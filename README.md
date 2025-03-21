@@ -2,14 +2,14 @@
 
 **A simple and convenient launcher for running games from ****[online-fix.me](https://online-fix.me)**** on Linux**
 
-## Features
+## ✨ Features
 
 - Launch games without the need to manually set `WINEDLLOVERRIDES` and other configurations
 - Automatically fetch game covers from Steam
 - Retrieve game icons
 - Create desktop and application menu shortcuts for games
 
-## Dependencies
+## 📦 Dependencies
 
 Before using the launcher, ensure that the following packages are installed:
 
@@ -43,11 +43,11 @@ sudo pacman -S protontricks ffmpeg 7zip
 eopkg install protontricks ffmpeg p7zip
 ```
 
-## Installation
+## ⬇️ Installation
 
 You can download a precompiled version with an installer from the [Releases](https://github.com/ZzEdovec/onlinefix-linux/releases) section.
 
-## Building from Source
+## 🏗 Building from Source
 
 To build the launcher, you will need [DevelNext](https://develnext.org):
 
