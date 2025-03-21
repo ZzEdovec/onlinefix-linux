@@ -31,7 +31,7 @@ Before using the launcher, ensure that the following packages are installed:
 #### Ubuntu and derivatives:
 
 ```bash
-sudo apt update && sudo apt install protontricks ffmpeg p7zip-full
+sudo apt install protontricks ffmpeg p7zip-full
 ```
 
 #### Fedora:
@@ -49,7 +49,7 @@ sudo pacman -S protontricks ffmpeg 7zip
 #### Solus:
 
 ```bash
-eopkg install protontricks ffmpeg p7zip
+sudo eopkg install protontricks ffmpeg p7zip
 ```
 
 ## ⬇️ Installation
