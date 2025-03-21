@@ -1,0 +1,48 @@
+{
+    "MAINFORM.HEADER": "Нет игр",
+    "MAINFORM.SUBHEADER": "добавьте какую-нибудь игру",
+    "MAINFORM.GAMEMODE": "Использовать gamemode для игр",
+    "MAINFORM.ADDGAME": "Добавить игру",
+    "MAINFORM.DONATE": "Поддержать",
+    "MAINFORM.EXENOTINROOT": "Исполняемый файл игры не в корневой папке, выберите корневую папку вручную",
+    "MAINFORM.SETGAMENAME": "Введите название для игры",
+    "MAINFORM.GAMEEXISTS": "Игра с таким названием уже добавлена",
+    "MAINFORM.NOFIX": "Не найдено ни одного DLL, связанного с OnlineFix!",
+    "MAINFORM.EOSFIX": "Обнаружен EOS Fix - работа над их поддержкой не завершена, они могут работать неправильно",
+    "MAINFORM.ICONPARSERERROR": "Ошибка получения иконки - %s",
+    "MAINFORM.MENU.REMOVEDESKTOP": "Удалить ярлык с рабочего стола",
+    "MAINFORM.MENU.REMOVEAPPMENU": "Удалить ярлык из меню приложений",
+    "MAINFORM.MENU.CREATEDESKTOP": "Создать ярлык на рабочем столе",
+    "MAINFORM.MENU.CREATEAPPMENU": "Создать ярлык в меню приложений",
+    "MAINFORM.MENU.EDITBANNER": "Изменить обложку",
+    "MAINFORM.MENU.EDITDLLS": "Изменить DLL-оверрайды",
+    "MAINFORM.MENU.REMOVEGAME": "Убрать игру из лаунчера",
+    "MAINFORM.EDITDLLS": "Разделяйте оверрайды символом ;",
+
+    "BANNEREDITOR.STEAM.HEADER": "Получить новую обложку из Steam:",
+    "BANNEREDITOR.STEAM.APPID": "AppID игры в Steam",
+    "BANNEDEDITOR.STEAM.NOAPPID": "AppID не указан!",
+    "BANNEREDITOR.STEAM.GET": "Получить",
+    "BANNEREDITOR.STEAM.FAILED": "Не удалось получить баннер из Steam - возможно, игра недоступна в регионе",
+    "BANNEREDITOR.FILE.HEADER": "Установить новую обложку из файла:",
+    "BANNEREDITOR.FILE.CHOOSE": "Выбрать файл",
+
+    "INITCONFIG.HEADER.DEFAULT": "Подготовка к работе",
+    "INITCONFIG.HEADER.WORKING": "Protontricks работает",
+    "INITCONFIG.TEXTAREA": "В открывшемся окне Steam установите Spacewar на тот диск, где хотите, чтобы был wineprefix, а ярлыки в меню приложений и рабочем столе не создавайте (уберите галочки)\n\nКогда Spacewar установится:\n1. Нажмите по нему в библиотеке правой кнопкой мыши\n2. Откройте \"Свойства\", затем \"Совместимость\"\n3. Включите использование инструмента совместимости Steam Play\n4. Выберите версию Proton, которая будет использоваться для всех игр с онлайн-фиксом (рекомендуется использовать Proton GE, если вы его устанавливали, или Proton Experimental и Hotfix)\n5. Дождитесь обновления Spacewar и запустите его\n\nДалее программа сама обнаружит процесс Spacewar, завершит его и перейдёт на следующий этап.\nЕсли этого не происходит, проверьте выполнение всех пунктов.",
+    "INITCOFIG.NOPROTONTRICKS": "Установите protontricks (flatpak не поддерживается) перед использованием лаунчера",
+
+    "FILESWORKER.STEAMNOTSTARTED": "Steam не запущен",
+    "FILESWORKER.NOPROTONTRICKS": "Для запуска игры требуется protontricks-launch, но он не найден в /usr/bin",
+
+    "GAMESTARTER.STARTING": "Игра запускается",
+
+    "7Z.NOTFOUND": "7z не найден в /usr/bin! Установите 7zip",
+    "FFMPEG.NOTFOUND": "FFmpeg не найден! Установите для создания ярлыков с иконками игр",
+
+    "DIRCHOOSER.GAMEROOT.TITLE": "Выберите корневую папку игры",
+    "FILECHOOSER.EXE.DESC": "Главный исполняемый файл игры",
+    "FILECHOOSER.EXE.TITLE": "Выберите главный исполняемый файл игры",
+    "FILECHOOSER.IMG.DESC": "Изображения",
+    "FILECHOOSER.IMG.TITLE": "Выберите картинку для нового баннера"
+}

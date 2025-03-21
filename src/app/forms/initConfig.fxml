@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360" prefWidth="640" styleClass="">
+  <children>
+    <LabelEx alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label" layoutX="24" layoutY="24" prefHeight="21" prefWidth="232" styleClass="label " text="Подготовка к работе" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+      <font>
+        <Font name="System Bold" size="15"/>
+      </font>
+    </LabelEx>
+    <Data cursor="DEFAULT" enabled="1" id="data-label" visible="1"/>
+    <TextArea editable="false" focusTraversable="true" id="textArea" layoutX="24" layoutY="72" prefColumnCount="40" prefHeight="264" prefWidth="592" promptText="" styleClass="text-input text-area " text="В открывшемся окне Steam установите Spacewar на тот диск, где хотите, чтобы был wineprefix, а ярлыки в меню приложений и рабочем столе не создавайте (уберите галочки)&#10;&#10;Когда Spacewar установиться:&#10;1. Нажмите по нему в библиотеке правой кнопкой мыши&#10;2. Откройте &quot;Свойства&quot;, затем &quot;Совместимость&quot;&#10;3. Включите использование инструмента совместимости Steam Play&#10;4. Выберите версию Proton, которая будет использоваться для всех игр с онлайн-фиксом (рекомендуется использовать Proton GE, если вы его устанавливали, или Proton Experimental и Hotfix)&#10;5. Дождитесь обновления Spacewar и запустите его&#10;&#10;Далее программа сама обнаружит процесс Spacewar, завершит его и перейдёт на следующий этап.&#10;Если этого не происходит, проверьте выполнение всех пунктов." wrapText="true">
+      <font>
+        <Font name="System Regular" size="12"/>
+      </font>
+    </TextArea>
+    <Data cursor="DEFAULT" enabled="1" id="data-textArea" visible="1"/>
+  </children>
+</AnchorPane>

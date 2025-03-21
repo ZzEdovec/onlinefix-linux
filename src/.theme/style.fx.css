@@ -1,0 +1,94 @@
+/* JavaFX CSS Style with -fx- prefix */
+
+.menu-button {
+    -fx-background-color:#1e1e1e;
+    -fx-text-fill:#fcfcfc;
+    -fx-border-radius:0px;
+    -fx-background-radius:0;
+}
+
+.def-button{
+    -fx-background-color:#333333;
+    -fx-text-fill:#fcfcfc;
+    -fx-border-radius:0px;
+    -fx-background-radius:0;
+}
+
+.menu-button:hover{
+    -fx-background-color:#404040;
+}
+
+.def-button:hover{
+    -fx-background-color:#4d4d4d;
+}
+
+
+.scroll-pane, .scroll-pane:focused, .scroll-pane .viewport{
+    -fx-background-color:Transparent;
+}
+
+.scroll-bar .increment-button, .scroll-bar .increment-arrow, .scroll-bar .decrement-button, .scroll-bar .decrement-arrow{
+    -fx-background-color:Transparent;
+    -fx-padding:0px;
+}
+
+.scroll-bar .track{
+    -fx-background-color:#292929;
+    
+}
+
+.scroll-bar .thumb{
+    -fx-background-color:#D1D1D1;
+    -fx-border-radius:0;
+    -fx-background-radius:0;
+}
+
+.scroll-bar{
+    -fx-pref-width: 8px;
+    -fx-pref-height: 8px;
+    
+    -fx-background-color:#292929;
+}
+
+.check-box .box{
+    -fx-background-color:#272b33;
+}
+
+.check-box:selected .box .mark{
+    -fx-background-color:Gray;
+}
+
+.context-menu{
+    -fx-background-color:#131519;
+    -fx-background-radius:7px;
+    -fx-border-color:#333333;
+    -fx-border-radius:7px;
+}
+
+.context-menu .menu-item{
+    -fx-background-color:Transparent;
+    -fx-background-radius:3px;
+}
+
+.context-menu .menu-item:hover{
+    -fx-background-color:#1b1e24;
+}
+
+.context-menu .menu-item .label{
+    -fx-text-fill:#cccccc;
+}
+
+.text-input, .text-area .content, .text-area, .text-area .scroll-pane{
+    -fx-background-color:#333333;
+    -fx-text-fill:#fcfcfc;
+    -fx-border-size:0px;
+    -fx-background-radius:0;
+    -fx-highlight-fill:linear-gradient(to right bottom,#7919F5,#370098);
+}
+
+.separator .line{
+    -fx-background-color:#666666;
+    -fx-border-color: transparent;
+    -fx-pref-width:1;
+    -fx-pref-height:1;
+}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568" prefWidth="904" styleClass="">
+  <children>
+    <Panel AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" backgroundColor="#000000" borderColor="#333333" borderRadius="0" borderStyle="SOLID" borderWidth="0" focusTraversable="false" id="bottomPanel" layoutX="0" layoutY="504" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="64" prefWidth="904" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
+      <children>
+        <Button AnchorPane.bottomAnchor="12" AnchorPane.rightAnchor="16" alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="5" id="addGame" layoutX="744" layoutY="12" prefHeight="40" prefWidth="144" styleClass="button menu-button " text="Добавить игру" textAlignment="CENTER" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="12"/>
+          </font>
+        </Button>
+        <Data cursor="HAND" enabled="1" graphic=".data/img/add.png" id="data-addGame" visible="1"/>
+        <CheckBox alignment="CENTER_LEFT" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="gamemode" layoutX="24" layoutY="20" prefHeight="24" prefWidth="272" selected="true" styleClass="check-box " text="Использовать gamemode для игр" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="12"/>
+          </font>
+        </CheckBox>
+        <Data cursor="HAND" enabled="1" id="data-gamemode" visible="1"/>
+        <Button AnchorPane.bottomAnchor="12" AnchorPane.rightAnchor="176" alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="5" id="button" layoutX="584" layoutY="12" prefHeight="40" prefWidth="144" styleClass="button menu-button " text="Поддержать" textAlignment="CENTER" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="12"/>
+          </font>
+        </Button>
+        <Data cursor="HAND" enabled="1" graphic=".data/img/donate.png" id="data-button" visible="1"/>
+      </children>
+      <titleFont>
+        <Font name="System Regular" size="13"/>
+      </titleFont>
+    </Panel>
+    <Data cursor="DEFAULT" enabled="1" id="data-bottomPanel" visible="1"/>
+    <ScrollPane AnchorPane.bottomAnchor="64" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="AS_NEEDED" hvalue="0" id="container" layoutX="0" layoutY="0" prefHeight="504" prefWidth="904" styleClass="scroll-pane " vbarPolicy="AS_NEEDED" vvalue="0">
+      <content>
+        <AnchorPane focusTraversable="false" id="" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="504" prefWidth="904" styleClass="">
+          <children/>
+        </AnchorPane>
+      </content>
+    </ScrollPane>
+    <Data cursor="DEFAULT" enabled="1" id="data-container" visible="1"/>
+    <LabelEx AnchorPane.bottomAnchor="278" AnchorPane.leftAnchor="328" AnchorPane.rightAnchor="328" AnchorPane.topAnchor="248" alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="noGamesHeader" layoutX="328" layoutY="248" prefHeight="42" prefWidth="248" styleClass="label " text="Нет игр" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+      <font>
+        <Font name="System Bold" size="30"/>
+      </font>
+    </LabelEx>
+    <Data cursor="DEFAULT" enabled="1" id="data-noGamesHeader" visible="1"/>
+    <LabelEx AnchorPane.bottomAnchor="259" AnchorPane.leftAnchor="312" AnchorPane.rightAnchor="312" AnchorPane.topAnchor="280" alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="noGamesSubHeader" layoutX="312" layoutY="280" prefHeight="29" prefWidth="280" styleClass="label " text="добавьте какую-нибудь игру" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
+      <font>
+        <Font name="System Regular" size="20"/>
+      </font>
+    </LabelEx>
+    <Data cursor="DEFAULT" enabled="1" id="data-noGamesSubHeader" visible="1"/>
+  </children>
+</AnchorPane>

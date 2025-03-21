@@ -1,0 +1,48 @@
+{
+    "MAINFORM.HEADER": "No games",
+    "MAINFORM.SUBHEADER": "add a game",
+    "MAINFORM.GAMEMODE": "Use gamemode for games",
+    "MAINFORM.ADDGAME": "Add game",
+    "MAINFORM.DONATE": "Donate",
+    "MAINFORM.EXENOTINROOT": "The game's executable file is not in the root folder, select the root folder manually",
+    "MAINFORM.SETGAMENAME": "Enter a name for the game",
+    "MAINFORM.GAMEEXISTS": "A game with this name is already added",
+    "MAINFORM.NOFIX": "No DLLs related to OnlineFix found!",
+    "MAINFORM.EOSFIX": "EOS Fix detected – work on their support is not finished, they may not function correctly",
+    "MAINFORM.ICONPARSERERROR": "Error retrieving icon - %s",
+    "MAINFORM.MENU.REMOVEDESKTOP": "Remove shortcut from desktop",
+    "MAINFORM.MENU.REMOVEAPPMENU": "Remove shortcut from application menu",
+    "MAINFORM.MENU.CREATEDESKTOP": "Create shortcut on desktop",
+    "MAINFORM.MENU.CREATEAPPMENU": "Create shortcut in application menu",
+    "MAINFORM.MENU.EDITBANNER": "Edit banner",
+    "MAINFORM.MENU.EDITDLLS": "Edit DLL overrides",
+    "MAINFORM.MENU.REMOVEGAME": "Remove game from launcher",
+    "MAINFORM.EDITDLLS": "Separate overrides with a ;",
+
+    "BANNEREDITOR.STEAM.HEADER": "Get a new banner from Steam:",
+    "BANNEREDITOR.STEAM.APPID": "Game's AppID in Steam",
+    "BANNEDEDITOR.STEAM.NOAPPID": "AppID not specified!",
+    "BANNEREDITOR.STEAM.GET": "Get",
+    "BANNEREDITOR.STEAM.FAILED": "Failed to get banner from Steam - the game may not be available in your region",
+    "BANNEREDITOR.FILE.HEADER": "Set a new banner from file:",
+    "BANNEREDITOR.FILE.CHOOSE": "Choose file",
+
+    "INITCONFIG.HEADER.DEFAULT": "Preparing to work",
+    "INITCONFIG.HEADER.WORKING": "Protontricks is working",
+    "INITCONFIG.TEXTAREA": "In the Steam window that opens, install Spacewar on the disk where you want the wineprefix to be, and do not create shortcuts in the application menu or desktop (uncheck the boxes)\n\nWhen Spacewar is installed:\n1. Right-click on it in the library\n2. Open \"Properties\", then \"Compatibility\"\n3. Enable the use of the Steam Play compatibility tool\n4. Select the Proton version to be used for all games with OnlineFix (it is recommended to use Proton GE if you have installed it, or Proton Experimental and Hotfix)\n5. Wait for Spacewar to update and launch it\n\nThe program will then automatically detect the Spacewar process, terminate it, and proceed to the next step.\nIf this does not happen, check all the steps.",
+    "INITCOFIG.NOPROTONTRICKS": "Install protontricks (flatpak is not supported) before using the launcher",
+
+    "FILESWORKER.STEAMNOTSTARTED": "Steam is not running",
+    "FILESWORKER.NOPROTONTRICKS": "Protontricks-launch is required to run the game, but it was not found in /usr/bin",
+
+    "GAMESTARTER.STARTING": "Game is starting",
+
+    "7Z.NOTFOUND": "7z not found in /usr/bin! Install 7zip",
+    "FFMPEG.NOTFOUND": "FFmpeg not found! Install it to create shortcuts with game icons",
+
+    "DIRCHOOSER.GAMEROOT.TITLE": "Select the game's root folder",
+    "FILECHOOSER.EXE.DESC": "Main executable file of the game",
+    "FILECHOOSER.EXE.TITLE": "Select the main executable file of the game",
+    "FILECHOOSER.IMG.DESC": "Images",
+    "FILECHOOSER.IMG.TITLE": "Select an image for the new banner"
+}
