@@ -9,7 +9,7 @@
 - Retrieve game icons
 - Create desktop and application menu shortcuts for games
 
-❕ Compatibility
+##❕ Compatibility
 
 Fully supported: Steam fixes
 
