@@ -54,7 +54,7 @@ To build the launcher, you will need [DevelNext](https://develnext.org):
 1. Open DevelNext
 2. Clone the repository to any folder on your disk:
    ```bash
-   git clone https://github.com/ZzEdovec/onlinefix-linux.git
+   git clone https://github.com/ZzEdovec/onlinefix-linux
    ```
 3. Open the `.dnproject` file in DevelNext
 4. Click the build button at the top
