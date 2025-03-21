@@ -11,9 +11,11 @@
 
 ## ❕ Compatibility
 
-Fully supported: Steam fixes
+Fully supported: Steam fixes from online-fix.me
 
-Experimental: Epic Games fixes (may behave unpredictably)
+Work-in-progres:
+- Epic Games fixes
+- Steam fixes from freetp.org
 
 ## 📦 Dependencies
 
