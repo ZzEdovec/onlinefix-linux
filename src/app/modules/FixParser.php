@@ -17,7 +17,10 @@ class FixParser
                 $dlls = str::split(file_get_contents($file),"\n");
                 foreach ($dlls as $dll)
                 {
-                    $dll = str::lower(fs::nameNoExt($dll));
+                    if (fs::ext($dll) != 'dll')
+                        continue;
+                    
+                    $dll = str::lower(fs::nameNoExt(str::replace($dll,'\\','/')));
                     if (str::contains($overrides,$dll) == false)
                         $overrides .= $dll.'=n;';
                 }
@@ -36,7 +39,10 @@ class FixParser
             $dll = str::lower(fs::nameNoExt($file));
             if (str::contains($overrides,$dll) == false)
             {
-                $override = $dll == 'winmm' ? '=n,b;' : '=n;';
+                if ($dll == 'winmm' or $dll == 'winhttp')
+                    $override = '=n,b;';
+                else 
+                    $override = '=n;';
                 $overrides .= $dll.$override;
             }
         }
@@ -60,7 +66,7 @@ class FixParser
     static function parseIcon($executable)
     {
         if (fs::isFile('/usr/bin/7z') == false)
-            throw new IOException(Localization::getByCode('7Z.NOTFOUNT'));
+            throw new IOException(Localization::getByCode('7Z.NOTFOUND'));
         
         fs::makeDir('/tmp/OFME-icon');
         $extractor = new Process(['7z','-y','x',$executable,'.rsrc/ICON'],'/tmp/OFME-icon')->startAndWait();

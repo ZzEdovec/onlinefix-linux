@@ -55,7 +55,7 @@ class MainForm extends AbstractForm
         }
         
         $files = fs::scan($appPath,['excludeDirs'=>true,'namePattern'=>
-                                                                 'winmm.dll|[Oo]nline[Ff]ix.*\.(dll|ini)$|[Ee][Oo][Ss].*\.dll$|[Ss]team.*\.dll$|dlllist.txt']);
+                                                        '[Ee][Mm][Pp].*\.dll|[Cc]ustom.*\.dll|win.*\.dll$|[Oo]nline[Ff]ix.*\.(dll|ini)$|[Ee][Oo][Ss].*\.dll$|[Ss]team.*\.dll$|dlllist.txt']);
                                                                  
         $overrides = FixParser::parseDlls($files);
         if ($overrides['overrides'] == null)
@@ -265,8 +265,10 @@ class MainForm extends AbstractForm
             
             app()->form('bannerEditor')->free();
         });
-        $overridesEdit->on('action',function () use ($overrides,$gameName)
+        $overridesEdit->on('action',function () use ($gameName)
         {
+            $overrides = $this->appModule()->games->get('overrides',$gameName);
+            
             $overrides = UXDialog::input(Localization::getByCode('MAINFORM.EDITDLLS'),$overrides,$this) ?? $overrides;
                 
             $this->appModule()->games->set('overrides',$overrides,$gameName);
