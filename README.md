@@ -1,4 +1,4 @@
-![OFME window](zzedovec.github.io/images/ofmeBanner)
+![OFME window](https://zzedovec.github.io/images/ofmeBanner.png)
 # OnlineFix Linux Launcher
 
 **A simple and convenient launcher for running games from ****[online-fix.me](https://online-fix.me)**** on Linux**
