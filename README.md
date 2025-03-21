@@ -12,7 +12,8 @@
 
 ## ❕ Compatibility
 
-Fully supported: Steam fixes from online-fix.me
+Currently, most online fixes from online-fix.me are supported.
+Fixes that include custom launchers (e.g., Phasmophobia) have not been tested yet.
 
 Work-in-progres:
 - Epic Games fixes
