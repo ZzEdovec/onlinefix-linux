@@ -9,6 +9,12 @@
 - Retrieve game icons
 - Create desktop and application menu shortcuts for games
 
+❕ Compatibility
+
+Fully supported: Steam fixes
+
+Experimental: Epic Games fixes (may behave unpredictably)
+
 ## 📦 Dependencies
 
 Before using the launcher, ensure that the following packages are installed:
