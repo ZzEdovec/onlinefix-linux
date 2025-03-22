@@ -43,8 +43,19 @@ sudo dnf install protontricks ffmpeg p7zip
 
 #### Arch Linux and derivatives:
 
+
+If you do not have `yay` installed, first install it:
+
 ```bash
-sudo pacman -S protontricks ffmpeg 7zip
+git clone https://aur.archlinux.org/yay-bin.git
+cd yay-bin
+makepkg -si
+```
+
+Then install all dependencies using:
+
+```bash
+yay -S --noconfirm protontricks ffmpeg 7zip
 ```
 
 #### Solus:
