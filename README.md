@@ -63,7 +63,7 @@ yay -S --noconfirm protontricks ffmpeg 7zip
 
 **Or simply copy and run this in the terminal:**
 ```bash
-sudo pacman -S git && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si && cd .. && rm -rf yay-bin && yay -S --noconfirm protontricks ffmpeg 7zip
+sudo pacman -S --noconfirm git && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si && cd .. && rm -rf yay-bin && yay -S --noconfirm protontricks ffmpeg 7zip
 ```
 
 #### Solus:
