@@ -47,6 +47,7 @@ sudo dnf install protontricks ffmpeg p7zip
 If you do not have `yay` installed, first install it:
 
 ```bash
+sudo pacman -S --noconfirm git
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
 makepkg -si
@@ -58,6 +59,11 @@ Then install all dependencies using:
 
 ```bash
 yay -S --noconfirm protontricks ffmpeg 7zip
+```
+
+Or simply copy and run this in the terminal:
+```bash
+sudo pacman -S git && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si && cd .. && rm -rf yay-bin && yay -S --noconfirm protontricks ffmpeg 7zip
 ```
 
 #### Solus:
