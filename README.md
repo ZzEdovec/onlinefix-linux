@@ -50,6 +50,8 @@ If you do not have `yay` installed, first install it:
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
 makepkg -si
+cd ..
+rm -rf yay-bin
 ```
 
 Then install all dependencies using:
