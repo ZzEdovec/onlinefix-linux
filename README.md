@@ -1,3 +1,4 @@
+
 ![OFME window](https://zzedovec.github.io/images/ofmeBanner.png)
 # OnlineFix Linux Launcher
 
@@ -28,6 +29,32 @@ Before using the launcher, ensure that the following packages are installed:
 - `7zip`
 
 ### Installing Dependencies:
+
+#### SteamOS / Steam Deck:
+
+1. Disable the read-only mode for the file system:
+   ```bash
+   sudo steamos-readonly disable
+   ```
+2. Edit `/etc/pacman.conf` and set `SigLevel = TrustAll`
+   - **Warning:** Using `TrustAll` disables package signature verification, which can pose security risks. However, without this change, `pacman` does not function properly on SteamOS.
+   - You can use `nemo` or `kate` to edit the file:
+     ```bash
+     sudo nemo /etc/pacman.conf
+     ```
+     or
+     ```bash
+     sudo kate /etc/pacman.conf
+     ```
+3. Enable the **Chaotic AUR** repository by following the [official instructions](https://aur.chaotic.cx/docs)
+4. Install the required dependencies:
+   ```bash
+   sudo pacman -Sy protontricks-git p7zip
+   ```
+5. After installation, it is recommended to re-enable the read-only mode:
+   ```bash
+   sudo steamos-readonly enable
+   ```
 
 #### Ubuntu and derivatives:
 
