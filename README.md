@@ -1,3 +1,4 @@
+[English](https://github.com/ZzEdovec/onlinefix-linux/blob/main/README.md) | [Русский](https://github.com/ZzEdovec/onlinefix-linux/blob/main/README_ru.md)
 
 ![OFME window](https://zzedovec.github.io/images/ofmeBanner.png)
 # OnlineFix Linux Launcher
