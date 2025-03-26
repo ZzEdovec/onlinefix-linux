@@ -9,12 +9,6 @@
           </font>
         </Button>
         <Data cursor="HAND" enabled="1" graphic=".data/img/add.png" id="data-addGame" visible="1"/>
-        <CheckBox alignment="CENTER_LEFT" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="gamemode" layoutX="24" layoutY="20" prefHeight="24" prefWidth="272" selected="true" styleClass="check-box " text="Использовать gamemode для игр" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="12"/>
-          </font>
-        </CheckBox>
-        <Data cursor="HAND" enabled="1" id="data-gamemode" visible="1"/>
         <Button AnchorPane.bottomAnchor="12" AnchorPane.rightAnchor="176" alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="5" id="button" layoutX="584" layoutY="12" prefHeight="40" prefWidth="144" styleClass="button menu-button " text="Поддержать" textAlignment="CENTER" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="12"/>

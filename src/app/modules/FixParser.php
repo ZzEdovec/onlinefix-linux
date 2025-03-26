@@ -1,6 +1,8 @@
 <?php
 namespace app\modules;
 
+use Throwable;
+use php\desktop\HotKeyManager;
 use php\io\IOException;
 use framework;
 use std;
@@ -12,7 +14,8 @@ class FixParser
     {
         foreach ($files as $file)
         {
-            if (fs::name($file) == 'dlllist.txt')
+            $regexFile = fs::name($file);
+            if (Regex::match('(?i)^(winmm|dlllist)\.txt$',$regexFile))
             {
                 $dlls = str::split(file_get_contents($file),"\n");
                 foreach ($dlls as $dll)
@@ -27,7 +30,7 @@ class FixParser
                 
                 continue;
             }
-            elseif (str::endsWith($file,'.ini'))
+            elseif (Regex::match('(?i)^(online|steam).*fix\.ini$',$regexFile))
             {
                 $ini = new IniStorage($file);
                 $realAppID = $ini->get('RealAppId','Main');
@@ -39,7 +42,7 @@ class FixParser
             $dll = str::lower(fs::nameNoExt($file));
             if (str::contains($overrides,$dll) == false)
             {
-                if ($dll == 'winmm' or $dll == 'winhttp')
+                if (Regex::match('(?i)^win.*\.dll$',$regexFile))
                     $override = '=n,b;';
                 else 
                     $override = '=n;';

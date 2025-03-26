@@ -1,6 +1,8 @@
     <?php
 namespace app\forms;
 
+use script\HotKeyScript;
+use php\desktop\HotKeyManager;
 use Throwable;
 use std, gui, framework, app;
 
@@ -47,7 +49,9 @@ class MainForm extends AbstractForm
                 return;
         }
         
-        $appName = UXDialog::input(Localization::getByCode('MAINFORM.SETGAMENAME'),fs::nameNoExt($exe),$this) ?? fs::nameNoExt($exe); 
+        $appName = UXDialog::input(Localization::getByCode('MAINFORM.SETGAMENAME'),fs::nameNoExt($exe),$this); 
+        if ($appName == false)
+            return;
         if ($this->appModule()->games->section($appName) != [])
         {
             UXDialog::show(Localization::getByCode('MAINFORM.GAMEEXISTS'),'ERROR',$this);
@@ -55,7 +59,7 @@ class MainForm extends AbstractForm
         }
         
         $files = fs::scan($appPath,['excludeDirs'=>true,'namePattern'=>
-                                                        '[Ee][Mm][Pp].*\.dll|[Cc]ustom.*\.dll|win.*\.dll$|[Oo]nline[Ff]ix.*\.(dll|ini)$|[Ee][Oo][Ss].*\.dll$|[Ss]team.*\.dll$|dlllist.txt']);
+                                                        '(?i)^(emp|custom)\.dll$|^win.*\.dll$|^(online|steam).*\.(dll|ini)$|^eos.*\.dll$|^epicfix.*\.dll$|^(winmm|dlllist)\.txt$']);
                                                                  
         $overrides = FixParser::parseDlls($files);
         if ($overrides['overrides'] == null)
@@ -108,10 +112,7 @@ class MainForm extends AbstractForm
      */
     function doConstruct(UXEvent $e = null)
     {
-        if (fs::isFile('/usr/bin/gamemoderun') == false)
-            $this->gamemode->enabled = false;
-        else
-            $this->gamemode->selected = $this->appModule()->settings->get('useGamemode');
+        $this->appModule()->overlayEmulator->disabled = true;
         
         foreach ($this->appModule()->games->toArray() as $name => $params)
         {
@@ -119,13 +120,6 @@ class MainForm extends AbstractForm
         }
     }
 
-    /**
-     * @event gamemode.click 
-     */
-    function doGamemodeClick(UXMouseEvent $e = null)
-    {    
-        $this->appModule()->settings->set('useGamemode',$e->sender->selected);
-    }
 
     /**
      * @event noGamesHeader.construct 
@@ -143,13 +137,6 @@ class MainForm extends AbstractForm
         $e->sender->text = Localization::getByCode('MAINFORM.SUBHEADER');
     }
 
-    /**
-     * @event gamemode.construct 
-     */
-    function doGamemodeConstruct(UXEvent $e = null)
-    {    
-        $e->sender->text = Localization::getByCode('MAINFORM.GAMEMODE');
-    }
 
     /**
      * @event addGame.construct 
@@ -187,18 +174,19 @@ class MainForm extends AbstractForm
         $gamePanel->children[4]->classesString = 'button menu-button';
         $gamePanel->children[4]->cursor = 'HAND';
         $gamePanel->children[4]->graphic = new UXImageView(new UXImage('res://.data/img/play.png'));
+        $gamePanel->children[4]->data('play',$gamePanel->children[4]->graphic);
+        $gamePanel->children[4]->data('stop',new UXImageView(new UXImage('res://.data/img/stop.png')));
         $menu = new UXContextMenu;
         
         $desktopIcon = new UXMenuItem(fs::isFile($this->appModule()->games->get('desktopIcon',$gameName)) ? Localization::getByCode('MAINFORM.MENU.REMOVEDESKTOP') : Localization::getByCode('MAINFORM.MENU.CREATEDESKTOP'));
         $appMenuIcon = new UXMenuItem(fs::isFile($this->appModule()->games->get('appMenuIcon',$gameName)) ? Localization::getByCode('MAINFORM.MENU.REMOVEAPPMENU') : Localization::getByCode('MAINFORM.MENU.CREATEAPPMENU'));
         $separator = UXMenuItem::createSeparator();
         $bannerEdit = new UXMenuItem(Localization::getByCode('MAINFORM.MENU.EDITBANNER'));
+        $gameSettings = new UXMenuItem(Localization::getByCode('MAINFORM.MENU.GAMESETTINGS'));
         $separatorAlt = UXMenuItem::createSeparator();
-        $overridesEdit = new UXMenuItem(Localization::getByCode('MAINFORM.MENU.EDITDLLS'));
-        $separator3 = UXMenuItem::createSeparator();
         $libraryDelete = new UXMenuItem(Localization::getByCode('MAINFORM.MENU.REMOVEGAME'));
         
-        $menu->items->addAll([$desktopIcon,$appMenuIcon,$separator,$bannerEdit,$separatorAlt,$overridesEdit,$separator3,$libraryDelete]);
+        $menu->items->addAll([$desktopIcon,$appMenuIcon,$separator,$bannerEdit,$gameSettings,$separatorAlt,$libraryDelete]);
         
         $desktopEntry = filesWorker::generateDesktopEntry($gameName,$icon);
         $desktopIcon->on('action',function () use ($desktopEntry,$gameName,$desktopIcon)
@@ -265,13 +253,15 @@ class MainForm extends AbstractForm
             
             app()->form('bannerEditor')->free();
         });
-        $overridesEdit->on('action',function () use ($gameName)
+        $gameSettings->on('action',function () use ($gamePanel,$gameName)
         {
-            $overrides = $this->appModule()->games->get('overrides',$gameName);
+            app()->form('gameSettings')->gameName->text = $gameName;
+            app()->form('gameSettings')->gameName->graphic = new UXImageView($gamePanel->children[9]->image);
+            app()->form('gameSettings')->gameName->graphic->size = $gamePanel->children[9]->size;
             
-            $overrides = UXDialog::input(Localization::getByCode('MAINFORM.EDITDLLS'),$overrides,$this) ?? $overrides;
-                
-            $this->appModule()->games->set('overrides',$overrides,$gameName);
+            app()->form('gameSettings')->title = $gameName;
+            
+            app()->showForm('gameSettings');
         });
         $libraryDelete->on('action',function () use ($gameName,$gamePanel)
         {
@@ -291,20 +281,41 @@ class MainForm extends AbstractForm
         {
             $menu->showByNode($gamePanel->children[6],0,$gamePanel->children[6]->height);
         });
-        $gamePanel->children[4]->on('click',function ($e) use ($gameName)
+        $gamePanel->children[4]->on('click',function ($e) use ($gameName,$exec)
         {
-            $process = filesWorker::generateProcess($gameName);
-            if ($process == null)
-                return;
-            
-            
-            $e->sender->enabled = false;
-            new Thread(function () use ($e,$process)
+            if ($e->sender->graphic == $e->sender->data('stop'))
             {
-                $process->startAndWait();
+                $this->data('manualKill',true);
+                $kill = new Process(['killall','-r',fs::nameNoExt($exec).'.*'])->startAndWait();
                 
-                uiLater(function () use ($e){$e->sender->enabled = true;});
-            })->start();
+                if ($kill->getExitValue() != 0)
+                {
+                    $this->toast(Localization::getByCode('MAINFORM.KILLFAILED'));
+                    $this->data('manualKill',false);
+                }
+                else
+                    $e->sender->graphic = $e->sender->data('play');
+            }
+            else 
+            {
+                $process = filesWorker::generateProcess($gameName);
+                if ($process == null)
+                    return;
+                
+                
+                $e->sender->graphic = $e->sender->data('stop');
+                $e->sender->enabled = false;
+                $this->appModule()->overlayEmulator->disabled = false;
+                
+                waitAsync('5s',function () use ($e){$e->sender->enabled = true;});
+                new Thread(function () use ($e,$process,$gameName,$overlayEmulator)
+                {
+                    filesWorker::runWithDebug($process,$gameName);
+                    
+                    $this->appModule()->overlayEmulator->disabled = true;
+                    uiLater(function () use ($e){$e->sender->graphic = $e->sender->data('play');});
+                })->start();
+            }
         });
         
         $this->container->content->children->add($gamePanel);

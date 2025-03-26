@@ -12,14 +12,14 @@ class initConfig extends AbstractForm
      */
     function doConstruct(UXEvent $e = null)
     {
-        if (fs::isFile('/usr/bin/protontricks') == false)
+        if (fs::isFile('/usr/bin/protontricks') == false or fs::isFile('/usr/bin/protontricks-launch') == false)
         {
             UXDialog::showAndWait(Localization::getByCode('INITCONFIG.NOPROTONTRICKS'),'ERROR',$this);
             app()->shutdown();
         }
         
-        if (fs::isFile('/usr/bin/gamemoderun'))
-            $this->appModule()->settings->set('useGamemode',true);
+        #if (fs::isFile('/usr/bin/gamemoderun'))
+        #    $this->appModule()->settings->set('useGamemode',true);
         
         
         execute('xdg-open steam://install/480');

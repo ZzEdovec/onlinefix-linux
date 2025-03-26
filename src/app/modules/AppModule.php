@@ -12,7 +12,7 @@ class AppModule extends AbstractModule
      * @event action 
      */
     function doAction(ScriptEvent $e = null)
-    {   
+    {
         $userhome = System::getProperty('user.home');
         $this->games->path = $userhome.'/.config/OFME-Linux/Games.ini';
         $this->settings->path = $userhome.'/.config/OFME-Linux/Launcher.ini';
@@ -25,7 +25,7 @@ class AppModule extends AbstractModule
         
         try
         {
-            if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '1.1')
+            if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '1.2')
             {
                 new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
                 app()->shutdown();
@@ -42,8 +42,17 @@ class AppModule extends AbstractModule
             app()->showForm('initConfig');
             return;
         }
-            
+        
         app()->showForm('MainForm');
     }
+
+    /**
+     * @event overlayEmulator.action 
+     */
+    function doOverlayEmulatorAction(ScriptEvent $e = null)
+    {    
+        execute('xdg-open steam://open/friends');
+    }
+
 
 }
