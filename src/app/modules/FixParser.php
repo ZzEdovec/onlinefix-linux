@@ -68,11 +68,11 @@ class FixParser
     
     static function parseIcon($executable)
     {
-        if (fs::isFile('/usr/bin/7z') == false)
+        if (fs::isFile('/usr/bin/7z') == false and fs::isFile('/usr/bin/7za') == false)
             throw new IOException(Localization::getByCode('7Z.NOTFOUND'));
         
         fs::makeDir('/tmp/OFME-icon');
-        $extractor = new Process(['7z','-y','x',$executable,'.rsrc/ICON'],'/tmp/OFME-icon')->startAndWait();
+        $extractor = new Process([fs::isFile('/usr/bin/7z') ? '7z' : '7za','-y','x',$executable,'.rsrc/ICON'],'/tmp/OFME-icon')->startAndWait();
         
         if (str::contains($extractor->getInput()->readFully(),'No files to process'))
             return null;
