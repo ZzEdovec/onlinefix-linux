@@ -27,9 +27,8 @@
 
 - `protontricks`
 - `ffmpeg`
-- `7zip`
 
-### Установка зависимостей:
+### Установка protontricks:
 
 #### SteamOS / Steam Deck:
 
@@ -50,7 +49,7 @@
 3. Включите репозиторий **Chaotic AUR**, следуя [официальной инструкции](https://aur.chaotic.cx/docs)
 4. Установите необходимые зависимости:
    ```bash
-   sudo pacman -Sy protontricks-git p7zip
+   sudo pacman -Sy protontricks-git
    ```
 5. После установки рекомендуется снова включить режим только для чтения:
    ```bash
@@ -60,13 +59,13 @@
 #### Ubuntu и производные:
 
 ```bash
-sudo apt install protontricks ffmpeg p7zip-full
+sudo apt install protontricks
 ```
 
 #### Fedora:
 
 ```bash
-sudo dnf install protontricks ffmpeg p7zip
+sudo dnf install protontricks
 ```
 
 #### Arch Linux и производные:
@@ -82,16 +81,16 @@ cd ..
 rm -rf yay-bin
 ```
 
-Затем установите все зависимости с помощью:
+Затем установите protontricks с помощью:
 
 ```bash
-yay -S --noconfirm protontricks ffmpeg 7zip
+yay -S --noconfirm protontricks
 ```
 
 #### Solus:
 
 ```bash
-sudo eopkg install protontricks ffmpeg p7zip
+sudo eopkg install protontricks
 ```
 
 ## ⬇️ Установка

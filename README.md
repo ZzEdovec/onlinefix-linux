@@ -27,9 +27,8 @@ Before using the launcher, ensure that the following packages are installed:
 
 - `protontricks`
 - `ffmpeg`
-- `7zip`
 
-### Installing Dependencies:
+### Installing protontricks:
 
 #### SteamOS / Steam Deck:
 
@@ -48,9 +47,9 @@ Before using the launcher, ensure that the following packages are installed:
      sudo kate /etc/pacman.conf
      ```
 3. Enable the **Chaotic AUR** repository by following the [official instructions](https://aur.chaotic.cx/docs)
-4. Install the required dependencies:
+4. Install the protontricks:
    ```bash
-   sudo pacman -Sy protontricks-git p7zip
+   sudo pacman -Sy protontricks-git
    ```
 5. After installation, it is recommended to re-enable the read-only mode:
    ```bash
@@ -60,13 +59,13 @@ Before using the launcher, ensure that the following packages are installed:
 #### Ubuntu and derivatives:
 
 ```bash
-sudo apt install protontricks ffmpeg p7zip-full
+sudo apt install protontricks
 ```
 
 #### Fedora:
 
 ```bash
-sudo dnf install protontricks ffmpeg p7zip
+sudo dnf install protontricks
 ```
 
 #### Arch Linux and derivatives:
@@ -83,16 +82,16 @@ cd ..
 rm -rf yay-bin
 ```
 
-Then install all dependencies using:
+Then install protontricks using:
 
 ```bash
-yay -S --noconfirm protontricks ffmpeg 7zip
+yay -S --noconfirm protontricks
 ```
 
 #### Solus:
 
 ```bash
-sudo eopkg install protontricks ffmpeg p7zip
+sudo eopkg install protontricks
 ```
 
 ## ⬇️ Installation
