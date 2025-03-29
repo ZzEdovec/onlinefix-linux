@@ -40,4 +40,36 @@ class log extends AbstractForm
         $this->textArea->text = null;
     }
 
+    /**
+     * @event label.construct 
+     */
+    function doLabelConstruct(UXEvent $e = null)
+    {    
+        $e->sender->text = Localization::getByCode('LOGFORM.HEADER');
+    }
+
+    /**
+     * @event labelAlt.construct 
+     */
+    function doLabelAltConstruct(UXEvent $e = null)
+    {    
+        $e->sender->text = Localization::getByCode('LOGFORM.SUBHEADER');
+    }
+
+    /**
+     * @event buttonAlt.construct 
+     */
+    function doButtonAltConstruct(UXEvent $e = null)
+    {    
+        $e->sender->text = Localization::getByCode('LOGFORM.DONOTSEND');
+    }
+
+    /**
+     * @event button.construct 
+     */
+    function doButtonConstruct(UXEvent $e = null)
+    {    
+        $e->sender->text = Localization::getByCode('LOGFORM.SEND');
+    }
+
 }

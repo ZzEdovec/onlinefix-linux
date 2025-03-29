@@ -37,7 +37,8 @@ class filesWorker
         
         $executable = app()->appModule()->games->get('executable',$name);
         
-        $overridesArr = ['WINEDLLOVERRIDES'=>app()->appModule()->games->get('overrides',$name),'WINEDEBUG'=>'+warn,+err,+trace'];
+        $dxOverrides = 'd3d11=n;d3d10=n;d3d10core=n;dxgi=n;openvr_api_dxvk=n;d3d12=n;d3d12core=n;d3d9=n;d3d8=n;'; #For some reason, some distributions use wined3d instead of dxvk, this is workaround
+        $overridesArr = ['WINEDLLOVERRIDES'=>$dxOverrides.app()->appModule()->games->get('overrides',$name),'WINEDEBUG'=>'+warn,+err,+trace'];
         $execArr = ['protontricks-launch','--appid','480',$executable];
         $envArr = str::split(app()->appModule()->games->get('environment',$name),' ');
         
@@ -73,7 +74,7 @@ class filesWorker
         if ($process->getExitValue() != 0 and uiLaterAndWait(function (){return app()->form('MainForm')->data('manualKill');}) == false)
         {
             uiLaterAndWait(function () use ($process,$gameName){
-                if (app()->appModule()->games->get('fakeSteam',$gameName) == false and $process->getExitValue() == 1 and uiConfirm('Вы сейчас получали ошибку "Steam не запущен"?'))
+                if (app()->appModule()->games->get('fakeSteam',$gameName) == false and $process->getExitValue() == 1 and uiConfirm(Localization::getByCode('FILESWORKER.ISSTEAMNOTSTARTEDERROR')))
                 {
                     app()->appModule()->games->set('fakeSteam',true,$gameName);
                     UXDialog::showAndWait(Localization::getByCode('FILESWORKER.FAKESTEAMENABLED'));

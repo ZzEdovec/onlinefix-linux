@@ -41,8 +41,14 @@
     "FILESWORKER.STEAMNOTSTARTED": "Steam не запущен",
     "FILESWORKER.NOPROTONTRICKS": "Для запуска игры требуется protontricks-launch, но он не найден в /usr/bin",
     "FILESWORKER.FAKESTEAMENABLED": "Включен обход ошибки. Попробуйте запустить игру заново",
+    "FILESWORKER.ISSTEAMNOTSTARTEDERROR": "Вы сейчас видели ошибку \"Steam не запущен\"?",
 
     "GAMESTARTER.STARTING": "Игра запускается",
+
+    "LOGFORM.HEADER": "Упс.. Кажется, эта игра работала не так, как нужно",
+    "LOGFORM.SUBHEADER": "Это лог её работы, который вы можете отправить разработчику лаунчера для изучения и возможного исправления",
+    "LOGFORM.DONOTSEND": "Не отправлять",
+    "LOGFORM.SEND": "Отправить",
 
     "7Z.NOTFOUND": "7z не найден в /usr/bin! Установите 7zip",
     "FFMPEG.NOTFOUND": "FFmpeg не найден! Установите для создания ярлыков с иконками игр",

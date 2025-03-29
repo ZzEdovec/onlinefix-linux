@@ -41,8 +41,14 @@
     "FILESWORKER.STEAMNOTSTARTED": "Steam is not running",
     "FILESWORKER.NOPROTONTRICKS": "Protontricks-launch is required to start the game, but it was not found in /usr/bin",
     "FILESWORKER.FAKESTEAMENABLED": "Error bypass enabled. Try launching the game again",
+    "FILESWORKER.ISSTEAMNOTSTARTEDERROR": "Did you just see the \"Steam is not running\" error?",
 
     "GAMESTARTER.STARTING": "Game is starting",
+
+    "LOGFORM.HEADER": "Oops.. It seems that this game didn't work as it should",
+    "LOGFORM.SUBHEADER": "Here is its log, which you can send to the launcher developer for analysis and possible fixes.",
+    "LOGFORM.DONOTSEND": "Do not send",
+    "LOGFORM.SEND": "Send",
 
     "7Z.NOTFOUND": "7z not found in /usr/bin! Install 7zip",
     "FFMPEG.NOTFOUND": "FFmpeg not found! Install it to create shortcuts with game icons",
