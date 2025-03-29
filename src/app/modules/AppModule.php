@@ -36,7 +36,8 @@ class AppModule extends AbstractModule
         }
         
         fs::ensureParent($this->games->path);
-        
+        new Process(['chmod','+x',fs::abs('./7zip/7z')])->start();
+
         if ($this->settings->get('inited') == null)
         {
             app()->showForm('initConfig');
