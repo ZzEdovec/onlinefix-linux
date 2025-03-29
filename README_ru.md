@@ -88,11 +88,6 @@ rm -rf yay-bin
 yay -S --noconfirm protontricks ffmpeg 7zip
 ```
 
-**Или просто скопируйте и выполните эту команду в терминале:**
-```bash
-sudo pacman -S --noconfirm git && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si && cd .. && rm -rf yay-bin && yay -S --noconfirm protontricks ffmpeg 7zip
-```
-
 #### Solus:
 
 ```bash
