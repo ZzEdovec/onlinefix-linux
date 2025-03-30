@@ -14,12 +14,11 @@
 
 ## ❕ Compatibility
 
-Currently, most online fixes from online-fix.me are supported.
+Currently, most online fixes from online-fix.me and freetp.org are supported.
 Fixes that include custom launchers (e.g., Phasmophobia) have not been tested yet.
 
 Work-in-progres:
 - Epic Games fixes
-- Steam fixes from freetp.org
 
 ## 📦 Dependencies
 
