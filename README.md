@@ -11,6 +11,7 @@
 - Automatically fetch game covers from Steam
 - Retrieve game icons
 - Create desktop and application menu shortcuts for games
+- Bypassing the "Steam is not running" error in some fixes
 
 ## ❕ Compatibility
 
