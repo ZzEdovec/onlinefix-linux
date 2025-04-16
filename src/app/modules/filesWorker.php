@@ -39,7 +39,7 @@ class filesWorker
         
         $dxOverrides = 'd3d11=n;d3d10=n;d3d10core=n;dxgi=n;openvr_api_dxvk=n;d3d12=n;d3d12core=n;d3d9=n;d3d8=n;'; #For some reason, some distributions use wined3d instead of dxvk, this is workaround
         $overridesArr = ['WINEDLLOVERRIDES'=>$dxOverrides.app()->appModule()->games->get('overrides',$name),'WINEDEBUG'=>'+warn,+err,+trace'];
-        $execArr = ['protontricks-launch','--appid','480',$executable];
+        $execArr = [filesWorker::findProtontricksPath().'protontricks-launch','--appid','480',$executable];
         $envArr = str::split(app()->appModule()->games->get('environment',$name),' ');
         
         if (isset($envArr[0]))
@@ -47,8 +47,8 @@ class filesWorker
             
         if (app()->appModule()->games->get('gamemode',$name) and fs::isFile('/usr/bin/gamemoderun'))
             array_unshift($execArr,'gamemoderun');
-        if (app()->appModule()->games->get('mangohud',$name) and fs::isFile('/usr/bin/mangohud'))
-            array_unshift($execArr,'mangohud');
+        #if (app()->appModule()->games->get('mangohud',$name) and fs::isFile('/usr/bin/mangohud'))
+            #array_unshift($execArr,'mangohud');
         
         return new Process($execArr,fs::parent($executable),$overridesArr);
     }
@@ -58,7 +58,7 @@ class filesWorker
         UXApplication::setImplicitExit(false);
         
         if (app()->appModule()->games->get('fakeSteam',$gameName))
-            $fakeSteam = new Process(['protontricks-launch','--appid','480',fs::abs('./steam.exe')])->start();
+            $fakeSteam = new Process([self::findProtontricksPath().'protontricks-launch','--appid','480',fs::abs('./steam.exe')])->start();
         
         $process = $process->startAndWait();
         
@@ -74,13 +74,13 @@ class filesWorker
         if ($process->getExitValue() != 0 and uiLaterAndWait(function (){return app()->form('MainForm')->data('manualKill');}) == false)
         {
             uiLaterAndWait(function () use ($process,$gameName){
-                if (app()->appModule()->games->get('fakeSteam',$gameName) == false and $process->getExitValue() == 1 and uiConfirm(Localization::getByCode('FILESWORKER.ISSTEAMNOTSTARTEDERROR')))
+                /*if (app()->appModule()->games->get('fakeSteam',$gameName) == false and $process->getExitValue() == 1 and uiConfirm(Localization::getByCode('FILESWORKER.ISSTEAMNOTSTARTEDERROR')))
                 {
                     app()->appModule()->games->set('fakeSteam',true,$gameName);
                     UXDialog::showAndWait(Localization::getByCode('FILESWORKER.FAKESTEAMENABLED'));
                 }
                 else 
-                {
+                {*/
                     $info = 'Game name - '.$gameName."\n".
                             'Exit code - '.$process->getExitValue()."\n".
                             "Game settings: \n";
@@ -88,11 +88,12 @@ class filesWorker
                     foreach (app()->appModule()->games->section($gameName) as $param => $value)
                         $info .= "\t$param - $value\n";
                     
-                    app()->form('log')->textArea->text = $info."\nGame output:\n".$process->getError()->readFully();
+                    app()->form('log')->textArea->text = $info."\nWine output:\n".$process->getError()->readFully();
+                    app()->form('log')->textArea->text .= "\n\n\nGame output:\n".$process->getInput()->readFully();
                     app()->form('log')->data('gameName',$gameName);
                     
                     app()->showFormAndWait('log');
-                }
+                #}
             });
         }
         
@@ -103,6 +104,16 @@ class filesWorker
         });
         
         UXApplication::setImplicitExit(true);
+    }
+    
+    static function findProtontricksPath()
+    {
+        if (fs::isFile('/usr/bin/protontricks') and fs::isFile('/usr/bin/protontricks-launch'))
+            return '/usr/bin/';
+        elseif (fs::isFile(System::getProperty('user.home').'/.local/bin/protontricks') and fs::isFile(System::getProperty('user.home').'/.local/bin/protontricks-launch'))
+            return System::getProperty('user.home').'/.local/bin/';
+        else 
+            return false;
     }
     
     /*static function checkProtontricksInstallation()

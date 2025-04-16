@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568" prefWidth="904" styleClass="">
+<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568" prefWidth="912" styleClass="">
   <children>
-    <Panel AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" backgroundColor="#000000" borderColor="#333333" borderRadius="0" borderStyle="SOLID" borderWidth="0" focusTraversable="false" id="bottomPanel" layoutX="0" layoutY="504" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="64" prefWidth="904" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
+    <Panel AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" backgroundColor="#000000" borderColor="#333333" borderRadius="0" borderStyle="SOLID" borderWidth="0" focusTraversable="false" id="bottomPanel" layoutX="0" layoutY="504" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="64" prefWidth="912" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
       <children>
-        <Button AnchorPane.bottomAnchor="12" AnchorPane.rightAnchor="16" alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="5" id="addGame" layoutX="744" layoutY="12" prefHeight="40" prefWidth="144" styleClass="button menu-button " text="Добавить игру" textAlignment="CENTER" underline="false" wrapText="false">
+        <Button AnchorPane.bottomAnchor="12" AnchorPane.rightAnchor="16" alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="5" id="addGame" layoutX="752" layoutY="12" prefHeight="40" prefWidth="144" styleClass="button menu-button " text="Добавить игру" textAlignment="CENTER" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="12"/>
           </font>
         </Button>
         <Data cursor="HAND" enabled="1" graphic=".data/img/add.png" id="data-addGame" visible="1"/>
-        <Button AnchorPane.bottomAnchor="12" AnchorPane.rightAnchor="176" alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="5" id="button" layoutX="584" layoutY="12" prefHeight="40" prefWidth="144" styleClass="button menu-button " text="Поддержать" textAlignment="CENTER" underline="false" wrapText="false">
+        <Button AnchorPane.bottomAnchor="12" AnchorPane.rightAnchor="176" alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="5" id="button" layoutX="592" layoutY="12" prefHeight="40" prefWidth="144" styleClass="button menu-button " text="Поддержать" textAlignment="CENTER" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="12"/>
           </font>
@@ -23,7 +23,7 @@
     <Data cursor="DEFAULT" enabled="1" id="data-bottomPanel" visible="1"/>
     <ScrollPane AnchorPane.bottomAnchor="64" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="AS_NEEDED" hvalue="0" id="container" layoutX="0" layoutY="0" prefHeight="504" prefWidth="904" styleClass="scroll-pane " vbarPolicy="AS_NEEDED" vvalue="0">
       <content>
-        <AnchorPane focusTraversable="false" id="" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="504" prefWidth="904" styleClass="">
+        <AnchorPane focusTraversable="false" id="" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="504" prefWidth="912" styleClass="">
           <children/>
         </AnchorPane>
       </content>

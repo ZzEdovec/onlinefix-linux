@@ -1,4 +1,4 @@
-    <?php
+<?php
 namespace app\forms;
 
 use script\HotKeyScript;
@@ -16,7 +16,8 @@ class MainForm extends AbstractForm
     function doContainerConstruct(UXEvent $e = null)
     {
         $fPane = new UXFlowPane;
-        $fPane->hgap = $fPane->vgap = $fPane->paddingTop = $fPane->paddingRight = $fPane->paddingLeft = 15;
+        $fPane->hgap = $fPane->vgap = $fPane->paddingTop = $fPane->paddingRight = 15;
+        $fPane->paddingLeft = 19;
         
         $e->sender->content = $fPane;
     }
@@ -59,22 +60,25 @@ class MainForm extends AbstractForm
         }
         
         $files = fs::scan($appPath,['excludeDirs'=>true,'namePattern'=>
-                                                        '(?i)^(emp|custom)\.dll$|^win.*\.dll$|^(online|steam).*\.(dll|ini)$|^eos.*\.dll$|^epicfix.*\.dll$|^(winmm|dlllist)\.txt$']);
+                                                        '(?i)^(emp|custom)\.dll$|^win.*\.dll$|^(online|steam).*\.(dll|ini)$|^eos.*\.dll$|^epicfix.*\.dll$|^(winmm|dlllist)\.txt$|FreeTP.Org.url']);
                                                                  
-        $overrides = FixParser::parseDlls($files);
-        if ($overrides['overrides'] == null)
+        $parsed = FixParser::parseDlls($files);
+        if ($parsed['overrides'] == null)
         {
             UXDialog::show(Localization::getByCode('MAINFORM.NOFIX'),'ERROR',$this);
             return;
         }
-        elseif (str::contains($overrides['overrides'],'steam') == false and str::contains($overrides['overrides'],'eos'))
+        elseif (str::contains($parsed['overrides'],'steam') == false and str::contains($parsed['overrides'],'eos'))
             UXDialog::show(Localization::getByCode('MAINFORM.EOSFIX'),'WARNING');
+        
+        if ($parsed['isFreeTP'])
+            $this->appModule()->games->set('fakeSteam',true,$appName);
             
-        if ($overrides['realAppId'] != null)
+        if ($parsed['realAppId'] != null)
         {
             try
             {
-                $url = FixParser::parseBanner($overrides['realAppId']);
+                $url = FixParser::parseBanner($parsed['realAppId']);
                 $imagesDir = System::getProperty('user.home').'/.config/OFME-Linux/banners';
                 
                 fs::makeDir($imagesDir);
@@ -100,11 +104,11 @@ class MainForm extends AbstractForm
             }
         } catch (Throwable $ex) {UXDialog::show(sprintf(Localization::getByCode('MAINFORM.ICONPARSERERROR'),$ex->getMessage()),'ERROR',$this);}
         
-        $this->appModule()->games->set('overrides',$overrides['overrides'],$appName);
+        $this->appModule()->games->set('overrides',$parsed['overrides'],$appName);
         $this->appModule()->games->set('executable',$exe,$appName);
         
         
-        $this->addGame($appName,$exe,$overrides['overrides'],$image,$iconPath);
+        $this->addGame($appName,$exe,$parsed['overrides'],$image,$iconPath);
     }
 
     /**

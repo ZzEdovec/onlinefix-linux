@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project author="queinu" authorOS="Linux" createdAt="1742308788170" ideName="DevelNext" ideVersion="16.7.0" ideVersionHash="2017103112" name="OnlineFix-Linux" packageName="app" template="ide\project\templates\DefaultGuiProjectTemplate" updatedAt="1742948776744">
+<project author="queinu" authorOS="Linux" createdAt="1742308788170" ideName="DevelNext" ideVersion="16.7.0" ideVersionHash="2017103112" name="OnlineFix-Linux" packageName="app" template="ide\project\templates\DefaultGuiProjectTemplate" updatedAt="1744834479255">
   <tree>
     <expanded>
     <path src=""/>
@@ -15,8 +15,8 @@
   </tree>
   <openedFiles>
   <file src="OnlineFix-Linux.dnproject"/>
-    <file src="src/app/forms/MainForm.php"/>
-    <file selected="1" src="src/app/modules/AppModule.php"/>
+    <file selected="1" src="src/app/forms/MainForm.php"/>
+    <file src="src/app/modules/AppModule.php"/>
     <file src="src/app/modules/FixParser.php"/>
     <file src="src/app/forms/initConfig.php"/>
     <file src="src/app/modules/filesWorker.php"/>

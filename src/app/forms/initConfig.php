@@ -12,17 +12,19 @@ class initConfig extends AbstractForm
      */
     function doConstruct(UXEvent $e = null)
     {
-        if (fs::isFile('/usr/bin/protontricks') == false or fs::isFile('/usr/bin/protontricks-launch') == false)
+        if (filesWorker::findProtontricksPath() == false)
         {
             UXDialog::showAndWait(Localization::getByCode('INITCONFIG.NOPROTONTRICKS'),'ERROR',$this);
             app()->shutdown();
         }
         
-        #if (fs::isFile('/usr/bin/gamemoderun'))
-        #    $this->appModule()->settings->set('useGamemode',true);
+        if (fs::isFile('/usr/bin/steam') == false)
+        {
+            UXDialog::showAndWait(Localization::getByCode('INITCONFIG.NOSTEAM'),'ERROR',$this);
+            app()->shutdown();
+        }
         
-        
-        execute('xdg-open steam://install/480');
+        execute('steam steam://install/480');
         
         new Thread(function ()
         {
@@ -36,7 +38,7 @@ class initConfig extends AbstractForm
                 $this->textArea->text = null;
             });
             
-            $tricks = new Process(['protontricks','480','-q','--force','vcrun2022'])->start();
+            $tricks = new Process([filesWorker::findProtontricksPath().'protontricks','480','-q','--force','vcrun2022'])->start();
             $tricks->getInput()->eachLine(function ($l)
             {
                 uiLater(function () use ($l){$this->textArea->text .= $l."\n";});

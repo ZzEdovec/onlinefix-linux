@@ -38,6 +38,11 @@ class FixParser
                 $ini->free();
                 continue;
             }
+            elseif ($regexFile == 'FreeTP.Org.url')
+            {
+                $isFTP = true;
+                continue;
+            }
             
             $dll = str::lower(fs::nameNoExt($file));
             if (str::contains($overrides,$dll) == false)
@@ -52,7 +57,7 @@ class FixParser
         if (str::endsWith($overrides,';'))
             $overrides = str::sub($overrides,0,str::length($overrides) - 1);
         
-        return ['overrides'=>$overrides,'realAppId'=>$realAppID];
+        return ['overrides'=>$overrides,'realAppId'=>$realAppID,'isFreeTP'=>$isFTP];
     }
     
     static function parseBanner($appId)

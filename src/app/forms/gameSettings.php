@@ -14,8 +14,8 @@ class gameSettings extends AbstractForm
     {
         if (fs::isFile('/usr/bin/gamemoderun') == false)
             $this->gamemode->enabled = false;
-        if (fs::isFile('/usr/bin/mangohud') == false)
-           $this->mangohud->enabled = false;
+        #if (fs::isFile('/usr/bin/mangohud') == false)
+           #$this->mangohud->enabled = false;
     }
 
     /**

@@ -1,6 +1,15 @@
 {
   "props": [],
   "components": {
+    "overlayEmulator": {
+      "type": "script\\HotKeyScript",
+      "x": 240,
+      "y": 16,
+      "props": {
+        "disabled": false,
+        "key": "shift + tab"
+      }
+    },
     "settings": {
       "type": "script\\storage\\IniStorage",
       "x": 80,
@@ -9,15 +18,6 @@
         "path": "",
         "autoSave": "1",
         "multiLineValues": "1"
-      }
-    },
-    "overlayEmulator": {
-      "type": "script\\HotKeyScript",
-      "x": 240,
-      "y": 16,
-      "props": {
-        "disabled": false,
-        "key": "shift + tab"
       }
     },
     "games": {

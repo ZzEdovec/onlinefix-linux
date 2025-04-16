@@ -3,14 +3,18 @@
 
 int main() {
     HKEY hKey;
-    DWORD pid, pidSize = sizeof(pid);
+    DWORD pid = 32;
+    DWORD pidSize = sizeof(pid);
 
     if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Valve\\Steam\\ActiveProcess", 0, KEY_READ | KEY_WRITE, &hKey) == ERROR_SUCCESS) {
-        RegQueryValueEx(hKey, "PID", NULL, NULL, (LPBYTE)&pid, &pidSize);
+        RegSetValueEx(hKey, "PID", 0, REG_DWORD, (const BYTE*)&pid, pidSize);
+
+        printf("Started!\n");
 
         getchar();
 
-        RegSetValueEx(hKey, "PID", 0, REG_DWORD, (const BYTE*)&pid, sizeof(pid));
+        Sleep(5000);
+        RegSetValueEx(hKey, "PID", 0, REG_DWORD, (const BYTE*)&pid, pidSize);
         RegCloseKey(hKey);
     }
     return 0;

@@ -25,7 +25,11 @@ class AppModule extends AbstractModule
         
         try
         {
+<<<<<<< Updated upstream
             if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '1.3')
+=======
+            if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '1.4')
+>>>>>>> Stashed changes
             {
                 new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
                 app()->shutdown();
@@ -52,7 +56,7 @@ class AppModule extends AbstractModule
      */
     function doOverlayEmulatorAction(ScriptEvent $e = null)
     {    
-        execute('xdg-open steam://open/friends');
+        execute('steam steam://open/friends');
     }
 
 

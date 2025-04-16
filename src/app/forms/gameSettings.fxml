@@ -20,7 +20,7 @@
             <Font name="System Regular" size="12"/>
           </font>
         </CheckBox>
-        <Data cursor="HAND" enabled="1" id="data-mangohud" visible="1"/>
+        <Data cursor="HAND" enabled="" id="data-mangohud" visible="1"/>
         <CheckBox alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="fakeSteam" layoutX="16" layoutY="80" prefHeight="24" prefWidth="200" styleClass="check-box " text="Обход &quot;Steam не запущен&quot;" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
           <font>
             <Font name="System Regular" size="12"/>
