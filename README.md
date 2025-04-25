@@ -90,7 +90,7 @@ rm -rf yay-bin
 Then install protontricks using:
 
 ```bash
-yay --noconfirm -S  protontricks-git
+yay --noconfirm -S protontricks-git
 ```
 
 #### Solus:
