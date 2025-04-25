@@ -79,10 +79,10 @@ sudo dnf install protontricks
 If you do not have `yay` installed, first install it:
 
 ```bash
-sudo pacman -S --noconfirm git
+sudo pacman --noconfirm -S git
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
-makepkg -si
+makepkg --noconfirm -si
 cd ..
 rm -rf yay-bin
 ```
@@ -90,7 +90,7 @@ rm -rf yay-bin
 Then install protontricks using:
 
 ```bash
-yay -S --noconfirm protontricks
+yay --noconfirm -S  protontricks-git
 ```
 
 #### Solus:
