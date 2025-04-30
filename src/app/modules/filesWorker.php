@@ -60,7 +60,10 @@ class filesWorker
         if (app()->appModule()->games->get('fakeSteam',$gameName))
             $fakeSteam = new Process([self::findProtontricksPath().'protontricks-launch','--appid','480',fs::abs('./steam.exe')])->start();
         
-        $process = $process->startAndWait();
+        $process = $process->start();
+    
+        while ($process->getExitValue() == null)
+            sleep(3);
         
         if (isset($fakeSteam))
         {
