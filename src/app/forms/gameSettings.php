@@ -34,8 +34,9 @@ class gameSettings extends AbstractForm
      * @event gamemode.click 
      */
     function doGamemodeClick(UXMouseEvent $e = null)
-    {
-        UXDialog::show('Некоторые фиксы перестают работать из-за Gamemode - выключите его, если игра не работает','WARNING');
+    {  
+        if ($e->sender->selected)
+            UXDialog::show('Некоторые фиксы перестают работать из-за Gamemode - выключите его, если игра не работает','WARNING');
         
         $this->appModule()->games->set('gamemode',$e->sender->selected,$this->gameName->text);
     }

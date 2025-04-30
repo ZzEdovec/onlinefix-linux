@@ -9,6 +9,7 @@
     "MAINFORM.NOFIX": "No DLLs related to OnlineFix found!",
     "MAINFORM.EOSFIX": "EOS Fix detected - support for them is not complete, they may not work correctly",
     "MAINFORM.ICONPARSERERROR": "Error retrieving icon - %s",
+    "MAINFORM.MENU.RUNDEBUG": "Run with debug",
     "MAINFORM.MENU.REMOVEDESKTOP": "Remove shortcut from desktop",
     "MAINFORM.MENU.REMOVEAPPMENU": "Remove shortcut from application menu",
     "MAINFORM.MENU.CREATEDESKTOP": "Create shortcut on desktop",
@@ -17,6 +18,7 @@
     "MAINFORM.MENU.GAMESETTINGS": "Launch settings",
     "MAINFORM.MENU.REMOVEGAME": "Remove game from launcher",
     "MAINFORM.KILLFAILED": "Failed to terminate the game process - it may still be starting",
+    "MAINFORM.FREETP": "A fix from FreeTP has been found! It may not work.",
 
     "BANNEREDITOR.STEAM.HEADER": "Get a new banner from Steam:",
     "BANNEREDITOR.STEAM.APPID": "Game AppID in Steam",
@@ -30,6 +32,7 @@
     "INITCONFIG.HEADER.WORKING": "Protontricks is working",
     "INITCONFIG.TEXTAREA": "In the opened Steam window, install Spacewar on the disk where you want the wineprefix to be, and do not create shortcuts in the application menu or desktop (uncheck the boxes)\n\nWhen Spacewar is installed:\n1. Right-click on it in the library\n2. Open \"Properties\", then \"Compatibility\"\n3. Enable the use of the Steam Play compatibility tool\n4. Select the Proton version to be used for all games with OnlineFix (it is recommended to use Proton GE if you have installed it, or Proton Experimental and Hotfix)\n5. Wait for Spacewar to update and launch it\n\nThe program will then detect the Spacewar process, terminate it, and proceed to the next step.\nIf this does not happen, check all the steps.",
     "INITCONFIG.NOPROTONTRICKS": "Install protontricks (flatpak is not supported) before using the launcher",
+    "INITCONFIG.NOSTEAM": "Install Steam (Flatpak and Snap is not supported) beforce using the launcher",
 
     "GAMESETTINGS.ADDITIONALS": "Additional features",
     "GAMESETTINGS.ADDITIONALS.USEGAMEMODE": "Use gamemode",
@@ -39,14 +42,14 @@
     "GAMESETTINGS.ENVS.ENVIRONMENT": "Environment variables",
 
     "FILESWORKER.STEAMNOTSTARTED": "Steam is not running",
-    "FILESWORKER.NOPROTONTRICKS": "Protontricks-launch is required to start the game, but it was not found in /usr/bin",
+    "FILESWORKER.NOPROTONTRICKS": "Protontricks-launch is required to start the game, but it was not found",
     "FILESWORKER.FAKESTEAMENABLED": "Error bypass enabled. Try launching the game again",
     "FILESWORKER.ISSTEAMNOTSTARTEDERROR": "Did you just see the \"Steam is not running\" error?",
 
     "GAMESTARTER.STARTING": "Game is starting",
 
-    "LOGFORM.HEADER": "Oops.. It seems that this game didn't work as it should",
-    "LOGFORM.SUBHEADER": "Here is its log, which you can send to the launcher developer for analysis and possible fixes.",
+    "LOGFORM.HEADER": "Game's operation log",
+    "LOGFORM.SUBHEADER": "If there are errors in it, you can figure it out yourself or send the log to the developer for help",
     "LOGFORM.DONOTSEND": "Do not send",
     "LOGFORM.SEND": "Send",
 

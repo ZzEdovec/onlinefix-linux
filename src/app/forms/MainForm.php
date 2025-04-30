@@ -68,11 +68,13 @@ class MainForm extends AbstractForm
             UXDialog::show(Localization::getByCode('MAINFORM.NOFIX'),'ERROR',$this);
             return;
         }
-        elseif (str::contains($parsed['overrides'],'steam') == false and str::contains($parsed['overrides'],'eos'))
+        if (str::contains($parsed['overrides'],'steam') == false and str::contains($parsed['overrides'],'eos'))
             UXDialog::show(Localization::getByCode('MAINFORM.EOSFIX'),'WARNING');
-        
         if ($parsed['isFreeTP'])
+        {
             $this->appModule()->games->set('fakeSteam',true,$appName);
+            UXDialog::show(Localization::getByCode('MAINFORM.FREETP'),'WARNING');
+        }
             
         if ($parsed['realAppId'] != null)
         {
@@ -182,17 +184,24 @@ class MainForm extends AbstractForm
         $gamePanel->children[4]->data('stop',new UXImageView(new UXImage('res://.data/img/stop.png')));
         $menu = new UXContextMenu;
         
+        $debug = new UXMenuItem(Localization::getByCode('MAINFORM.MENU.RUNDEBUG'));
+        $separator = UXMenuItem::createSeparator();
         $desktopIcon = new UXMenuItem(fs::isFile($this->appModule()->games->get('desktopIcon',$gameName)) ? Localization::getByCode('MAINFORM.MENU.REMOVEDESKTOP') : Localization::getByCode('MAINFORM.MENU.CREATEDESKTOP'));
         $appMenuIcon = new UXMenuItem(fs::isFile($this->appModule()->games->get('appMenuIcon',$gameName)) ? Localization::getByCode('MAINFORM.MENU.REMOVEAPPMENU') : Localization::getByCode('MAINFORM.MENU.CREATEAPPMENU'));
-        $separator = UXMenuItem::createSeparator();
+        $separatorAlt = UXMenuItem::createSeparator();
         $bannerEdit = new UXMenuItem(Localization::getByCode('MAINFORM.MENU.EDITBANNER'));
         $gameSettings = new UXMenuItem(Localization::getByCode('MAINFORM.MENU.GAMESETTINGS'));
-        $separatorAlt = UXMenuItem::createSeparator();
+        $separator3 = UXMenuItem::createSeparator();
         $libraryDelete = new UXMenuItem(Localization::getByCode('MAINFORM.MENU.REMOVEGAME'));
         
-        $menu->items->addAll([$desktopIcon,$appMenuIcon,$separator,$bannerEdit,$gameSettings,$separatorAlt,$libraryDelete]);
+        $menu->items->addAll([$debug,$separator,$desktopIcon,$appMenuIcon,$separatorAlt,$bannerEdit,$gameSettings,$separator3,$libraryDelete]);
         
         $desktopEntry = filesWorker::generateDesktopEntry($gameName,$icon);
+        
+        $debug->on('action',function () use ($gamePanel,$gameName)
+        {
+            $this->runGame($gamePanel->children[4],$gameName,true);
+        });
         $desktopIcon->on('action',function () use ($desktopEntry,$gameName,$desktopIcon)
         {
             $desktopPath = str::trim(execute('xdg-user-dir DESKTOP',true)->getInput()->readFully()).'/'.$gameName.'.desktop';
@@ -289,7 +298,6 @@ class MainForm extends AbstractForm
         {
             if ($e->sender->graphic == $e->sender->data('stop'))
             {
-                $this->data('manualKill',true);
                 $kill = new Process(['killall','-r',fs::nameNoExt($exec).'.*'])->startAndWait();
                 
                 if ($kill->getExitValue() != 0)
@@ -302,23 +310,7 @@ class MainForm extends AbstractForm
             }
             else 
             {
-                $process = filesWorker::generateProcess($gameName);
-                if ($process == null)
-                    return;
-                
-                
-                $e->sender->graphic = $e->sender->data('stop');
-                $e->sender->enabled = false;
-                $this->appModule()->overlayEmulator->disabled = false;
-                
-                waitAsync('5s',function () use ($e){$e->sender->enabled = true;});
-                new Thread(function () use ($e,$process,$gameName,$overlayEmulator)
-                {
-                    filesWorker::runWithDebug($process,$gameName);
-                    
-                    $this->appModule()->overlayEmulator->disabled = true;
-                    uiLater(function () use ($e){$e->sender->graphic = $e->sender->data('play');});
-                })->start();
+                $this->runGame($e->sender,$gameName);
             }
         });
         
@@ -328,6 +320,27 @@ class MainForm extends AbstractForm
         {
             $this->noGamesHeader->visible = $this->noGamesSubHeader->visible = false;
         }
+    }
+    
+    function runGame($panel,$gameName,$debug = false)
+    {
+        $process = filesWorker::generateProcess($gameName,$debug);
+        if ($process == null)
+            return;
+        
+        $panel->graphic = $panel->data('stop');
+        $panel->enabled = false;
+        $this->appModule()->overlayEmulator->disabled = false;
+        
+        waitAsync('5s',function () use ($panel){$panel->enabled = true;});
+        
+        new Thread(function () use ($panel,$process,$gameName,$debug)
+        {
+            filesWorker::run($process,$gameName,$debug);
+            
+            $this->appModule()->overlayEmulator->disabled = true;
+            uiLater(function () use ($panel){$panel->graphic = $panel->data('play');});
+        })->start();
     }
 
 }

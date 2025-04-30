@@ -18,7 +18,7 @@ class gameStarting extends AbstractForm
         
         new Thread(function () use ($process)
         {
-            filesWorker::runWithDebug($process,$GLOBALS['argv'][1]);
+            filesWorker::run($process,$GLOBALS['argv'][1]);
         })->start();
     }
 

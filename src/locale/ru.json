@@ -9,6 +9,7 @@
     "MAINFORM.NOFIX": "Не найдено ни одного DLL, связанного с OnlineFix!",
     "MAINFORM.EOSFIX": "Обнаружен EOS Fix - работа над их поддержкой не завершена, они могут работать неправильно",
     "MAINFORM.ICONPARSERERROR": "Ошибка получения иконки - %s",
+    "MAINFORM.MENU.RUNDEBUG": "Запустить с отладкой",
     "MAINFORM.MENU.REMOVEDESKTOP": "Удалить ярлык с рабочего стола",
     "MAINFORM.MENU.REMOVEAPPMENU": "Удалить ярлык из меню приложений",
     "MAINFORM.MENU.CREATEDESKTOP": "Создать ярлык на рабочем столе",
@@ -17,6 +18,7 @@
     "MAINFORM.MENU.GAMESETTINGS": "Настройки запуска",
     "MAINFORM.MENU.REMOVEGAME": "Убрать игру из лаунчера",
     "MAINFORM.KILLFAILED": "Не удалось завершить процесс игры - возможно, она ещё запускается",
+    "MAINFORM.FREETP": "Обнаружен фикс от FreeTP! Он может не работать",
 
     "BANNEREDITOR.STEAM.HEADER": "Получить новую обложку из Steam:",
     "BANNEREDITOR.STEAM.APPID": "AppID игры в Steam",
@@ -30,6 +32,7 @@
     "INITCONFIG.HEADER.WORKING": "Protontricks работает",
     "INITCONFIG.TEXTAREA": "В открывшемся окне Steam установите Spacewar на тот диск, где хотите, чтобы был wineprefix, а ярлыки в меню приложений и рабочем столе не создавайте (уберите галочки)\n\nКогда Spacewar установится:\n1. Нажмите по нему в библиотеке правой кнопкой мыши\n2. Откройте \"Свойства\", затем \"Совместимость\"\n3. Включите использование инструмента совместимости Steam Play\n4. Выберите версию Proton, которая будет использоваться для всех игр с онлайн-фиксом (рекомендуется использовать Proton GE, если вы его устанавливали, или Proton Experimental и Hotfix)\n5. Дождитесь обновления Spacewar и запустите его\n\nДалее программа сама обнаружит процесс Spacewar, завершит его и перейдёт на следующий этап.\nЕсли этого не происходит, проверьте выполнение всех пунктов.",
     "INITCONFIG.NOPROTONTRICKS": "Установите protontricks (flatpak не поддерживается) перед использованием лаунчера",
+    "INITCONFIG.NOSTEAM": "Установите Steam (Flatpak и Snap не поддерживаются) перед использованем лаунчера",
 
     "GAMESETTINGS.ADDITIONALS": "Дополнительные функции",
     "GAMESETTINGS.ADDITIONALS.USEGAMEMODE": "Использовать gamemode",
@@ -39,14 +42,14 @@
     "GAMESETTINGS.ENVS.ENVIRONMENT": "Переменные окружения",
 
     "FILESWORKER.STEAMNOTSTARTED": "Steam не запущен",
-    "FILESWORKER.NOPROTONTRICKS": "Для запуска игры требуется protontricks-launch, но он не найден в /usr/bin",
+    "FILESWORKER.NOPROTONTRICKS": "Для запуска игры требуется protontricks-launch, но он не найден",
     "FILESWORKER.FAKESTEAMENABLED": "Включен обход ошибки. Попробуйте запустить игру заново",
     "FILESWORKER.ISSTEAMNOTSTARTEDERROR": "Вы сейчас видели ошибку \"Steam не запущен\"?",
 
     "GAMESTARTER.STARTING": "Игра запускается",
 
-    "LOGFORM.HEADER": "Упс.. Кажется, эта игра работала не так, как нужно",
-    "LOGFORM.SUBHEADER": "Это лог её работы, который вы можете отправить разработчику лаунчера для изучения и возможного исправления",
+    "LOGFORM.HEADER": "Лог работы игры",
+    "LOGFORM.SUBHEADER": "Если в нём есть ошибки, вы можете разобраться самостоятельно или отправить лог разработчику для помощи",
     "LOGFORM.DONOTSEND": "Не отправлять",
     "LOGFORM.SEND": "Отправить",
 
