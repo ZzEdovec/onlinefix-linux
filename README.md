@@ -41,9 +41,9 @@ Before using the launcher, ensure that the following packages are installed:
    ```
 2. Edit `/etc/pacman.conf` and set `SigLevel = TrustAll`
    - **Warning:** Using `TrustAll` disables package signature verification, which can pose security risks. However, without this change, `pacman` does not function properly on SteamOS.
-   - You can use `nemo` or `kate` to edit the file:
+   - You can use `nano` or `kate` to edit the file:
      ```bash
-     sudo nemo /etc/pacman.conf
+     sudo nano /etc/pacman.conf
      ```
      or
      ```bash
