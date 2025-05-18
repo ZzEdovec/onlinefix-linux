@@ -35,29 +35,14 @@ Before using the launcher, ensure that the following packages are installed:
 
 #### SteamOS / Steam Deck:
 
-1. Disable the read-only mode for the file system:
-   ```bash
-   sudo steamos-readonly disable
-   ```
-2. Edit `/etc/pacman.conf` and set `SigLevel = TrustAll`
-   - **Warning:** Using `TrustAll` disables package signature verification, which can pose security risks. However, without this change, `pacman` does not function properly on SteamOS.
-   - You can use `nano` or `kate` to edit the file:
-     ```bash
-     sudo nano /etc/pacman.conf
-     ```
-     or
-     ```bash
-     sudo kate /etc/pacman.conf
-     ```
-3. Enable the **Chaotic AUR** repository by following the [official instructions](https://aur.chaotic.cx/docs)
-4. Install the protontricks:
-   ```bash
-   sudo pacman -Sy protontricks-git
-   ```
-5. After installation, it is recommended to re-enable the read-only mode:
-   ```bash
-   sudo steamos-readonly enable
-   ```
+```bash
+sudo steamos-readonly disable
+sudo pacman-key --init
+sudo pacman-key --populate archlinux
+sudo pacman -Sy python-pipx winetricks
+pipx install protontricks
+sudo steamos-readonly enable
+```
 
 #### Ubuntu/Debian and derivatives:
 
