@@ -35,29 +35,14 @@
 
 #### SteamOS / Steam Deck:
 
-1. Отключите режим только для чтения файловой системы:
-   ```bash
-   sudo steamos-readonly disable
-   ```
-2. Отредактируйте файл `/etc/pacman.conf` и установите `SigLevel = TrustAll`
-   - **Предупреждение:** Использование `TrustAll` отключает проверку подписи пакетов, что может представлять угрозу безопасности. Однако без этого изменения `pacman` не работает корректно на SteamOS.
-   - Вы можете использовать `nano` или `kate` для редактирования файла:
-     ```bash
-     sudo nano /etc/pacman.conf
-     ```
-     или
-     ```bash
-     sudo kate /etc/pacman.conf
-     ```
-3. Включите репозиторий **Chaotic AUR**, следуя [официальной инструкции](https://aur.chaotic.cx/docs)
-4. Установите необходимые зависимости:
-   ```bash
-   sudo pacman -Sy protontricks-git
-   ```
-5. После установки рекомендуется снова включить режим только для чтения:
-   ```bash
-   sudo steamos-readonly enable
-   ```
+```bash
+sudo steamos-readonly disable
+sudo pacman-key --init
+sudo pacman-key --populate archlinux
+sudo pacman -Sy python-pipx winetricks
+pipx install protontricks
+sudo steamos-readonly enable
+```
 
 #### Ubuntu/Debian и производные:
 
