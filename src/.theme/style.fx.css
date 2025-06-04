@@ -1,5 +1,24 @@
 /* JavaFX CSS Style with -fx- prefix */
 
+.jfx-button{
+    -fx-background-radius:50px;
+    -fx-background-color: #9141ac;
+    -jfx-button-type: RAISED;
+}
+
+.jfx-button:hover{
+    -fx-background-color:#9c54b4;
+}
+
+.jfx-menu-button{
+    -fx-background-color:#4d4d4d99;
+    -fx-background-radius:7px;
+}
+
+.jfx-menu-button:hover{
+    -fx-background-color:#666666;
+}
+
 .menu-button {
     -fx-background-color:#1e1e1e;
     -fx-text-fill:#fcfcfc;
@@ -91,4 +110,68 @@
     -fx-border-color: transparent;
     -fx-pref-width:1;
     -fx-pref-height:1;
+}
+
+.toggle-switch .label{
+    -fx-text-fill:white;
+}
+
+.toggle-switch .thumb-area{
+    -fx-background-color:#515155;
+}
+
+.toggle-switch .thumb{
+    -fx-background-color:#D1D1D1;
+}
+
+.toggle-switch:hover .thumb-area{
+    -fx-background-color:#606063;
+}
+
+.toggle-switch:hover .thumb, .toggle-switch:selected .thumb{
+    -fx-background-color:#fffffe;
+}
+
+.toggle-switch:selected .thumb-area{
+    -fx-background-color:linear-gradient(to right,#b774dc,#663366);
+}
+
+.modern-input-box{
+    -fx-background-color:#333337;
+    -fx-background-radius:15px;
+}
+
+.modern-text-input{
+    -fx-background-color:transparent;
+    -fx-text-fill:white;
+}
+
+.list-view, .list-view:focused{
+    -fx-background-color:#333337;
+    -fx-background-radius:15px;
+}
+
+.list-cell{
+    -fx-background-color:Transparent;
+    -fx-text-fill:#f6f6f6;
+    -fx-font-size:12px;
+    -fx-background-radius:15px;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:hover{
+    -fx-background-color:#424246;
+    -fx-text-fill:White;
+}
+
+.list-cell:filled:hover{
+    -fx-background-color:#3d3d40;
+}
+
+.progress-bar .track{
+    -fx-background-color:#333337;
+}
+
+.tooltip{
+    -fx-background-color:white;
+    -fx-text-fill:black;
 }

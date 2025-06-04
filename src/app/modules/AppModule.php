@@ -1,6 +1,7 @@
 <?php
 namespace app\modules;
 
+use Throwable;
 use php\io\IOException;
 use std, gui, framework, app;
 
@@ -15,7 +16,22 @@ class AppModule extends AbstractModule
     {
         $userhome = System::getProperty('user.home');
         $this->games->path = $userhome.'/.config/OFME-Linux/Games.ini';
-        $this->settings->path = $userhome.'/.config/OFME-Linux/Launcher.ini';
+        fs::ensureParent($this->games->path);
+        
+        $releases = filesWorker::fetchProtonReleases();
+        if ($releases != false and str::contains($releases,'tar.gz') == false)
+        {
+            foreach ($releases[0]['assets'] as $asset)
+            {
+                if ($asset['content_type'] != 'application/gzip' or $asset['state'] != 'uploaded' or $asset['browser_download_url'] == null)
+                    continue;
+                
+                $GLOBALS['LatestProton'] = $asset['browser_download_url'];
+                break;
+            }
+        }
+        elseif (str::contains($releases,'tar.gz'))
+            $GLOBALS['LatestProton'] = $releases;
         
         if ($GLOBALS['argv'][1] != null and fs::isFile($this->games->get('executable',$GLOBALS['argv'][1])))
         {
@@ -23,27 +39,17 @@ class AppModule extends AbstractModule
             return;
         }
         
-        try
-        {
-            if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '1.4.1')
+        new Thread(function (){
+            try
             {
-                new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
-                app()->shutdown();
-            }
-        } catch (IOException $ex)
-        {
-            UXDialog::show('Failed to fetch updates - '.$ex->getMessage());
-        }
-        
-        fs::ensureParent($this->games->path);
-        new Process(['chmod','+x',fs::abs('./7zip/7z')])->start();
-
-        if ($this->settings->get('inited') == null)
-        {
-            app()->showForm('initConfig');
-            return;
-        }
-        
+                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2')
+                {
+                    new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
+                    app()->shutdown();
+                }
+            } catch (IOException $ex){}
+        })->start();
+                                 
         app()->showForm('MainForm');
     }
 
@@ -54,6 +60,11 @@ class AppModule extends AbstractModule
     {    
         execute('steam steam://open/friends');
     }
+
+
+
+
+
 
 
 }

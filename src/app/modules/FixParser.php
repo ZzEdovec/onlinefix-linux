@@ -73,8 +73,12 @@ class FixParser
     
     static function parseIcon($executable)
     {
+        $sz = File::of('./7zip/7z');
+        if ($sz->canExecute() == false)
+            $sz->setExecutable(true);
+            
         fs::makeDir('/tmp/OFME-icon');
-        $extractor = new Process([fs::abs('./7zip/7z'),'-y','x',$executable,'.rsrc/ICON'],'/tmp/OFME-icon')->startAndWait();
+        $extractor = new Process([$sz->getAbsolutePath(),'-y','x',$executable,'.rsrc/ICON'],'/tmp/OFME-icon')->startAndWait();
         
         if (str::contains($extractor->getInput()->readFully(),'No files to process'))
             return null;

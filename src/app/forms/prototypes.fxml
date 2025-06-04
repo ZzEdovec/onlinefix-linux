@@ -1,38 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480" prefWidth="640" styleClass="">
   <children>
-    <Panel backgroundColor="#333333" borderColor="#333333" borderRadius="7" borderStyle="SOLID" borderWidth="0" focusTraversable="false" id="panel" layoutX="16" layoutY="16" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="200" prefWidth="280" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
+    <Panel backgroundColor="#333333" borderColor="#333333" borderRadius="15" borderStyle="SOLID" borderWidth="0" focusTraversable="false" id="panel" layoutX="16" layoutY="16" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="136" prefWidth="224" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
       <children>
-        <ImageViewEx AnchorPane.bottomAnchor="64" AnchorPane.leftAnchor="16" AnchorPane.rightAnchor="16" AnchorPane.topAnchor="16" autoSize="false" centered="true" focusTraversable="false" height="120" id="imageAlt" layoutX="16" layoutY="16" mosaic="false" mosaicGap="0" proportional="true" stretch="true" styleClass="" textFill="#000000" width="248">
+        <ImageViewEx AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" autoSize="false" centered="true" focusTraversable="false" height="136" id="imageAlt" layoutX="0" layoutY="0" mosaic="false" mosaicGap="0" proportional="false" stretch="true" styleClass="" textFill="#000000" width="224">
           <font>
             <Font name="System Regular" size="12"/>
           </font>
         </ImageViewEx>
-        <LabelEx AnchorPane.bottomAnchor="12" AnchorPane.leftAnchor="64" AnchorPane.rightAnchor="88" alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label" layoutX="64" layoutY="148" prefHeight="40" prefWidth="128" styleClass="label " text="Game name" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="true">
-          <font>
-            <Font name="System Bold" size="12"/>
-          </font>
-        </LabelEx>
-        <Data cursor="DEFAULT" enabled="1" id="data-label" visible="1"/>
-        <Button AnchorPane.bottomAnchor="16" AnchorPane.rightAnchor="16" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="button" layoutX="232" layoutY="152" prefHeight="32" prefWidth="32" styleClass="button menu-button " text="" textAlignment="CENTER" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="13"/>
-          </font>
-        </Button>
-        <Data cursor="DEFAULT" enabled="1" graphic=".data/img/play.png" id="data-button" visible="1"/>
-        <ImageViewEx AnchorPane.bottomAnchor="24" AnchorPane.rightAnchor="64" autoSize="false" centered="false" focusTraversable="false" height="16" id="image" layoutX="200" layoutY="160" mosaic="false" mosaicGap="0" proportional="false" stretch="true" styleClass="" textFill="#000000" width="16">
-          <font>
-            <Font name="System Regular" size="12"/>
-          </font>
-        </ImageViewEx>
-        <Data cursor="DEFAULT" enabled="1" id="data-image" image=".data/img/more.png" visible="1"/>
-        <Data cursor="DEFAULT" enabled="1" id="data-imageAlt" visible="1"/>
-        <ImageViewEx AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16" autoSize="false" centered="true" focusTraversable="false" height="32" id="image3" layoutX="16" layoutY="152" mosaic="false" mosaicGap="0" proportional="true" stretch="true" styleClass="" textFill="#000000" width="32">
-          <font>
-            <Font name="System Regular" size="12"/>
-          </font>
-        </ImageViewEx>
-        <Data cursor="DEFAULT" enabled="1" id="data-image3" visible="1"/>
+        <Data cursor="DEFAULT" enabled="1" id="data-imageAlt" image="" visible="1"/>
+        <HBox alignment="CENTER_LEFT" focusTraversable="false" id="hbox" layoutX="0" layoutY="88" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="48" prefWidth="224" spacing="5" style="-fx-background-color:#333337cd;-fx-background-radius:0 0 15 15;" styleClass="">
+          <padding>
+            <Insets bottom="0" left="10" right="0" top="0"/>
+          </padding>
+          <children>
+            <LabelEx alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label" layoutX="10" layoutY="4" prefHeight="40" prefWidth="208" styleClass="label " text="game name" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="true">
+              <font>
+                <Font name="System Bold" size="12"/>
+              </font>
+            </LabelEx>
+            <Data cursor="DEFAULT" enabled="1" id="data-label" visible="1"/>
+          </children>
+        </HBox>
+        <Data cursor="DEFAULT" enabled="1" id="data-hbox" visible="1"/>
       </children>
       <titleFont>
         <Font name="System Regular" size="13"/>

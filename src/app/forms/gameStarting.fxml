@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="232" prefWidth="408" styleClass="">
   <children>
-    <Panel backgroundColor="#1a1a1a" borderColor="#333333" borderRadius="7" borderStyle="SOLID" borderWidth="1" focusTraversable="false" id="panel" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="232" prefWidth="408" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
-      <children>
-        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label" layoutX="120" layoutY="72" prefHeight="21" prefWidth="168" styleClass="label " text="Игра запускается" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Bold" size="15"/>
-          </font>
-        </LabelEx>
-        <Data cursor="DEFAULT" enabled="1" graphic=".data/img/shiggy.gif" id="data-label" visible="1"/>
-      </children>
-      <titleFont>
-        <Font name="System Regular" size="13"/>
-      </titleFont>
-    </Panel>
-    <Data cursor="DEFAULT" enabled="1" id="data-panel" visible="1"/>
+    <ImageViewEx AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" autoSize="false" centered="false" focusTraversable="false" height="232" id="background" layoutX="0" layoutY="0" mosaic="false" mosaicGap="0" proportional="false" stretch="true" styleClass="" textFill="#000000" width="408">
+      <font>
+        <Font name="System Regular" size="12"/>
+      </font>
+    </ImageViewEx>
+    <LabelEx AnchorPane.bottomAnchor="44" AnchorPane.leftAnchor="52" AnchorPane.rightAnchor="52" AnchorPane.topAnchor="44" alignment="CENTER" autoSize="false" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label" layoutX="52" layoutY="44" prefHeight="144" prefWidth="304" styleClass="label " text="Игра запускается" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+      <font>
+        <Font name="System Bold" size="15"/>
+      </font>
+    </LabelEx>
+    <Data cursor="DEFAULT" enabled="1" graphic=".data/img/shiggy.gif" id="data-label" visible="1"/>
+    <Data cursor="DEFAULT" enabled="1" id="data-background" visible="1"/>
   </children>
 </AnchorPane>

@@ -25,63 +25,10 @@
 
 Перед использованием лаунчера убедитесь, что установлены следующие пакеты:
 
-- `protontricks`
 - `ffmpeg`
 - `steam`
 
 ‼️ Они должны быть установлены как нормальные пакеты. Flatpak и Snap версии **не поддерживаются и не будут!** В случае их использования лаунчер не будет правильно работать - и это не вина его разработчика.
-
-### Установка protontricks:
-
-#### SteamOS / Steam Deck:
-
-```bash
-sudo steamos-readonly disable
-sudo pacman-key --init
-sudo pacman-key --populate archlinux
-sudo pacman -Sy python-pipx winetricks
-pipx install protontricks
-sudo steamos-readonly enable
-```
-
-#### Ubuntu/Debian и производные:
-
-```bash
-sudo apt install python3-pip python3-setuptools python3-venv pipx winetricks
-pipx install protontricks
-```
-*Вы **должны** установить `protontricks` при помощи `pipx` **даже если `protontricks` установлен через системный пакетный менеджер**, т.к. версия из системных репозиториев **не работает!***
-
-#### Fedora:
-
-```bash
-sudo dnf install protontricks
-```
-
-#### Arch Linux и производные:
-
-Если у вас не установлен `yay`, сначала установите его:
-
-```bash
-sudo pacman --noconfirm -S git
-git clone https://aur.archlinux.org/yay-bin.git
-cd yay-bin
-makepkg --noconfirm -si
-cd ..
-rm -rf yay-bin
-```
-
-Затем установите protontricks с помощью:
-
-```bash
-yay --noconfirm -S protontricks-git
-```
-
-#### Solus:
-
-```bash
-sudo eopkg install protontricks
-```
 
 ## ⬇️ Установка
 
