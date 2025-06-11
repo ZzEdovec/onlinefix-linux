@@ -139,6 +139,9 @@ class MainForm extends AbstractForm
                     fs::copy($appIcon,$iconPath);
     
                     $this->appModule()->games->set('icon',$iconPath,$appName);
+                    
+                    fs::clean('/tmp/OFME-icon');
+                    fs::delete('/tmp/OFME-icon');
                 }
             } catch (Throwable $ex)
             {
@@ -180,63 +183,11 @@ class MainForm extends AbstractForm
     }
 
 
-    /**
-     * @event gameDebugButton.construct 
-     */
-    function doGameDebugButtonConstruct(UXEvent $e = null)
-    {
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.RUNDEBUG');
-        $e->sender->tooltipText = Localization::getByCode('MAINFORM.MENU.RUNDEBUG.TOOLTIP');
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/debug.png'));
-        $e->sender->graphic->size = [15,15];
-    }
 
-    /**
-     * @event gameSettingsButton.construct 
-     */
-    function doGameSettingsButtonConstruct(UXEvent $e = null)
-    {
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.SETTINGS');
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/settings.png'));
-        $e->sender->graphic->size = [15,15];
-    }
 
-    /**
-     * @event gameDeleteButton.construct 
-     */
-    function doGameDeleteButtonConstruct(UXEvent $e = null)
-    {
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.DELETE');
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/remove.png'));
-        $e->sender->graphic->size = [15,15];
-    }
 
-    /**
-     * @event protonDBButton.construct 
-     */
-    function doProtonDBButtonConstruct(UXEvent $e = null)
-    {
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/protondb.png'));
-        $e->sender->graphic->size = [15,15];
-    }
 
-    /**
-     * @event steamButton.construct 
-     */
-    function doSteamButtonConstruct(UXEvent $e = null)
-    {
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/steam.png'));
-        $e->sender->graphic->size = [15,15];
-    }
 
-    /**
-     * @event steamDBButton.construct 
-     */
-    function doSteamDBButtonConstruct(UXEvent $e = null)
-    {
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/db.png'));
-        $e->sender->graphic->size = [15,15];
-    }
 
     /**
      * @event playButton.construct 
@@ -253,29 +204,8 @@ class MainForm extends AbstractForm
         $e->sender->text = Localization::getByCode('MAINFORM.PLAY');
     }
 
-    /**
-     * @event protonDBButton.action 
-     */
-    function doProtonDBButtonAction(UXEvent $e = null)
-    {    
-        execute('xdg-open https://protondb.com/app/'.$this->appModule()->games->get('steamID',$this->gamePanel->data('gameName')));
-    }
 
-    /**
-     * @event steamButton.action 
-     */
-    function doSteamButtonAction(UXEvent $e = null)
-    {    
-        execute('xdg-open https://store.steampowered.com/app/'.$this->appModule()->games->get('steamID',$this->gamePanel->data('gameName')));
-    }
 
-    /**
-     * @event steamDBButton.action 
-     */
-    function doSteamDBButtonAction(UXEvent $e = null)
-    {    
-        execute('xdg-open https://steamdb.info/app/'.$this->appModule()->games->get('steamID',$this->gamePanel->data('gameName')));
-    }
 
     /**
      * @event desktopIcon.construct 
@@ -304,13 +234,14 @@ class MainForm extends AbstractForm
         if (fs::isFile($desktopPath))
         {
             fs::delete($desktopPath);
-            $e->sender->selected = false;
+            $this->desktopIcon->selected = false;
         }
         else 
         {
             file_put_contents($desktopPath,filesWorker::generateDesktopEntry($gameName,$icon));
             new Process(['chmod','+x',$desktopPath])->start();
-            $e->sender->selected = true;
+            
+            $this->desktopIcon->selected = true;
         }
     }
 
@@ -325,32 +256,17 @@ class MainForm extends AbstractForm
         if (fs::isFile($menuPath))
         {
             fs::delete($menuPath);
-            $e->sender->selected = false;
+            $this->menuIcon->selected = false;
         }
         else 
         {
             file_put_contents($menuPath,filesWorker::generateDesktopEntry($this->gamePanel->data('gameName'),$icon));
-            $e->sender->selected = true;
+            
+            $this->menuIcon->selected = true;
         }
     }
 
 
-    /**
-     * @event gameSettingsButton.action 
-     */
-    function doGameSettingsButtonAction(UXEvent $e = null)
-    {
-        $iconView = new UXImageArea($this->gamePanel->data('opener')->children[3]->children[0]->graphic->image);
-        $iconView->size = [64,64];
-        $iconView->proportional = $iconView->centered = $iconView->stretch = true;
-        
-        if (app()->form('gameSettings')->gameName->graphic != null and app()->form('gameSettings')->gameName->graphic->isFree() == false)
-            app()->form('gameSettings')->gameName->graphic->free();
-        
-        app()->form('gameSettings')->gameName->text = app()->form('gameSettings')->title = $this->gamePanel->data('gameName');
-        app()->form('gameSettings')->gameName->graphic = $iconView;
-        app()->showForm('gameSettings');
-    }
 
     /**
      * @event playButton.action 
@@ -378,21 +294,7 @@ class MainForm extends AbstractForm
         }
     }
 
-    /**
-     * @event gameDebugButton.action 
-     */
-    function doGameDebugButtonAction(UXEvent $e = null)
-    {    
-        $this->runGame($this->gamePanel->data('gameName'),true);
-    }
 
-    /**
-     * @event gameDeleteButton.action 
-     */
-    function doGameDeleteButtonAction(UXEvent $e = null)
-    {    
-        app()->showForm('gameRemover');
-    }
 
     /**
      * @event donate.action 
@@ -437,6 +339,228 @@ class MainForm extends AbstractForm
     {    
         $e->sender->text = Localization::getByCode('MAINFORM.MENU.TIMESTEMP.HEADER');
     }
+
+    /**
+     * @event gameDebugButton.construct 
+     */
+    function doGameDebugButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->text = Localization::getByCode('MAINFORM.MENU.RUNDEBUG');
+        $e->sender->tooltipText = Localization::getByCode('MAINFORM.MENU.RUNDEBUG.TOOLTIP');
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/debug.png'));
+        $e->sender->graphic->size = [15,15];
+    }
+
+    /**
+     * @event gameDebugButton.action 
+     */
+    function doGameDebugButtonAction(UXEvent $e = null)
+    {
+        $this->runGame($this->gamePanel->data('gameName'),true);
+    }
+
+    /**
+     * @event gameSettingsButton.construct 
+     */
+    function doGameSettingsButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->text = Localization::getByCode('MAINFORM.MENU.SETTINGS');
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/settings.png'));
+        $e->sender->graphic->size = [15,15];
+    }
+
+    /**
+     * @event gameSettingsButton.action 
+     */
+    function doGameSettingsButtonAction(UXEvent $e = null)
+    {
+        if (app()->form('gameSettings')->gameName->graphic != null and app()->form('gameSettings')->gameName->graphic->isFree() == false)
+            app()->form('gameSettings')->gameName->graphic->free();
+        
+        app()->form('gameSettings')->data('gameName',$this->gamePanel->data('gameName'));
+        app()->form('gameSettings')->title = $this->gamePanel->data('gameName');
+        app()->form('gameSettings')->gameIcon->image = $this->gamePanel->data('opener')->children[3]->children[0]->graphic->image;
+        
+        app()->showForm('gameSettings');
+    }
+
+    /**
+     * @event gameDeleteButton.construct 
+     */
+    function doGameDeleteButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->text = Localization::getByCode('MAINFORM.MENU.DELETE');
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/remove.png'));
+        $e->sender->graphic->size = [15,15];
+    }
+
+    /**
+     * @event gameDeleteButton.action 
+     */
+    function doGameDeleteButtonAction(UXEvent $e = null)
+    {
+        app()->showForm('gameRemover');
+    }
+
+    /**
+     * @event winetricksButton.construct 
+     */
+    function doWinetricksButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/wine.png'));
+        $e->sender->graphic->size = [15,15];
+    }
+
+    /**
+     * @event winetricksButton.action 
+     */
+    function doWinetricksButtonAction(UXEvent $e = null)
+    {
+        $proton = filesWorker::getProtonExecutable($this->gamePanel->data('gameName'));
+        $prefixDir = fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix';
+        if ($proton == false)
+        {
+            $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
+            return;
+        }
+        if (fs::isFile('/usr/bin/winetricks') == false)
+        {
+            $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOTFOUND'));
+            return;
+        }
+        if (fs::isDir($prefixDir) == false)
+        {
+            $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOPREFIX'));
+            return;
+        }
+        
+        new Process(['winetricks'],null,['WINE'=>fs::parent($proton).'/files/bin/wine','WINEPREFIX'=>$prefixDir])->start();
+    }
+
+    /**
+     * @event protonDBButton.construct 
+     */
+    function doProtonDBButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/protondb.png'));
+        $e->sender->graphic->size = [15,15];
+    }
+
+    /**
+     * @event protonDBButton.action 
+     */
+    function doProtonDBButtonAction(UXEvent $e = null)
+    {
+        execute('xdg-open https://protondb.com/app/'.$this->appModule()->games->get('steamID',$this->gamePanel->data('gameName')));
+    }
+
+    /**
+     * @event steamButton.construct 
+     */
+    function doSteamButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/steam.png'));
+        $e->sender->graphic->size = [15,15];
+    }
+
+    /**
+     * @event steamButton.action 
+     */
+    function doSteamButtonAction(UXEvent $e = null)
+    {
+        execute('xdg-open https://store.steampowered.com/app/'.$this->appModule()->games->get('steamID',$this->gamePanel->data('gameName')));
+    }
+
+    /**
+     * @event steamDBButton.construct 
+     */
+    function doSteamDBButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/db.png'));
+        $e->sender->graphic->size = [15,15];
+    }
+
+    /**
+     * @event steamDBButton.action 
+     */
+    function doSteamDBButtonAction(UXEvent $e = null)
+    {
+        execute('xdg-open https://steamdb.info/app/'.$this->appModule()->games->get('steamID',$this->gamePanel->data('gameName')));
+    }
+
+    /**
+     * @event gameFolderButton.construct 
+     */
+    function doGameFolderButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->text = Localization::getByCode('GAMESETTINGS.FOLDERS.BUTTON');
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/folder.png'));
+        $e->sender->graphic->size = [15,15];
+        
+        $menu = new UXContextMenu;
+        $gameFolder = new UXMenuItem(Localization::getByCode('GAMESETTINGS.FOLDERS.GAME'));
+        $prefixFolder = new UXMenuItem(Localization::getByCode('GAMESETTINGS.FOLDERS.PREFIX'));
+        
+        $gameFolder->on('action',function ()
+        {
+            open($this->appModule()->games->get('mainPath',$this->gamePanel->data('gameName')) ?? fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))));
+        });
+        $prefixFolder->on('action',function ()
+        {
+            $prefixDir = fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix/pfx/drive_c';
+            if (fs::isDir($prefixDir))
+                open($prefixDir);
+            else 
+                $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOPREFIX'));
+        });
+        
+        $menu->items->addAll([$gameFolder,$prefixFolder]);
+        
+        $e->sender->on('click',function (UXMouseEvent $e) use ($menu)
+        {
+            $menu->showByNode($e->sender,$e->x,$e->y);
+        });
+    }
+
+    /**
+     * @event runInPrefixButton.construct 
+     */
+    function doRunInPrefixButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->text = Localization::getByCode('MAINFORM.MENU.RUN');
+        $e->sender->tooltipText = Localization::getByCode('MAINFORM.MENU.RUN.TOOLTIP');
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/run.png'));
+        $e->sender->graphic->size = [15,15];
+    }
+
+    /**
+     * @event runInPrefixButton.action 
+     */
+    function doRunInPrefixButtonAction(UXEvent $e = null)
+    {    
+        $proton = filesWorker::getProtonExecutable($this->gamePanel->data('gameName'));
+        $prefixDir = fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix';
+        if ($proton == false)
+        {
+            $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
+            return;
+        }
+        
+        $fc = new UXFileChooser;
+
+        $fc->extensionFilters = [['extensions'=>['*.exe'],'description'=>Localization::getByCode('FILECHOOSER.EXE.DESC')]];
+        $fc->title = Localization::getByCode('FILECHOOSER.EXE.TITLE');
+
+        $exe = $fc->showOpenDialog($this);
+        if ($exe == null)
+            return;
+            
+        new Process([$proton,'run',$exe],fs::parent($exe),['STEAM_COMPAT_DATA_PATH'=>$prefixDir,
+                                                           'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>System::getProperty('user.home').'/.steam/steam'])->start();
+    }
+
+
+
 
 
 

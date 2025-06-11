@@ -4,6 +4,6 @@
     <behaviour radius="18.313953488372" type="behaviour\custom\GaussianBlurEffectBehaviour" when="ALWAYS"/>
   </target>
   <target id="label">
-    <behaviour color="#b3b3b3" offsetX="0" offsetY="0" radius="10" spread="0.30232558139535" type="behaviour\custom\DropShadowEffectBehaviour" when="ALWAYS"/>
+    <behaviour color="#000000b4" offsetX="0" offsetY="0" radius="10" spread="0" type="behaviour\custom\DropShadowEffectBehaviour" when="ALWAYS"/>
   </target>
 </behaviours>

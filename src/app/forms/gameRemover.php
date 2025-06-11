@@ -1,6 +1,7 @@
 <?php
 namespace app\forms;
 
+use Throwable;
 use std, gui, framework, app;
 
 
@@ -13,8 +14,10 @@ class gameRemover extends AbstractForm
     function doButtonAction(UXEvent $e = null)
     {
         $gameName = app()->form('MainForm')->gamePanel->data('gameName');
-        $desktopIcon = $this->appModule()->games->get('desktopIcon',$gameName);
-        $appMenuIcon = $this->appModule()->games->get('appMenuIcon',$gameName);
+        $desktopIcon = str::trim(execute('xdg-user-dir DESKTOP',true)->getInput()->readFully())."/$gameName.desktop";
+        $appMenuIcon = System::getProperty('user.home')."/.local/share/applications/$gameName.desktop";
+        $icon = $this->appModule()->games->get('icon',$gameName);
+        $banner = $this->appModule()->games->get('banner',$gameName);
         
         $prefixPath = fs::parent($this->appModule()->games->get('executable',$gameName)).'/OFME Prefix';
         if (fs::isDir($prefixPath))
@@ -30,11 +33,16 @@ class gameRemover extends AbstractForm
                 new Process(['rm','-rf',$gamePath])->startAndWait();
         }
         
-        $this->removeLink($desktopIcon);
-        $this->removeLink($appMenuIcon);
+        $this->removeFile($desktopIcon);
+        $this->removeFile($appMenuIcon);
+        $this->removeFile($icon);
+        $this->removeFile($banner);
         
-        $this->appModule()->games->removeSection($gameName);
-        app()->form('MainForm')->gamePanel->data('opener')->free();
+        try
+        {
+            $this->appModule()->games->removeSection($gameName);
+            app()->form('MainForm')->gamePanel->data('opener')->free();
+        } catch (Throwable $ex){}
         
         if (app()->form('MainForm')->container->content->children->isEmpty())
         {
@@ -45,7 +53,7 @@ class gameRemover extends AbstractForm
         $this->free();
     }
     
-    function removeLink($path)
+    function removeFile($path)
     {
         if ($path != null and fs::isFile($path))
             fs::delete($path);

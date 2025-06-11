@@ -18,7 +18,7 @@ class filesWorker
         return "[Desktop Entry]\n".
                "Name=$name\n".
                "GenericName=Play this game with OnlineFix Launcher\n".
-               "Exec=env GDK_BACKEND=x11 \"$pwd/jre/bin/java\" -jar \"".$GLOBALS['argv'][0]."\" \"$name\"\n".
+               "Exec=env GDK_BACKEND=x11 \"$pwd/jre/bin/java\" -Dprism.forceGPU=true -jar \"".$GLOBALS['argv'][0]."\" \"$name\"\n".
                "Icon=$icon\n".
                "Path=$pwd\n".
                "Type=Application\n".

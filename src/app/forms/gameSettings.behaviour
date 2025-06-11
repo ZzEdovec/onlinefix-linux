@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <behaviours>
-  <target id="gameFolderButton">
-    <behaviour brightness="0.05" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
-  </target>
-  <target id="winetricksButton">
-    <behaviour brightness="0.05" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
-  </target>
   <target id="overview">
     <behaviour delay="0" duration="100" initialScale="1" repeatCount="-1" scale="1.05" type="behaviour\custom\ScaleAnimationBehaviour" when="HOVER"/>
   </target>
@@ -56,5 +50,8 @@
   </target>
   <target id="bannerEditor">
     <behaviour delay="0" duration="100" initialScale="1" repeatCount="-1" scale="1.05" type="behaviour\custom\ScaleAnimationBehaviour" when="HOVER"/>
+  </target>
+  <target id="editIcon">
+    <behaviour brightness="0.1" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
   </target>
 </behaviours>

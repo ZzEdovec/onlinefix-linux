@@ -24,6 +24,8 @@
     "MAINFORM.MENU.CREATEAPPMENU": "Ярлык в меню приложений",
     "MAINFORM.MENU.SETTINGS": "Настройки",
     "MAINFORM.MENU.DELETE": "Удалить",
+    "MAINFORM.MENU.RUN": "Выполнить",
+    "MAINFORM.MENU.RUN.TOOLTIP": "Запустить сторонний .exe в префиксе игры",
     "MAINFORM.MENU.GAMESETTINGS": "Настройки запуска",
     "MAINFORM.MENU.REMOVEGAME": "Убрать игру из лаунчера",
     "MAINFORM.MENU.TIMESTEMP.HEADER": "Времени в игре",
@@ -93,8 +95,8 @@
     "FFMPEG.NOTFOUND": "FFmpeg не найден! Установите для создания ярлыков с иконками игр",
 
     "DIRCHOOSER.GAMEROOT.TITLE": "Выберите корневую папку игры",
-    "FILECHOOSER.EXE.DESC": "Главный исполняемый файл игры",
-    "FILECHOOSER.EXE.TITLE": "Выберите главный исполняемый файл игры",
+    "FILECHOOSER.EXE.DESC": ".exe файл",
+    "FILECHOOSER.EXE.TITLE": "Выберите исполняемый файл",
     "FILECHOOSER.IMG.DESC": "Изображения",
     "FILECHOOSER.IMG.TITLE": "Выберите картинку для нового баннера"
 }

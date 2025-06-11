@@ -29,18 +29,20 @@ class gameSettings extends AbstractForm
      */
     function doShow(UXWindowEvent $e = null)
     {
-        $this->overrides->text = $this->appModule()->games->get('overrides',$this->gameName->text);
-        $this->env->text = $this->appModule()->games->get('environment',$this->gameName->text);
-        $this->argsBefore->text = $this->appModule()->games->get('argsBefore',$this->gameName->text);
-        $this->argsAfter->text = $this->appModule()->games->get('argsAfter',$this->gameName->text);
+        $this->gameName->text = $this->data('gameName');
+        $this->overrides->text = $this->appModule()->games->get('overrides',$this->data('gameName'));
+        $this->env->text = $this->appModule()->games->get('environment',$this->data('gameName'));
+        $this->argsBefore->text = $this->appModule()->games->get('argsBefore',$this->data('gameName'));
+        $this->argsAfter->text = $this->appModule()->games->get('argsAfter',$this->data('gameName'));
+        $this->steamAppID->text = $this->appModule()->games->get('steamID',$this->data('gameName'));
         
         uiLater(function ()
         {
             $this->gamemode->data('quUIElement')->selected = str::contains($this->argsBefore->text,'gamemoderun');
             $this->mangohud->data('quUIElement')->selected = str::contains($this->argsBefore->text,'mangohud');
             $this->gamescope->data('quUIElement')->selected = str::contains($this->argsBefore->text,'gamescope');
-            $this->steamOverlay->data('quUIElement')->selected = $this->appModule()->games->get('steamOverlay',$this->gameName->text);
-            $this->steamRuntime->data('quUIElement')->selected = $this->appModule()->games->get('steamRuntime',$this->gameName->text);
+            $this->steamOverlay->data('quUIElement')->selected = $this->appModule()->games->get('steamOverlay',$this->data('gameName'));
+            $this->steamRuntime->data('quUIElement')->selected = $this->appModule()->games->get('steamRuntime',$this->data('gameName'));
             
             if (str::contains($this->env->text,'LD_PRELOAD'))
                 $this->steamOverlay->enabled = false;
@@ -60,7 +62,7 @@ class gameSettings extends AbstractForm
             }
             uiLater(function ()
             {
-                $selectedProton = $this->appModule()->games->get('proton',$this->gameName->text);
+                $selectedProton = $this->appModule()->games->get('proton',$this->data('gameName'));
                 foreach ($this->installedProtons->items->toArray() as $num => $item)
                 {
                     if ($item == $selectedProton)
@@ -111,7 +113,7 @@ class gameSettings extends AbstractForm
      */
     function doOverridesKeyUp(UXKeyEvent $e = null)
     {
-        $this->appModule()->games->set('overrides',$e->sender->text,$this->gameName->text);
+        $this->appModule()->games->set('overrides',$e->sender->text,$this->data('gameName'));
     }
 
 
@@ -127,7 +129,7 @@ class gameSettings extends AbstractForm
             if ($this->steamOverlay->data('quUIElement')->selected)
             {
                 $this->steamOverlay->data('quUIElement')->selected = false;
-                $this->appModule()->games->set('steamOverlay',false,$this->gameName->text);
+                $this->appModule()->games->set('steamOverlay',false,$this->data('gameName'));
             }
         }
         else 
@@ -135,7 +137,7 @@ class gameSettings extends AbstractForm
         if (str::contains($e->sender->text,'WINEDLLOVERRIDES'))
             $e->sender->text = str::replace($e->sender->text,'WINEDLLOVERRIDES',null);
             
-        $this->appModule()->games->set('environment',$e->sender->text,$this->gameName->text);
+        $this->appModule()->games->set('environment',$e->sender->text,$this->data('gameName'));
     }
 
 
@@ -149,7 +151,7 @@ class gameSettings extends AbstractForm
         $this->mangohud->data('quUIElement')->selected = str::contains($e->sender->text,'mangohud');
         $this->gamescope->data('quUIElement')->selected = str::contains($e->sender->text,'gamescope');
         
-        $this->appModule()->games->set('argsBefore',$e->sender->text,$this->gameName->text);
+        $this->appModule()->games->set('argsBefore',$e->sender->text,$this->data('gameName'));
     }
 
 
@@ -160,50 +162,7 @@ class gameSettings extends AbstractForm
 
 
 
-    /**
-     * @event winetricksButton.construct 
-     */
-    function doWinetricksButtonConstruct(UXEvent $e = null)
-    {
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/wine.png'));
-        $e->sender->graphic->size = [20,20];
-        $e->sender->graphic->stretch = $e->sender->graphic->centered = $e->sender->graphic->proportional = true;
-    }
 
-    /**
-     * @event gameFolderButton.construct 
-     */
-    function doGameFolderButtonConstruct(UXEvent $e = null)
-    {
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.FOLDERS.BUTTON');
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/folder.png'));
-        $e->sender->graphic->size = [20,20];
-        $e->sender->graphic->stretch = $e->sender->graphic->centered = $e->sender->graphic->proportional = true;
-        
-        $menu = new UXContextMenu;
-        $gameFolder = new UXMenuItem(Localization::getByCode('GAMESETTINGS.FOLDERS.GAME'));
-        $prefixFolder = new UXMenuItem(Localization::getByCode('GAMESETTINGS.FOLDERS.PREFIX'));
-        
-        $gameFolder->on('action',function ()
-        {
-            open($this->appModule()->games->get('mainPath',$this->gameName->text) ?? fs::parent($this->appModule()->games->get('executable',$this->gameName->text)));
-        });
-        $prefixFolder->on('action',function ()
-        {
-            $prefixDir = fs::parent($this->appModule()->games->get('executable',$this->gameName->text)).'/OFME Prefix/pfx/drive_c';
-            if (fs::isDir($prefixDir))
-                open($prefixDir);
-            else 
-                $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOPREFIX'));
-        });
-        
-        $menu->items->addAll([$gameFolder,$prefixFolder]);
-        
-        $e->sender->on('click',function (UXMouseEvent $e) use ($menu)
-        {
-            $menu->showByNode($e->sender,$e->x,$e->y);
-        });
-    }
 
     /**
      * @event overview.click 
@@ -350,7 +309,7 @@ class gameSettings extends AbstractForm
      */
     function doArgsAfterKeyUp(UXKeyEvent $e = null)
     {    
-        $this->appModule()->games->set('argsAfter',$e->sender->text,$this->gameName->text);
+        $this->appModule()->games->set('argsAfter',$e->sender->text,$this->data('gameName'));
     }
 
     /**
@@ -361,7 +320,7 @@ class gameSettings extends AbstractForm
         if (!($e->sender->data('quUIElement')->selected))
             $this->toast(Localization::getByCode('GAMESETTINGS.STEAMOVERLAY.WARNING'));
             
-        $this->appModule()->games->set('steamOverlay',!($e->sender->data('quUIElement')->selected),$this->gameName->text);
+        $this->appModule()->games->set('steamOverlay',!($e->sender->data('quUIElement')->selected),$this->data('gameName'));
     }
 
     /**
@@ -378,7 +337,7 @@ class gameSettings extends AbstractForm
             return;
         }
         
-        $this->appModule()->games->set('steamRuntime',!($e->sender->data('quUIElement')->selected),$this->gameName->text);
+        $this->appModule()->games->set('steamRuntime',!($e->sender->data('quUIElement')->selected),$this->data('gameName'));
     }
 
     /**
@@ -441,7 +400,7 @@ class gameSettings extends AbstractForm
             $this->availableProtons->items->insert(0,$this->installedProtons->selectedItem);
         $this->installedProtons->items->removeByIndex($this->installedProtons->selectedIndex);
         
-        uiLater(function (){$this->appModule()->games->set('proton',$this->installedProtons->selectedItem,$this->gameName->text);});
+        uiLater(function (){$this->appModule()->games->set('proton',$this->installedProtons->selectedItem,$this->data('gameName'));});
     }
 
     /**
@@ -452,34 +411,9 @@ class gameSettings extends AbstractForm
         if ($this->installedProtons->selectedIndex == -1)
             return;
             
-        $this->appModule()->games->set('proton',$e->sender->selectedItem,$this->gameName->text);
+        $this->appModule()->games->set('proton',$e->sender->selectedItem,$this->data('gameName'));
     }
 
-    /**
-     * @event winetricksButton.action 
-     */
-    function doWinetricksButtonAction(UXEvent $e = null)
-    {    
-        $proton = filesWorker::getProtonExecutable($this->gameName->text);
-        $prefixDir = fs::parent($this->appModule()->games->get('executable',$this->gameName->text)).'/OFME Prefix';
-        if ($proton == false)
-        {
-            $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
-            return;
-        }
-        if (fs::isFile('/usr/bin/winetricks') == false)
-        {
-            $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOTFOUND'));
-            return;
-        }
-        if (fs::isDir($prefixDir) == false)
-        {
-            $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOPREFIX'));
-            return;
-        }
-        
-        new Process(['winetricks'],null,['WINE'=>fs::parent($proton).'/files/bin/wine','WINEPREFIX'=>$prefixDir])->start();
-    }
 
 
 
@@ -493,7 +427,7 @@ class gameSettings extends AbstractForm
     {    
         if ($e->sender->text == null)
         {
-            $this->toast(Localization::getByCode('BANNEREDITOR.STEAM.NOAPPID'));
+            $this->toast(Localization::getByCode('BANNEDEDITOR.STEAM.NOAPPID'));
             return;
         }
         
@@ -632,29 +566,138 @@ class gameSettings extends AbstractForm
         $e->sender->text = Localization::getByCode('GAMESETTINGS.ADDITIONALS');
     }
 
+    /**
+     * @event gameName.keyUp 
+     */
+    function doGameNameKeyUp(UXKeyEvent $e = null)
+    {
+        if ($e->sender->text == $this->data('gameName'))
+        {
+            $this->applyGameName->enabled = false;
+            return;
+        }
+        
+        $this->applyGameName->enabled = true;
+    }
 
+    /**
+     * @event applyGameName.construct 
+     */
+    function doApplyGameNameConstruct(UXEvent $e = null)
+    {
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/ok.png'));
+        $e->sender->graphic->size = [14,14];
+    }
 
+    /**
+     * @event editIcon.construct 
+     */
+    function doEditIconConstruct(UXEvent $e = null)
+    {
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/edit.png'));
+        $e->sender->graphic->size = [14,14];
+    }
 
+    /**
+     * @event applyGameName.action 
+     */
+    function doApplyGameNameAction(UXEvent $e = null)
+    {
+        $gameName = $this->data('gameName');
+        $gameSettings = $this->appModule()->games->section($gameName);
+        $desktopPath = str::trim(execute('xdg-user-dir DESKTOP',true)->getInput()->readFully());
+        $menuPath = System::getProperty('user.home').'/.local/share/applications';
+        
+        if (fs::isFile("$desktopPath/$gameName.desktop"))
+        {
+            fs::delete("$desktopPath/$gameName.desktop");
+            $desktop = true;
+        }
+        if (fs::isFile("$menuPath/$gameName.desktop"))
+        {
+            fs::delete("$menuPath/$gameName.desktop");
+            $menu = true;
+        }
+        
+        $gameNameNew = $this->gameName->text;
+        
+        $this->appModule()->games->removeSection($gameName);
+        $this->appModule()->games->put($gameSettings,$gameNameNew);
+        
+        $this->data('gameName',$gameNameNew);
+        if (app()->form('MainForm')->gamePanel->data('gameName') == $gameName)
+        {
+            app()->form('MainForm')->gamePanel->data('gameName',$gameNameNew);
+            app()->form('MainForm')->gamePanel->data('opener')->children[3]->children[0]->text = $gameNameNew;
+        }
+        else 
+        {
+            foreach (app()->form('MainForm')->container->content->children->toArray() as $game)
+            {
+                if ($game->children[3]->children[0]->text == $gameName)
+                {
+                    $game->children[3]->children[0]->text = $gameNameNew;
+                    break;
+                }
+            }
+        }
+        
+        if ($desktop)
+        {
+            file_put_contents("$desktopPath/$gameNameNew.desktop",filesWorker::generateDesktopEntry($gameNameNew,$gameSettings['icon']));
+            new Process(['chmod','+x',$desktopPath])->start();
+        }
+        if ($menu) {file_put_contents("$menuPath/$gameNameNew.desktop",filesWorker::generateDesktopEntry($gameNameNew,$gameSettings['icon']));}
+        
+        $e->sender->enabled = false;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * @event editIcon.action 
+     */
+    function doEditIconAction(UXEvent $e = null)
+    {    
+        $fc = new UXFileChooser;
+        $fc->extensionFilters = [['extensions'=>['*.png','*.jpg'],'description'=>Localization::getByCode('FILECHOOSER.IMG.DESC')]];
+        
+        $icon = $fc->showOpenDialog($this);
+        if ($icon == null)
+            return;
+        
+        $userHome = System::getProperty('user.home');
+        $iconName = fs::nameNoExt($icon);
+        $desktopPath = str::trim(execute('xdg-user-dir DESKTOP',true)->getInput()->readFully());
+        $menuPath = "$userHome/.local/share/applications";
+        $oldIcon = $this->appModule()->games->get('icon',$this->data('gameName'));
+        
+        fs::copy($icon,"$userHome/.config/OFME-Linux/icons/$iconName");
+        
+        $this->appModule()->games->set('icon',"$userHome/.config/OFME-Linux/icons/$iconName",$this->data('gameName'));
+        $this->gameIcon->image = new UXImage($icon);
+        
+        if (app()->form('MainForm')->gamePanel->data('gameName') == $this->data('gameName'))
+            app()->form('MainForm')->gamePanel->data('opener')->children[3]->children[0]->graphic->image = $this->gameIcon->image;
+        else 
+        {
+            foreach (app()->form('MainForm')->container->content->children->toArray() as $game)
+            {
+                if ($game->children[3]->children[0]->text == $gameName)
+                {
+                    $game-->children[3]->children[0]->graphic->image = $this->gameIcon->image;
+                    break;
+                }
+            }
+        }
+        
+        fs::delete($oldIcon);
+        
+        if (fs::isFile("$desktopPath/".$this->data('gameName').'.desktop'))
+            file_put_contents("$desktopPath/".$this->data('gameName').'.desktop',str::replace
+            (file_get_contents("$desktopPath/".$this->data('gameName').'.desktop'),$oldIcon,"$userHome/.config/OFME-Linux/icons/$iconName"));
+        if (fs::isFile("$menuPath/".$this->data('gameName').'.desktop'))
+            file_put_contents("$menuPath/".$this->data('gameName').'.desktop',str::replace
+            (file_get_contents("$menuPath/".$this->data('gameName').'.desktop'),$oldIcon,"$userHome/.config/OFME-Linux/icons/$iconName"));
+    }
 
 
 
@@ -686,7 +729,7 @@ class gameSettings extends AbstractForm
         else 
             $this->argsBefore->text = $arg;
             
-        $this->appModule()->games->set('argsBefore',$this->argsBefore->text,$this->gameName->text);
+        $this->appModule()->games->set('argsBefore',$this->argsBefore->text,$this->data('gameName'));
     }
     
     function removeBeforeArg($arg)
@@ -705,7 +748,7 @@ class gameSettings extends AbstractForm
                 $this->argsBefore->text = str::replace($this->argsBefore->text," $arg",null);
         }
         
-        $this->appModule()->games->set('argsBefore',$this->argsBefore->text,$this->gameName->text);
+        $this->appModule()->games->set('argsBefore',$this->argsBefore->text,$this->data('gameName'));
     }
     
     function setBanner(UXImage $banner)

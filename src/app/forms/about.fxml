@@ -20,7 +20,7 @@
             <Font name="System Regular" size="13"/>
           </font>
         </LabelEx>
-        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label3" layoutX="120" layoutY="219" prefHeight="24" prefWidth="96" style="-fx-background-color:#9141ac;-fx-background-radius:50px;" styleClass="label " text="2.1 version" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label3" layoutX="120" layoutY="219" prefHeight="24" prefWidth="96" style="-fx-background-color:#9141ac;-fx-background-radius:50px;" styleClass="label " text="2.2 version" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="12"/>
           </font>

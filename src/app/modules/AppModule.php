@@ -8,13 +8,12 @@ use std, gui, framework, app;
 
 class AppModule extends AbstractModule
 {
-
     /**
      * @event action 
      */
     function doAction(ScriptEvent $e = null)
     {
-    	if (System::getProperty('prism.forceGPU') != true) #MIGRATION FROM LEGACY, REMOVE IN V2.4
+        if (System::getProperty('prism.forceGPU') != true) #MIGRATION FROM LEGACY, REMOVE IN V2.4
         {
             $desktops = [str::trim(execute('xdg-user-dir DESKTOP',true)->getInput()->readFully()).'/OnlineFix Linux Launcher.desktop',
                          System::getProperty('user.home').'/.local/share/applications/OnlineFix Linux Launcher.desktop'];
@@ -31,7 +30,7 @@ class AppModule extends AbstractModule
                 System::halt(0);
             }
         }
-    
+        
         $userhome = System::getProperty('user.home');
         $this->games->path = $userhome.'/.config/OFME-Linux/Games.ini';
         fs::ensureParent($this->games->path);
@@ -60,7 +59,7 @@ class AppModule extends AbstractModule
         new Thread(function (){
             try
             {
-                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2')
+                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2.2')
                 {
                     new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
                     app()->shutdown();

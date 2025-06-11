@@ -26,7 +26,7 @@
       </font>
     </com.jfoenix.controls.JFXButton>
     <Data cursor="HAND" enabled="1" graphic=".data/img/add.png" id="data-addGame" visible="1"/>
-    <Data cursor="DEFAULT" enabled="1" id="data-background" visible="1"/>
+    <Data cursor="DEFAULT" enabled="1" id="data-background" image="" visible="1"/>
     <Data cursor="DEFAULT" enabled="1" id="data-gamePanel" visible=""/>
     <Panel AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" backgroundColor="#333337db" borderColor="#c0c0c0" borderRadius="0" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="gamePanel" layoutX="504" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="496" prefWidth="312" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
       <children>
@@ -36,73 +36,7 @@
           </font>
         </ImageViewEx>
         <Data cursor="DEFAULT" enabled="1" id="data-gameHeader" image="" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameDebugButton" layoutX="24" layoutY="200" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Отладка" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="12"/>
-          </font>
-          <styleClass xmlns:fx="http://javafx.com/fxml">
-            <String fx:value="button"/>
-            <String fx:value="jfx-button"/>
-            <String fx:value="jfx-menu-button"/>
-          </styleClass>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" graphic=".data/img/debug.png" id="data-gameDebugButton" tooltipText="Запуск с отладкой" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameSettingsButton" layoutX="116" layoutY="200" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Настройки" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="12"/>
-          </font>
-          <styleClass xmlns:fx="http://javafx.com/fxml">
-            <String fx:value="button"/>
-            <String fx:value="jfx-button"/>
-            <String fx:value="jfx-menu-button"/>
-          </styleClass>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" graphic=".data/img/settings.png" id="data-gameSettingsButton" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameDeleteButton" layoutX="208" layoutY="200" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Удалить" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="12"/>
-          </font>
-          <styleClass xmlns:fx="http://javafx.com/fxml">
-            <String fx:value="button"/>
-            <String fx:value="jfx-button"/>
-            <String fx:value="jfx-menu-button"/>
-          </styleClass>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" graphic=".data/img/remove.png" id="data-gameDeleteButton" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="protonDBButton" layoutX="24" layoutY="260" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="ProtonDB" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="12"/>
-          </font>
-          <styleClass xmlns:fx="http://javafx.com/fxml">
-            <String fx:value="button"/>
-            <String fx:value="jfx-button"/>
-            <String fx:value="jfx-menu-button"/>
-          </styleClass>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" graphic=".data/img/protondb.png" id="data-protonDBButton" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamButton" layoutX="116" layoutY="260" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Steam" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="12"/>
-          </font>
-          <styleClass xmlns:fx="http://javafx.com/fxml">
-            <String fx:value="button"/>
-            <String fx:value="jfx-button"/>
-            <String fx:value="jfx-menu-button"/>
-          </styleClass>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" graphic=".data/img/steam.png" id="data-steamButton" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamDBButton" layoutX="208" layoutY="260" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="SteamDB" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="12"/>
-          </font>
-          <styleClass xmlns:fx="http://javafx.com/fxml">
-            <String fx:value="button"/>
-            <String fx:value="jfx-button"/>
-            <String fx:value="jfx-menu-button"/>
-          </styleClass>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" graphic=".data/img/db.png" id="data-steamDBButton" visible="1"/>
-        <Panel backgroundColor="#4d4d4d99" borderColor="#c0c0c0" borderRadius="7" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="panel3" layoutX="24" layoutY="328" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="75" prefWidth="264" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
+        <Panel backgroundColor="#4d4d4d99" borderColor="#c0c0c0" borderRadius="7" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="panel3" layoutX="24" layoutY="386" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="75" prefWidth="264" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
           <children>
             <org.controlsfx.control.ToggleSwitch alignment="CENTER_LEFT" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="desktopIcon" layoutX="28" layoutY="16" prefHeight="18" prefWidth="208" selected="false" styleClass="toggle-switch " text="Ярлык на рабочем столе" textAlignment="LEFT" underline="false" wrapText="false">
               <font>
@@ -140,6 +74,110 @@
           </font>
         </LabelEx>
         <Data cursor="DEFAULT" enabled="1" id="data-timeLabel" visible="1"/>
+        <FlowPane alignment="TOP_LEFT" columnHalignment="LEFT" focusTraversable="false" hgap="12" id="flowPane" layoutX="24" layoutY="200" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" orientation="HORIZONTAL" prefHeight="168" prefWidth="264" rowValignment="CENTER" styleClass="" vgap="12">
+          <children>
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameDebugButton" layoutX="0" layoutY="0" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Отладка" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Regular" size="12"/>
+              </font>
+              <styleClass xmlns:fx="http://javafx.com/fxml">
+                <String fx:value="button"/>
+                <String fx:value="jfx-button"/>
+                <String fx:value="jfx-menu-button"/>
+              </styleClass>
+            </com.jfoenix.controls.JFXButton>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/debug.png" id="data-gameDebugButton" tooltipText="Запуск с отладкой" visible="1"/>
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameSettingsButton" layoutX="92" layoutY="0" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Настройки" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Regular" size="12"/>
+              </font>
+              <styleClass xmlns:fx="http://javafx.com/fxml">
+                <String fx:value="button"/>
+                <String fx:value="jfx-button"/>
+                <String fx:value="jfx-menu-button"/>
+              </styleClass>
+            </com.jfoenix.controls.JFXButton>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/settings.png" id="data-gameSettingsButton" visible="1"/>
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameDeleteButton" layoutX="184" layoutY="0" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Удалить" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Regular" size="12"/>
+              </font>
+              <styleClass xmlns:fx="http://javafx.com/fxml">
+                <String fx:value="button"/>
+                <String fx:value="jfx-button"/>
+                <String fx:value="jfx-menu-button"/>
+              </styleClass>
+            </com.jfoenix.controls.JFXButton>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/remove.png" id="data-gameDeleteButton" visible="1"/>
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="winetricksButton" layoutX="0" layoutY="60" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Winetricks" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Regular" size="12"/>
+              </font>
+              <styleClass xmlns:fx="http://javafx.com/fxml">
+                <String fx:value="button"/>
+                <String fx:value="jfx-button"/>
+                <String fx:value="jfx-menu-button"/>
+              </styleClass>
+            </com.jfoenix.controls.JFXButton>
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="runInPrefixButton" layoutX="92" layoutY="60" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Выполнить" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="true">
+              <font>
+                <Font name="System Regular" size="11"/>
+              </font>
+              <styleClass xmlns:fx="http://javafx.com/fxml">
+                <String fx:value="button"/>
+                <String fx:value="jfx-button"/>
+                <String fx:value="jfx-menu-button"/>
+              </styleClass>
+            </com.jfoenix.controls.JFXButton>
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameFolderButton" layoutX="184" layoutY="60" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Папки" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Regular" size="12"/>
+              </font>
+              <styleClass xmlns:fx="http://javafx.com/fxml">
+                <String fx:value="button"/>
+                <String fx:value="jfx-button"/>
+                <String fx:value="jfx-menu-button"/>
+              </styleClass>
+            </com.jfoenix.controls.JFXButton>
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamDBButton" layoutX="0" layoutY="120" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="SteamDB" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Regular" size="12"/>
+              </font>
+              <styleClass xmlns:fx="http://javafx.com/fxml">
+                <String fx:value="button"/>
+                <String fx:value="jfx-button"/>
+                <String fx:value="jfx-menu-button"/>
+              </styleClass>
+            </com.jfoenix.controls.JFXButton>
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="protonDBButton" layoutX="92" layoutY="120" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="ProtonDB" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Regular" size="12"/>
+              </font>
+              <styleClass xmlns:fx="http://javafx.com/fxml">
+                <String fx:value="button"/>
+                <String fx:value="jfx-button"/>
+                <String fx:value="jfx-menu-button"/>
+              </styleClass>
+            </com.jfoenix.controls.JFXButton>
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamButton" layoutX="184" layoutY="120" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Steam" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Regular" size="12"/>
+              </font>
+              <styleClass xmlns:fx="http://javafx.com/fxml">
+                <String fx:value="button"/>
+                <String fx:value="jfx-button"/>
+                <String fx:value="jfx-menu-button"/>
+              </styleClass>
+            </com.jfoenix.controls.JFXButton>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/wine.png" id="data-winetricksButton" visible="1"/>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/protondb.png" id="data-protonDBButton" visible="1"/>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/steam.png" id="data-steamButton" visible="1"/>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/db.png" id="data-steamDBButton" visible="1"/>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/folder.png" id="data-gameFolderButton" visible="1"/>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/run.png" id="data-runInPrefixButton" tooltipText="Запустить сторонний .exe в префиксе игры" visible="1"/>
+          </children>
+        </FlowPane>
+        <Data cursor="DEFAULT" enabled="1" id="data-flowPane" visible="1"/>
       </children>
       <titleFont>
         <Font name="System Regular" size="12"/>
