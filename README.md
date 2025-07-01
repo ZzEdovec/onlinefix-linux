@@ -3,7 +3,7 @@
 ![OFME window](https://zzedovec.github.io/images/ofmeBanner.png)
 # OnlineFix Linux Launcher
 
-**A simple and convenient launcher for running games from ****[online-fix.me](https://online-fix.me)**** on Linux**
+**A simple and convenient launcher for running games with community multiplayer fixes on Linux**
 
 ## ✨ Features
 
@@ -15,11 +15,8 @@
 
 ## ❕ Compatibility
 
-Most online fixes from online-fix.me are currently supported. Partial support is available for fixes from freetp.org *(it is highly recommended to download games from online-fix.me if available, rather than from FreeTP)*.
-Fixes that include custom launchers (e.g., Phasmophobia) have not been tested yet.
-
-Work-in-progres:
-- Epic Games fixes
+Most online fixes are currently supported.
+Fixes that include custom launchers have not been tested yet.
 
 ## 📦 Dependencies
 

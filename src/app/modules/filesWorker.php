@@ -62,8 +62,8 @@ class filesWorker
             $mainEnvironment = array_merge($mainEnvironment,$customEnvironment);
         if (app()->appModule()->games->get('steamOverlay',$name))
         {
-            $mainEnvironment = array_merge($mainEnvironment,['LD_PRELOAD'=>":$userhome/.local/share/Steam/ubuntu12_32/gameoverlayrenderer.so:".
-                                                                            "$userhome/.local/share/Steam/ubuntu12_64/gameoverlayrenderer.so"]);
+            $mainEnvironment = array_merge($mainEnvironment,['LD_PRELOAD'=>":$userHome/.local/share/Steam/ubuntu12_32/gameoverlayrenderer.so:".
+                                                                            "$userHome/.local/share/Steam/ubuntu12_64/gameoverlayrenderer.so"]);
         }
         
         if (app()->appModule()->games->get('steamRuntime',$name))

@@ -59,7 +59,7 @@ class AppModule extends AbstractModule
         new Thread(function (){
             try
             {
-                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2.2')
+                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2.2.1')
                 {
                     new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
                     app()->shutdown();

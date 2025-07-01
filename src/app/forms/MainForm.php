@@ -276,7 +276,7 @@ class MainForm extends AbstractForm
         if ($e->sender->graphic == $e->sender->data('stop'))
         {
             $exec = $this->appModule()->games->get('executable',$this->gamePanel->data('gameName'));
-            $kill = new Process(['pkill','-f',fs::nameNoExt($exec)])->startAndWait();
+            $kill = new Process(['pkill','-f',fs::name($exec)])->startAndWait();
             
             if ($kill->getExitValue() != 0)
             {
@@ -650,7 +650,7 @@ class MainForm extends AbstractForm
         $this->gamePanel->data('gameName',$name); 
         $this->gamePanel->data('opener',$sender);  
         $this->protonDBButton->enabled = $this->steamButton->enabled = $this->steamDBButton->enabled = $this->appModule()->games->get('steamID',$name) != null;
-        if (new Process(['pgrep','-af',fs::nameNoExt($this->appModule()->games->get('executable',$name))])->startAndWait()->getExitValue() == 1)
+        if (new Process(['pgrep','-af',fs::name($this->appModule()->games->get('executable',$name))])->startAndWait()->getExitValue() == 1)
             $this->switchPlayButton('play');
         else 
             $this->switchPlayButton('stop');
