@@ -54,6 +54,4 @@ class about extends AbstractForm
         AnimationFX::play('FadeInUp',$this->vbox);
     }
 
-
-
 }

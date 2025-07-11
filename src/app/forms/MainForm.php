@@ -3,8 +3,6 @@ namespace app\forms;
 
 use php\gui\animatefx\AnimationFX;
 use php\gui\controlsfx\UXToggleSwitch;
-use script\HotKeyScript;
-use php\desktop\HotKeyManager;
 use Throwable;
 use std, gui, framework, app;
 
@@ -30,8 +28,6 @@ class MainForm extends AbstractForm
      */
     function doConstruct(UXEvent $e = null)
     {
-        $this->appModule()->overlayEmulator->disabled = true;
-        
         foreach ($this->appModule()->games->toArray() as $name => $params)
         {
             $this->addGame($name,$params['executable'],$params['overrides'],$params['banner'],$params['icon']);
@@ -104,20 +100,15 @@ class MainForm extends AbstractForm
                 });
                 return;
             }
-    
+            
+            if ($parsed['fakeAppId'] != null)
+                $this->appModule()->games->set('fakeSteamID',$parsed['fakeAppId'],$appName);
+            
             if ($parsed['realAppId'] != null)
             {
-                try
-                {
-                    $url = FixParser::parseBanner($parsed['realAppId']);
-                    $imagesDir = System::getProperty('user.home').'/.config/OFME-Linux/banners';
-    
-                    fs::makeDir($imagesDir);
-                    fs::copy($url,$imagesDir.'/'.$appName.'.jpg');
-    
-                    $image = $imagesDir.'/'.$appName.'.jpg';
-                    $this->appModule()->games->set('banner',$image,$appName);
-                } catch (Throwable $ex) {}
+                $bannerPath = FixParser::parseBanner($parsed['realAppId']);
+                if ($bannerPath != null)
+                    $this->appModule()->games->set('banner',$bannerPath,$appName);
                 
                 $this->appModule()->games->set('steamID',$parsed['realAppId'],$appName);
             }
@@ -157,9 +148,9 @@ class MainForm extends AbstractForm
                                            'steamOverlay'=>true],$appName);
     
     
-            uiLater(function () use ($appName,$exe,$parsed,$image,$iconPath)
+            uiLater(function () use ($appName,$exe,$parsed,$bannerPath,$iconPath)
             {
-                $this->addGame($appName,$exe,$parsed['overrides'],$image,$iconPath);
+                $this->addGame($appName,$exe,$parsed['overrides'],$bannerPath,$iconPath);
                 
                 $this->switchGameButton('add');
             });
@@ -675,14 +666,12 @@ class MainForm extends AbstractForm
         if ($process == null)
             return;
         
-        $this->appModule()->overlayEmulator->disabled = $this->appModule()->games->get('steamOverlay',$gameName);
         $this->switchPlayButton('stop');
         
         new Thread(function () use ($process,$gameName,$debug)
         {
             filesWorker::run($process,$gameName,$debug);
             
-            $this->appModule()->overlayEmulator->disabled = true;
             if ($this->gamePanel->data('gameName') == $gameName)
             {
                 uiLater(function () use ($gameName)

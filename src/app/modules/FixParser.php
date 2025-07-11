@@ -2,7 +2,6 @@
 namespace app\modules;
 
 use Throwable;
-use php\desktop\HotKeyManager;
 use php\io\IOException;
 use framework;
 use std;
@@ -34,6 +33,7 @@ class FixParser
             {
                 $ini = new IniStorage($file);
                 $realAppID = $ini->get('RealAppId','Main');
+                $fakeAppID = $ini->get('FakeAppId','Main');
                 
                 $ini->free();
                 continue;
@@ -57,18 +57,42 @@ class FixParser
         if (str::endsWith($overrides,';'))
             $overrides = str::sub($overrides,0,str::length($overrides) - 1);
         
-        return ['overrides'=>$overrides,'realAppId'=>$realAppID,'isFreeTP'=>$isFTP];
+        return ['overrides'=>$overrides,'realAppId'=>$realAppID,'fakeAppId'=>$fakeAppID,'isFreeTP'=>$isFTP];
     }
     
     static function parseBanner($appId)
     {
-        $jsoup = Jsoup::connect('https://store.steampowered.com/app/'.$appId)->get();
-        $banner = $jsoup->select('#gameHeaderImageCtn > img')->attr('src');
+        $imagesDir = System::getProperty('user.home').'/.config/OFME-Linux/banners';
+        $imagePath = $imagesDir.'/'.$appId.'.jpg';
         
-        if ($banner == null)
-            throw new IOException;
+        fs::makeDir($imagesDir);
         
-        return $banner;
+        try
+        {
+            Logger::info('Trying to fetch banner from akamai CDN');
+            
+            fs::copy("https://cdn.akamai.steamstatic.com/steam/apps/$appId/capsule_616x353.jpg",$imagePath);
+        } catch (Throwable $ex) #Fallback to legacy method
+        { 
+            Logger::warn('Exception catched - '.$ex->getMessage().'. Fallback to legacy method');
+            
+            try
+            {
+                $jsoup = Jsoup::connect('https://store.steampowered.com/app/'.$appId)->get();
+                $imageUrl = $jsoup->select('#gameHeaderImageCtn > img')->attr('src');
+                
+                fs::copy($imageUrl,$imagePath);
+            } 
+            catch (Throwable $ex)
+            {
+                Logger::error('Failed to fetch banner');
+                
+                return null;
+            }
+        }
+        
+        Logger::info('Banner fetched');
+        return $imagePath;
     }
     
     static function parseIcon($executable)

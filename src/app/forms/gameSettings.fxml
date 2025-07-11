@@ -292,7 +292,7 @@
     </HBox>
     <FlowPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="48" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER" columnHalignment="CENTER" focusTraversable="false" hgap="10" id="overviewPage" layoutX="48" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" orientation="VERTICAL" prefHeight="424" prefWidth="656" rowValignment="CENTER" styleClass="" vgap="10">
       <children>
-        <Panel borderRadius="0" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="panelAlt" layoutX="188" layoutY="127" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="128" prefWidth="280" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
+        <Panel borderColor="#c0c0c0" borderRadius="0" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="panelAlt" layoutX="188" layoutY="127" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="128" prefWidth="280" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
           <children>
             <ImageViewEx autoSize="false" centered="true" focusTraversable="false" height="128" id="gameIcon" layoutX="76" layoutY="0" mosaic="false" mosaicGap="0" proportional="true" stretch="true" styleClass="" textFill="#000000" width="128">
               <font>

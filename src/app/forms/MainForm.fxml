@@ -38,13 +38,13 @@
         <Data cursor="DEFAULT" enabled="1" id="data-gameHeader" image="" visible="1"/>
         <Panel backgroundColor="#4d4d4d99" borderColor="#c0c0c0" borderRadius="7" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="panel3" layoutX="24" layoutY="386" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="75" prefWidth="264" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
           <children>
-            <org.controlsfx.control.ToggleSwitch alignment="CENTER_LEFT" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="desktopIcon" layoutX="28" layoutY="16" prefHeight="18" prefWidth="208" selected="false" styleClass="toggle-switch " text="Ярлык на рабочем столе" textAlignment="LEFT" underline="false" wrapText="false">
+            <org.controlsfx.control.ToggleSwitch alignment="CENTER_LEFT" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="desktopIcon" layoutX="32" layoutY="16" prefHeight="16" prefWidth="200" selected="false" styleClass="toggle-switch " text="Ярлык на рабочем столе" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
             </org.controlsfx.control.ToggleSwitch>
             <Data cursor="HAND" enabled="1" id="data-desktopIcon" visible="1"/>
-            <org.controlsfx.control.ToggleSwitch alignment="CENTER_LEFT" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="menuIcon" layoutX="28" layoutY="40" prefHeight="18" prefWidth="208" selected="false" styleClass="toggle-switch " text="Ярлык в меню приложений" textAlignment="LEFT" underline="false" wrapText="false">
+            <org.controlsfx.control.ToggleSwitch alignment="CENTER_LEFT" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="menuIcon" layoutX="32" layoutY="40" prefHeight="24" prefWidth="200" selected="false" styleClass="toggle-switch " text="Ярлык в меню приложений" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -185,13 +185,13 @@
     </Panel>
     <HBox AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16" alignment="TOP_LEFT" focusTraversable="false" id="buttonBox" layoutX="16" layoutY="432" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="48" prefWidth="256" spacing="1" styleClass="">
       <children>
-        <com.jfoenix.controls.JFXButton AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16" alignment="CENTER" buttonType="FLAT" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="donate" layoutX="0" layoutY="0" prefHeight="48" prefWidth="144" ripplerFill="#f2f2f2" style="-jfx-button-type: FLAT;-fx-background-color: #33333799;-fx-background-radius:50 0 0 50;" styleClass="button jfx-button " text="Поддержать" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+        <com.jfoenix.controls.JFXButton AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="donate" layoutX="0" layoutY="0" prefHeight="48" prefWidth="144" ripplerFill="#f2f2f2" style="-fx-background-color: #33333799;-fx-background-radius:50 0 0 50;" styleClass="button jfx-button " text="Поддержать" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="12"/>
           </font>
         </com.jfoenix.controls.JFXButton>
         <Data cursor="HAND" enabled="1" graphic=".data/img/donate.png" id="data-donate" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="FLAT" contentDisplay="RIGHT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="about" layoutX="129" layoutY="0" prefHeight="48" prefWidth="144" ripplerFill="#f2f2f2" style="-jfx-button-type: FLAT;-fx-background-color: #33333799;-fx-background-radius:0 50 50 0;" styleClass="button jfx-button " text="О программе" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="RIGHT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="about" layoutX="129" layoutY="0" prefHeight="48" prefWidth="144" ripplerFill="#f2f2f2" style="-fx-background-color: #33333799;-fx-background-radius:0 50 50 0;" styleClass="button jfx-button " text="О программе" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="12"/>
           </font>

@@ -47,8 +47,19 @@ class filesWorker
         $exec = "\"$proton\" run \"$executable\"";
         $userHome = System::getProperty('user.home');
         $dxOverrides = 'd3d11=n;d3d10=n;d3d10core=n;dxgi=n;openvr_api_dxvk=n;d3d12=n;d3d12core=n;d3d9=n;d3d8=n;';
-        $mainEnvironment = ['WINEDLLOVERRIDES'=>$dxOverrides.app()->appModule()->games->get('overrides',$name),'WINEDEBUG'=>$debug ? '+warn,+err,+trace' : '-all',
-                            'STEAM_COMPAT_DATA_PATH'=>fs::parent($executable).'/OFME Prefix','STEAM_COMPAT_CLIENT_INSTALL_PATH'=>"$userHome/.steam/steam"];
+        $mainEnvironment = ['WINEDLLOVERRIDES'=>$dxOverrides.app()->appModule()->games->get('overrides',$name),
+                            'WINEDEBUG'=>$debug ? '+warn,+err,+trace' : '-all',
+                            'STEAM_COMPAT_DATA_PATH'=>fs::parent($executable).'/OFME Prefix',
+                            'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>"$userHome/.steam/steam"];
+                            
+        if (app()->appModule()->games->get('steamOverlay',$name))
+        {
+            $mainEnvironment = array_merge($mainEnvironment,['LD_PRELOAD'=>":$userHome/.local/share/Steam/ubuntu12_32/gameoverlayrenderer.so:".
+                                                                            "$userHome/.local/share/Steam/ubuntu12_64/gameoverlayrenderer.so",
+                                                             'ENABLE_VK_LAYER_VALVE_steam_overlay_1'=>true,
+                                                             'SteamOverlayGameId'=>app()->appModule()->games->get('fakeSteamID',$name) ?? 480]);
+        }
+        
         foreach (str::split(app()->appModule()->games->get('environment',$name),' ') as $env)
         {
             $env = str::split($env,'=');
@@ -57,15 +68,9 @@ class filesWorker
             
             $customEnvironment[$env[0]] = $env[1];
         }
-        
         if (isset($customEnvironment))
             $mainEnvironment = array_merge($mainEnvironment,$customEnvironment);
-        if (app()->appModule()->games->get('steamOverlay',$name))
-        {
-            $mainEnvironment = array_merge($mainEnvironment,['LD_PRELOAD'=>":$userHome/.local/share/Steam/ubuntu12_32/gameoverlayrenderer.so:".
-                                                                            "$userHome/.local/share/Steam/ubuntu12_64/gameoverlayrenderer.so"]);
-        }
-        
+
         if (app()->appModule()->games->get('steamRuntime',$name))
         {
             $steamRuntime = self::findSteamRuntime();
@@ -78,6 +83,7 @@ class filesWorker
             $exec = $argsBeforeExec." $exec";
         if ($argsAfterExec != null)
             $exec .= " $argsAfterExec";
+            
         if ($debug == false)
             $exec .= ' > /dev/null 2>&1';
         
@@ -92,9 +98,10 @@ class filesWorker
         UXApplication::setImplicitExit(false);
         fs::makeDir($exeParent.'/OFME Prefix');
         
-        if (app()->appModule()->games->get('mainPath',$gameName) == null and app()->appModule()->games->get('migratedFromLegacy',$gameName) != true) #Migrate from legacy. Will be removed in v2.2
+        if (app()->appModule()->games->get('mainPath',$gameName) == null and app()->appModule()->games->get('migratedFromLegacy',$gameName) != true) #Migrate from legacy. Will be removed in v2.4
         {
             self::migrateFromOldLauncher($gameName,$exeParent.'/OFME Prefix');
+            
             Logger::info("Migrated - $gameName");
         }
         
@@ -190,6 +197,9 @@ class filesWorker
         $proton = app()->appModule()->games->get('proton',$gameName);
         if ($proton == 'GE-Proton Latest' or $proton == null)
         {
+            while ($GLOBALS['LatestProton'] == 'fetching') #Block main thread until fetched
+                wait(50);
+                
             if (isset($GLOBALS['LatestProton']) == false)
                 $availableName = self::findFirstAvailableProton();
             else 

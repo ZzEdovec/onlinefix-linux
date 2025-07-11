@@ -1,15 +1,11 @@
 {
-  "props": [],
+  "props": {
+    "author": "queinu",
+    "version": "2.3",
+    "description": "OFMELL Initialization Module",
+    "singleton": true
+  },
   "components": {
-    "overlayEmulator": {
-      "type": "script\\HotKeyScript",
-      "x": 240,
-      "y": 16,
-      "props": {
-        "disabled": false,
-        "key": "shift + tab"
-      }
-    },
     "games": {
       "type": "script\\storage\\IniStorage",
       "x": 16,

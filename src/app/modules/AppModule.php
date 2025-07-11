@@ -15,6 +15,8 @@ class AppModule extends AbstractModule
     {
         if (System::getProperty('prism.forceGPU') != true) #MIGRATION FROM LEGACY, REMOVE IN V2.4
         {
+            Logger::info('Setting forceGPU to true (migration from legacy launcher installation)');
+            
             $desktops = [str::trim(execute('xdg-user-dir DESKTOP',true)->getInput()->readFully()).'/OnlineFix Linux Launcher.desktop',
                          System::getProperty('user.home').'/.local/share/applications/OnlineFix Linux Launcher.desktop'];
             foreach ($desktops as $desktop)
@@ -35,53 +37,54 @@ class AppModule extends AbstractModule
         $this->games->path = $userhome.'/.config/OFME-Linux/Games.ini';
         fs::ensureParent($this->games->path);
         
-        $releases = filesWorker::fetchProtonReleases();
-        if ($releases != false and str::contains($releases,'tar.gz') == false)
-        {
-            foreach ($releases[0]['assets'] as $asset)
-            {
-                if ($asset['content_type'] != 'application/gzip' or $asset['state'] != 'uploaded' or $asset['browser_download_url'] == null)
-                    continue;
-                
-                $GLOBALS['LatestProton'] = $asset['browser_download_url'];
-                break;
-            }
-        }
-        elseif (str::contains($releases,'tar.gz'))
-            $GLOBALS['LatestProton'] = $releases;
-        
+        Logger::info('Loading UI');
         if ($GLOBALS['argv'][1] != null and fs::isFile($this->games->get('executable',$GLOBALS['argv'][1])))
         {
             app()->showForm('gameStarting');
             return;
         }
         
+        $GLOBALS['LatestProton'] = 'fetching';
         new Thread(function (){
-            try
+            $releases = filesWorker::fetchProtonReleases(); #Fetch latest proton 
+            if ($releases != false and str::contains($releases,'tar.gz') == false)
             {
-                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2.2.1')
+                foreach ($releases[0]['assets'] as $asset)
+                {
+                    if ($asset['content_type'] != 'application/gzip' or $asset['state'] != 'uploaded' or $asset['browser_download_url'] == null)
+                        continue;
+                    
+                    $GLOBALS['LatestProton'] = $asset['browser_download_url'];
+                    break;
+                }
+            }
+            elseif (str::contains($releases,'tar.gz'))
+                $GLOBALS['LatestProton'] = $releases;
+            else
+            {
+                unset($GLOBALS['LatestProton']);
+                
+                Logger::error('Failed to fetch latest proton version');
+            }
+                
+            try #Check updates
+            {
+                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2.2.2')
                 {
                     new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
+                    
                     app()->shutdown();
+                    return;
                 }
-            } catch (IOException $ex){}
+            } catch (IOException $ex)
+            {
+                Logger::error('Failed to fetch latest launcher version - '.$ex->getMessage());
+            }
+            
+            Logger::info('Latest versions fetch thread completed. Latest Proton - '.$GLOBALS['LatestProton']);
         })->start();
-                                 
+        
         app()->showForm('MainForm');
+        Logger::info('Initialization complete. OFME Linux Launcher '.app()->form('about')->version->text);
     }
-
-    /**
-     * @event overlayEmulator.action 
-     */
-    function doOverlayEmulatorAction(ScriptEvent $e = null)
-    {    
-        execute('steam steam://open/friends');
-    }
-
-
-
-
-
-
-
 }
