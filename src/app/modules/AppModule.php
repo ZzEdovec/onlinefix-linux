@@ -51,7 +51,9 @@ class AppModule extends AbstractModule
             {
                 foreach ($releases[0]['assets'] as $asset)
                 {
-                    if ($asset['content_type'] != 'application/gzip' or $asset['state'] != 'uploaded' or $asset['browser_download_url'] == null)
+                    if (Regex::match($asset['content_type'],'application/gzip|application/x-gtar') == false or 
+                        $asset['state'] != 'uploaded' or 
+                        $asset['browser_download_url'] == null)
                         continue;
                     
                     $GLOBALS['LatestProton'] = $asset['browser_download_url'];
@@ -69,7 +71,7 @@ class AppModule extends AbstractModule
                 
             try #Check updates
             {
-                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2.2.2')
+                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2.2.3')
                 {
                     new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
                     
