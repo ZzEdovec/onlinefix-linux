@@ -84,7 +84,9 @@ class gameSettings extends AbstractForm
             {
                 foreach ($release['assets'] as $asset)
                 {
-                    if ($asset['content_type'] != 'application/gzip' or $asset['state'] != 'uploaded' or $asset['browser_download_url'] == null)
+                    if (Regex::match($asset['content_type'],'application/gzip|application/x-gtar') == false or 
+                        $asset['state'] != 'uploaded' or 
+                        $asset['browser_download_url'] == null)
                         continue;
                     
                     $this->availableProtons->data($release['tag_name'],$asset['browser_download_url']);
