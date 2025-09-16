@@ -13,7 +13,7 @@ class AppModule extends AbstractModule
      */
     function doAction(ScriptEvent $e = null)
     {
-        if (System::getProperty('prism.forceGPU') != true) #MIGRATION FROM LEGACY, REMOVE IN V2.4
+        /*if (System::getProperty('prism.forceGPU') != true) #MIGRATION FROM LEGACY, REMOVE IN V2.4
         {
             Logger::info('Setting forceGPU to true (migration from legacy launcher installation)');
             
@@ -31,27 +31,23 @@ class AppModule extends AbstractModule
                 new Process(array_merge([fs::abs('./jre/bin/java'),'-Dprism.forceGPU=true','-jar'],$GLOBALS['argv']))->start();
                 System::halt(0);
             }
-        }
+        }*/
+        
+        $GLOBALS['version'] = '2.3';
         
         $userhome = System::getProperty('user.home');
-        $this->games->path = $userhome.'/.config/OFME-Linux/Games.ini';
+        $this->games->path = "$userhome/.config/OFME-Linux/Games.ini";
+        $this->launcher->path = "$userhome/.config/OFME-Linux/Launcher.ini";
         fs::ensureParent($this->games->path);
-        
-        Logger::info('Loading UI');
-        if ($GLOBALS['argv'][1] != null and fs::isFile($this->games->get('executable',$GLOBALS['argv'][1])))
-        {
-            app()->showForm('gameStarting');
-            return;
-        }
         
         $GLOBALS['LatestProton'] = 'fetching';
         new Thread(function (){
-            $releases = filesWorker::fetchProtonReleases(); #Fetch latest proton 
+            $releases = FilesWorker::fetchProtonReleases(); #Fetch latest proton 
             if ($releases != false and str::contains($releases,'tar.gz') == false)
             {
                 foreach ($releases[0]['assets'] as $asset)
                 {
-                    if (Regex::match($asset['content_type'],'application/gzip|application/x-gtar') == false or 
+                    if (Regex::match('^application/(gzip|x-gtar)$',$asset['content_type']) == false or 
                         $asset['state'] != 'uploaded' or 
                         $asset['browser_download_url'] == null)
                         continue;
@@ -71,7 +67,7 @@ class AppModule extends AbstractModule
                 
             try #Check updates
             {
-                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != '2.2.3')
+                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != $GLOBALS['version'])
                 {
                     new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
                     
@@ -86,7 +82,39 @@ class AppModule extends AbstractModule
             Logger::info('Latest versions fetch thread completed. Latest Proton - '.$GLOBALS['LatestProton']);
         })->start();
         
+        Logger::info('Loading UI');
+        if ($GLOBALS['argv'][1] != null and fs::isFile($this->games->get('executable',$GLOBALS['argv'][1])))
+        {
+            Logger::info('Game for load detected. Running in minimal mode');
+            
+            #if ($this->launcher->get('splash','User Settings') ?? true)
+                app()->showForm('gameStarting');
+            /*else 
+                app()->form('gameStarting')->doShow();*/
+            return;
+        }
+        
+        $pid = file_get_contents('/tmp/ofllpid');
+        if ($pid != null and fs::isDir("/proc/$pid"))
+        {
+            UXDialog::showAndWait(sprintf(Localization::getByCode('APPMODULE.PIDEXISTS'),$pid),'ERROR');
+            
+            app()->shutdown();
+            return;
+        }
+        else
+        {
+            try {file_put_contents('/tmp/ofllpid',App::pid());}
+            catch (Throwable $ex) {Logger::warn('Failed to write PID to /tmp/ofllpid - '.$ex->getMessage());}
+        }
+        
+        if (System::getProperty('prism.forceGPU') == false)
+            Logger::warn('UI GPU acceleration disabled, so some effects will be disabled');
+
         app()->showForm('MainForm');
-        Logger::info('Initialization complete. OFME Linux Launcher '.app()->form('about')->version->text);
+        
+        Logger::info('Initialization complete. OnlineFix Linux Launcher '.$GLOBALS['version']);
     }
+
+
 }

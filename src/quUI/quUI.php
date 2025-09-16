@@ -1,6 +1,7 @@
 <?php
 namespace quUI;
 
+use std;
 use php\gui\animatefx\AnimationFX;
 use php\gui\controlsfx\UXPopOver;
 use gui;
@@ -26,7 +27,7 @@ class quUI
         $button->on('click',function () use ($element){$element->selected = !$element->selected;});
     }
     
-    static function generateContextMenu(UXButton $button, string $buttonText, array $elements, string $defaultText = null, callable $callback = null)
+    /*static function generateContextMenu(UXButton $button, string $buttonText, array $elements, string $defaultText = null, callable $callback = null)
     {
         $listView = new UXListView;
         $listView->size = [$button->width,100];
@@ -80,14 +81,12 @@ class quUI
         {
             $popup->showByNode($button,0,$button->height);
         });
-    }
+    }*/
     
     static function animateWithoutConflict($animation,$node,$speed,$callback = null)
     {
         if ($node->data('quUIAnimation') != null)
-        {
             $node->data('quUIAnimation')->stop();
-        }
             
         $animation = new AnimationFX($animation,$node);
         $animation->setOnFinished(function () use ($node,$callback)
@@ -102,5 +101,13 @@ class quUI
         $animation->cycleCount = 1;
         $animation->speed = $speed;
         $animation->start();
+    }
+    
+    static function showFormAndFocus($form,$new = false)
+    {
+        $form = $new ? app()->showNewForm($form) : app()->showForm($form);
+        uiLater(function () use ($form) {$form->requestFocus();});
+
+        return $form;
     }
 }

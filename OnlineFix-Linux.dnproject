@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project author="queinu" authorOS="Linux" createdAt="1742308788170" ideName="DevelNext" ideVersion="16.7.0" ideVersionHash="2017103112" name="OnlineFix-Linux" packageName="app" template="ide\project\templates\DefaultGuiProjectTemplate" updatedAt="1749063264891">
+<project author="queinu" authorOS="Linux" createdAt="1742308788170" ideName="DevelNext" ideVersion="16.7.0" ideVersionHash="2017103112" name="OnlineFix-Linux" packageName="app" template="ide\project\templates\DefaultGuiProjectTemplate" updatedAt="1756335743086">
   <tree>
     <expanded>
     <path src=""/>
-      <path src="/protons"/>
       <path src="/src"/>
       <path src="/src/.data"/>
       <path src="/src/.data/img"/>
@@ -13,6 +12,7 @@
       <path src="/src/app/modules"/>
       <path src="/src/locale"/>
       <path src="/src/quUI"/>
+      <path src="/vendor"/>
     </expanded>
   </tree>
   <openedFiles>

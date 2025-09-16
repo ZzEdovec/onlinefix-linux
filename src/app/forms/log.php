@@ -19,7 +19,7 @@ class log extends AbstractForm
         execute('xdg-open https://t.me/queinu');
         open($documents.'/OnlineFix-Linux');
         
-        UXDialog::showAndWait('Отправьте лог-файл с названием игры, которую вы пытались запустить');
+        UXDialog::showAndWait(Localization::getByCode('LOGFORM.SEND.HINT'));
         
         $this->hide();
     }

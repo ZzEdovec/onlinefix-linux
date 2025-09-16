@@ -30,7 +30,7 @@ class gameStarting extends AbstractForm
      * @event background.construct 
      */
     function doBackgroundConstruct(UXEvent $e = null)
-    {    
+    {
         $clip = new UXRectangle;
         $clip->size = $this->background->size;
         $clip->arcHeight = $clip->arcWidth = 25;

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<behaviours>
+  <target id="vboxAlt">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="vbox">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="vbox3">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="vbox4">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="fullscreenLauncher">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="telegram">
+    <behaviour threshold="0.1" type="behaviour\custom\BloomEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="github">
+    <behaviour threshold="0.10487804878049" type="behaviour\custom\BloomEffectBehaviour" when="HOVER"/>
+  </target>
+</behaviours>

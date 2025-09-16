@@ -19,13 +19,11 @@ class gameRemover extends AbstractForm
         $icon = $this->appModule()->games->get('icon',$gameName);
         $banner = $this->appModule()->games->get('banner',$gameName);
         
-        $prefixPath = fs::parent($this->appModule()->games->get('executable',$gameName)).'/OFME Prefix';
-        if (fs::isDir($prefixPath))
-        {
+        $prefixPath = $this->appModule()->games->get('prefixPath',$gameName) ?? fs::parent($this->appModule()->games->get('executable',$gameName)).'/OFME Prefix';
+        if ($this->removePrefix->selected)
             new Process(['rm','-rf',$prefixPath])->startAndWait();
-        }
         
-        if ($this->checkbox->selected)
+        if ($this->removeFiles->selected)
         {
             $gamePath = $this->appModule()->games->get('mainPath',$gameName) ?? fs::parent($this->appModule()->games->get('executable',$gameName));
             
@@ -45,12 +43,10 @@ class gameRemover extends AbstractForm
         } catch (Throwable $ex){}
         
         if (app()->form('MainForm')->container->content->children->isEmpty())
-        {
             $this->noGamesHeader->show();
-        }
         
         app()->form('MainForm')->hideGameMenu();
-        $this->free();
+        $this->hide();
     }
     
     function removeFile($path)
@@ -72,7 +68,7 @@ class gameRemover extends AbstractForm
      */
     function doButtonAltAction(UXEvent $e = null)
     {
-        $this->free();
+        $this->hide();
     }
 
     /**
@@ -92,9 +88,9 @@ class gameRemover extends AbstractForm
     }
 
     /**
-     * @event checkbox.construct 
+     * @event removeFiles.construct 
      */
-    function doCheckboxConstruct(UXEvent $e = null)
+    function doRemoveFilesConstruct(UXEvent $e = null)
     {    
         $e->sender->text = Localization::getByCode('GAMEREMOVER.DISKREMOVE');
     }
@@ -103,8 +99,32 @@ class gameRemover extends AbstractForm
      * @event show 
      */
     function doShow(UXWindowEvent $e = null)
-    {    
-        $this->label->text = sprintf(Localization::getByCode('GAMEREMOVER.HEADER'),app()->form('MainForm')->gamePanel->data('gameName'));
+    {   
+        $gameName = app()->form('MainForm')->gamePanel->data('gameName');
+        $this->label->text = sprintf(Localization::getByCode('GAMEREMOVER.HEADER'),$gameName);
+        
+        $mainPath = $this->appModule()->games->get('mainPath',$gameName);
+        $legacyPrefixPath = fs::parent($this->appModule()->games->get('executable',$gameName)).'/OFME Prefix';
+        $prefixPath = $this->appModule()->games->get('prefixPath',$gameName);
+        if (fs::isDir($prefixPath) == false and fs::isDir($legacyPrefixPath) == false)
+            $this->removePrefix->enabled = $this->removePrefix->selected = false;
+        elseif (fs::isDir($legacyPrefixPath) or str::contains($prefixPath,$mainPath))
+        {
+            $this->removePrefix->enabled = false;
+            $this->removePrefix->selected = true;
+        }
+        else 
+            $this->removePrefix->enabled = $this->removePrefix->selected = true;
+            
+        $this->removeFiles->enabled = fs::isDir($mainPath);
+    }
+
+    /**
+     * @event removePrefix.construct 
+     */
+    function doRemovePrefixConstruct(UXEvent $e = null)
+    {
+        $e->sender->text = Localization::getByCode('GAMEREMOVER.PREFIXREMOVE');
     }
 
 

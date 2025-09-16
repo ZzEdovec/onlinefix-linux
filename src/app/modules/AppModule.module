@@ -1,11 +1,21 @@
 {
   "props": {
     "author": "queinu",
-    "version": "2.3",
+    "version": "2.4",
     "description": "OFMELL Initialization Module",
     "singleton": true
   },
   "components": {
+    "launcher": {
+      "type": "script\\storage\\IniStorage",
+      "x": 80,
+      "y": 16,
+      "props": {
+        "path": "",
+        "autoSave": "1",
+        "multiLineValues": "1"
+      }
+    },
     "games": {
       "type": "script\\storage\\IniStorage",
       "x": 16,

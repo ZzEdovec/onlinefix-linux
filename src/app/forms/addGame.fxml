@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464" prefWidth="464" styleClass="">
+  <children>
+    <VBox alignment="CENTER" focusTraversable="false" id="errorBox" layoutX="24" layoutY="88" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="352" prefWidth="416" spacing="5" styleClass="">
+      <children>
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="errorLabel" layoutX="32" layoutY="55" prefHeight="133" prefWidth="352" styleClass="label " text="Упс.." textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="true">
+          <font>
+            <Font name="System Bold" size="20"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" graphic=".data/img/noInternet.png" id="data-errorLabel" visible="1"/>
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="errorSubLabel" layoutX="44" layoutY="193" prefHeight="104" prefWidth="328" styleClass="label " text="Не удалось получить список скачиваемых игр.&#10;&#10;Проверьте подключение к Интернету&#10;или смените источник.&#10;Для повторной попытки откройте это окно заново." textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="true">
+          <font>
+            <Font name="System Regular" size="13"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" id="data-errorSubLabel" visible="1"/>
+      </children>
+    </VBox>
+    <VBox AnchorPane.rightAnchor="176" AnchorPane.topAnchor="8" alignment="CENTER_RIGHT" focusTraversable="false" id="vbox" layoutX="24" layoutY="8" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="56" prefWidth="264" spacing="0" styleClass="">
+      <children>
+        <LabelEx alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label" layoutX="0" layoutY="9" prefHeight="21" prefWidth="272" styleClass="label " text="Уже есть скачанная игра?" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="14"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" id="data-label" visible="1"/>
+        <LabelEx alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="labelAlt" layoutX="64" layoutY="30" prefHeight="17" prefWidth="200" styleClass="label " text="Добавьте её в лаунчер" textAlignment="LEFT" textFill="#e6e6e6" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="12"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" id="data-labelAlt" visible="1"/>
+      </children>
+    </VBox>
+    <Data cursor="DEFAULT" enabled="1" id="data-vbox" visible="1"/>
+    <com.jfoenix.controls.JFXButton AnchorPane.rightAnchor="24" AnchorPane.topAnchor="16" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="addGame" layoutX="296" layoutY="16" prefHeight="40" prefWidth="144" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Добавить игру" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+      <font>
+        <Font name="System Bold" size="12"/>
+      </font>
+    </com.jfoenix.controls.JFXButton>
+    <Data cursor="HAND" enabled="1" graphic=".data/img/add.png" id="data-addGame" visible="1"/>
+    <Separator AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="68" focusTraversable="false" id="separator" layoutX="0" layoutY="68" orientation="HORIZONTAL" prefHeight="8" prefWidth="584" styleClass="separator "/>
+    <Data cursor="DEFAULT" enabled="1" id="data-separator" visible="1"/>
+    <VBox alignment="TOP_CENTER" focusTraversable="false" id="gamesBox" layoutX="24" layoutY="88" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="352" prefWidth="416" spacing="5" styleClass="">
+      <children>
+        <TextField alignment="CENTER_LEFT" editable="true" focusTraversable="false" id="search" layoutX="0" layoutY="0" prefColumnCount="12" prefHeight="32" prefWidth="416" promptText="Поиск" style="-fx-background-radius:15px;" text="">
+          <styleClass xmlns:fx="http://javafx.com/fxml">
+            <String fx:value="text-input"/>
+            <String fx:value="text-field"/>
+            <String fx:value="search"/>
+          </styleClass>
+          <font>
+            <Font name="System Regular" size="12"/>
+          </font>
+        </TextField>
+        <ScrollPane fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" hvalue="0" id="container" layoutX="0" layoutY="37" prefHeight="296" prefWidth="416" styleClass="scroll-pane " vbarPolicy="AS_NEEDED" vvalue="0">
+          <content>
+            <AnchorPane focusTraversable="false" id="" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="296" prefWidth="416" styleClass="">
+              <children/>
+            </AnchorPane>
+          </content>
+        </ScrollPane>
+        <Data cursor="DEFAULT" enabled="1" id="data-container" visible="1"/>
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label3" layoutX="20" layoutY="338" prefHeight="8" prefWidth="376" styleClass="label " text="В списке могут содержаться Xbox-fix игры. Они не будут работать." textAlignment="CENTER" textFill="#ffb366" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="10"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" id="data-label3" visible="1"/>
+        <Data cursor="DEFAULT" enabled="1" id="data-search" visible="1"/>
+      </children>
+    </VBox>
+    <Data cursor="DEFAULT" enabled="1" id="data-gamesBox" visible=""/>
+    <Data cursor="DEFAULT" enabled="1" id="data-errorBox" visible=""/>
+    <VBox alignment="CENTER" focusTraversable="false" id="noFoundOverlay" layoutX="48" layoutY="136" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="288" prefWidth="368" spacing="5" styleClass="">
+      <children>
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label4" layoutX="52" layoutY="67" prefHeight="133" prefWidth="264" styleClass="label " text="Ничего не найдено" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="20"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" graphic=".data/img/noFound.png" id="data-label4" visible="1"/>
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label5" layoutX="92" layoutY="205" prefHeight="17" prefWidth="184" styleClass="label " text="Попробуйте другой запрос" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="12"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" id="data-label5" visible="1"/>
+      </children>
+    </VBox>
+    <Data cursor="DEFAULT" enabled="1" id="data-noFoundOverlay" visible=""/>
+    <VBox AnchorPane.bottomAnchor="24" AnchorPane.leftAnchor="24" AnchorPane.rightAnchor="24" AnchorPane.topAnchor="128" alignment="CENTER" focusTraversable="false" id="loadingOverlay" layoutX="24" layoutY="128" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="312" prefWidth="416" spacing="0" styleClass="">
+      <children>
+        <com.jfoenix.controls.JFXSpinner focusTraversable="false" id="progressIndicator" layoutX="155" layoutY="99" prefHeight="96" prefWidth="136" progress="-1" radius="50" styleClass="progress-indicator jfx-spinner "/>
+        <Data cursor="DEFAULT" enabled="1" id="data-progressIndicator" visible="1"/>
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label7" layoutX="64" layoutY="195" prefHeight="18" prefWidth="288" styleClass="label " text="Получение доступных загрузок" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="13"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" id="data-label7" visible="1"/>
+      </children>
+    </VBox>
+    <Data cursor="DEFAULT" enabled="1" id="data-loadingOverlay" visible=""/>
+    <LabelEx AnchorPane.bottomAnchor="9" AnchorPane.leftAnchor="8" AnchorPane.rightAnchor="8" alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="sourceLabel" layoutX="8" layoutY="440" prefHeight="15" prefWidth="448" styleClass="label " text="Источник Hydra: " textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+      <font>
+        <Font name="System Regular" size="10"/>
+      </font>
+    </LabelEx>
+    <Data cursor="HAND" enabled="1" id="data-sourceLabel" visible="1"/>
+  </children>
+</AnchorPane>

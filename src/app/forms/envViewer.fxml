@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400" prefWidth="472" styleClass="">
+  <children>
+    <TableView AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" editable="false" fixedCellSize="-1" focusTraversable="false" id="envTable" layoutX="0" layoutY="0" prefHeight="400" prefWidth="472" styleClass="table-view " tableMenuButtonVisible="false">
+      <placeholder>
+        <Label/>
+      </placeholder>
+      <columnResizePolicy xmlns:fx="http://javafx.com/fxml">
+        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+      </columnResizePolicy>
+      <columns>
+        <TableColumn id="variable" maxWidth="5000" minWidth="10" prefWidth="235" resizable="true" sortable="false" style="-fx-alignment: center-left; " text="ENVEDITOR.VARIABLE" visible="true"/>
+        <TableColumn id="value" maxWidth="5000" minWidth="10" prefWidth="235" resizable="true" sortable="false" style="-fx-alignment: center-left; " text="ENVEDITOR.VALUE" visible="true"/>
+      </columns>
+    </TableView>
+    <Data cursor="DEFAULT" enabled="1" id="data-envTable" visible="1"/>
+    <VBox AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" alignment="BOTTOM_RIGHT" focusTraversable="false" id="vbox" layoutX="400" layoutY="288" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="112" prefWidth="72" spacing="5" styleClass="">
+      <padding>
+        <Insets bottom="8" left="0" right="8" top="0"/>
+      </padding>
+      <children>
+        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="saveButton" layoutX="16" layoutY="3" prefHeight="48" prefWidth="48" ripplerFill="#f2f2f2" style="-fx-background-color: #33333799;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="12"/>
+          </font>
+        </com.jfoenix.controls.JFXButton>
+        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="addButton" layoutX="16" layoutY="56" prefHeight="48" prefWidth="48" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="12"/>
+          </font>
+        </com.jfoenix.controls.JFXButton>
+        <Data cursor="HAND" enabled="1" graphic=".data/img/add.png" id="data-addButton" visible="1"/>
+        <Data cursor="HAND" enabled="1" graphic=".data/img/save.png" id="data-saveButton" visible=""/>
+      </children>
+    </VBox>
+    <Data cursor="DEFAULT" enabled="1" id="data-vbox" visible="1"/>
+  </children>
+</AnchorPane>

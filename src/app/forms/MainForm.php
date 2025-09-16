@@ -1,8 +1,6 @@
 <?php
 namespace app\forms;
 
-use php\gui\animatefx\AnimationFX;
-use php\gui\controlsfx\UXToggleSwitch;
 use Throwable;
 use std, gui, framework, app;
 
@@ -16,8 +14,7 @@ class MainForm extends AbstractForm
     function doContainerConstruct(UXEvent $e = null)
     {
         $fPane = new UXFlowPane;
-        $fPane->hgap = $fPane->vgap = $fPane->paddingTop = $fPane->paddingRight = 35;
-        $fPane->paddingLeft = 35;
+        $fPane->hgap = $fPane->vgap = $fPane->paddingTop = $fPane->paddingRight = $fPane->paddingLeft = $fPane->paddingBottom = 35;
         
         $e->sender->content = $fPane;
     }
@@ -28,9 +25,23 @@ class MainForm extends AbstractForm
      */
     function doConstruct(UXEvent $e = null)
     {
+        if ($this->appModule()->launcher->get('fullscreen','User Settings'))
+            $this->fullScreen = true;
+            
         foreach ($this->appModule()->games->toArray() as $name => $params)
-        {
             $this->addGame($name,$params['executable'],$params['overrides'],$params['banner'],$params['icon']);
+        
+        $currentDownloads = $this->appModule()->launcher->get('ariaDownloads','Downloads');
+        if ($currentDownloads != null)
+        { 
+            if (app()->form('addGame')->ariaDownloader == null)
+                app()->form('addGame')->doConstruct();
+                
+            $aria = app()->form('addGame')->ariaDownloader;
+            if ($aria->isRunning() == false)
+                app()->form('addGame')->runAria();
+            
+            $aria->reAddDownloadsFromPreviousSession();
         }
     }
 
@@ -44,134 +55,7 @@ class MainForm extends AbstractForm
     }
 
 
-    /**
-     * @event addGame.action 
-     */
-    function doAddGameAction(UXEvent $e = null)
-    {
-        if ($this->addGame->graphic == $this->addGame->data('loading'))
-            return;
-        
-        $fc = new UXFileChooser;
 
-        $fc->extensionFilters = [['extensions'=>['*.exe'],'description'=>Localization::getByCode('FILECHOOSER.EXE.DESC')]];
-        $fc->title = Localization::getByCode('FILECHOOSER.EXE.TITLE');
-
-        $exe = $fc->showOpenDialog($this);
-        if ($exe == null)
-            return;
-
-        $appPath = $exe->getParent();
-
-        if (str::contains($exe,'/bin/') or str::contains($exe,'/Binaries/') or str::contains($exe,'/binaries/'))
-        {
-            UXDialog::showAndWait(Localization::getByCode('MAINFORM.EXENOTINROOT'),'WARNING',$this);
-            $dc = new UXDirectoryChooser;
-
-            $dc->title = Localization::getByCode('DIRCHOOSER.GAMEROOT.TITLE');
-
-            $appPath = $dc->showDialog($this);
-            if ($appPath == null)
-                return;
-        }
-        
-        $appName = UXDialog::input(Localization::getByCode('MAINFORM.SETGAMENAME'),fs::nameNoExt($exe),$this);
-        if ($appName == false)
-            return;
-        if ($this->appModule()->games->section($appName) != [])
-        {
-            UXDialog::show(Localization::getByCode('MAINFORM.GAMEEXISTS'),'ERROR',$this);
-            return;
-        }
-        
-        $this->switchGameButton('loading');
-        
-        new Thread(function () use ($appName,$appPath,$exe){
-            $files = fs::scan($appPath,['excludeDirs'=>true,'namePattern'=>
-            '(?i)^(emp|custom)\.dll$|^win.*\.dll$|^(online|steam).*\.(dll|ini)$|^eos.*\.dll$|^epicfix.*\.dll$|^(winmm|dlllist)\.txt$|FreeTP.Org.url']);
-    
-            $parsed = FixParser::parseDlls($files);
-            if ($parsed['overrides'] == null)
-            {
-                uiLater(function ()
-                {
-                    UXDialog::show(Localization::getByCode('MAINFORM.NOFIX'),'ERROR',$this);
-                    $this->switchGameButton('add');
-                });
-                return;
-            }
-            
-            if ($parsed['fakeAppId'] != null)
-                $this->appModule()->games->set('fakeSteamID',$parsed['fakeAppId'],$appName);
-            
-            if ($parsed['realAppId'] != null)
-            {
-                $bannerPath = FixParser::parseBanner($parsed['realAppId']);
-                if ($bannerPath != null)
-                    $this->appModule()->games->set('banner',$bannerPath,$appName);
-                
-                $this->appModule()->games->set('steamID',$parsed['realAppId'],$appName);
-            }
-            elseif (str::contains($parsed['overrides'],'steam') == false and str::contains($parsed['overrides'],'eos'))
-                uiLater(function (){UXDialog::show(Localization::getByCode('MAINFORM.EOSFIX'),'WARNING',$this);});
-                
-            if ($parsed['isFreeTP'])
-                uiLater(function (){UXDialog::show(Localization::getByCode('MAINFORM.FREETP'),'WARNING',$this);});
-    
-            try
-            {
-                $appIcon = FixParser::parseIcon($exe);
-                if ($appIcon != null)
-                {
-                    $iconsDir = System::getProperty('user.home').'/.config/OFME-Linux/icons';
-                    $iconPath = $iconsDir.'/'.$appName;
-    
-                    fs::makeDir($iconsDir);
-                    fs::copy($appIcon,$iconPath);
-    
-                    $this->appModule()->games->set('icon',$iconPath,$appName);
-                    
-                    fs::clean('/tmp/OFME-icon');
-                    fs::delete('/tmp/OFME-icon');
-                }
-            } catch (Throwable $ex)
-            {
-                uiLater(function () use ($ex){UXDialog::show(sprintf(Localization::getByCode('MAINFORM.ICONPARSERERROR'),$ex->getMessage()),'ERROR',$this);});
-            }
-            
-            
-            $this->appModule()->games->put(['overrides'=>$parsed['overrides'],
-                                           'executable'=>$exe,
-                                           'mainPath'=>$appPath,
-                                           'proton'=>'GE-Proton Latest',
-                                           'steamRuntime'=>filesWorker::findSteamRuntime() != false ? true : false,
-                                           'steamOverlay'=>true],$appName);
-    
-    
-            uiLater(function () use ($appName,$exe,$parsed,$bannerPath,$iconPath)
-            {
-                $this->addGame($appName,$exe,$parsed['overrides'],$bannerPath,$iconPath);
-                
-                $this->switchGameButton('add');
-            });
-        })->start();
-    }
-
-    /**
-     * @event addGame.construct 
-     */
-    function doAddGameConstruct(UXEvent $e = null)
-    {
-        $loadingGraphic = new UXMaterialProgressIndicator;
-        $loadingGraphic->size = [20,20];
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/add.png'));
-        $e->sender->graphic->size = [20,20];
-        
-        $e->sender->data('add',$e->sender->graphic);
-        $e->sender->data('loading',$loadingGraphic);
-        
-        $e->sender->text = Localization::getByCode('MAINFORM.ADDGAME');
-    }
 
 
 
@@ -229,7 +113,7 @@ class MainForm extends AbstractForm
         }
         else 
         {
-            file_put_contents($desktopPath,filesWorker::generateDesktopEntry($gameName,$icon));
+            file_put_contents($desktopPath,FilesWorker::generateDesktopEntry($gameName,$icon));
             new Process(['chmod','+x',$desktopPath])->start();
             
             $this->desktopIcon->selected = true;
@@ -251,7 +135,7 @@ class MainForm extends AbstractForm
         }
         else 
         {
-            file_put_contents($menuPath,filesWorker::generateDesktopEntry($this->gamePanel->data('gameName'),$icon));
+            file_put_contents($menuPath,FilesWorker::generateDesktopEntry($this->gamePanel->data('gameName'),$icon));
             
             $this->menuIcon->selected = true;
         }
@@ -310,7 +194,7 @@ class MainForm extends AbstractForm
      */
     function doAboutAction(UXEvent $e = null)
     {
-        app()->showForm('about');
+        quUI::showFormAndFocus('launcherSettings');
     }
 
     /**
@@ -318,8 +202,8 @@ class MainForm extends AbstractForm
      */
     function doAboutConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('MAINFORM.ABOUT');
-        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/about.png'));
+        $e->sender->text = Localization::getByCode('MAINFORM.SETTINGS');
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/settings-hires.png'));
         $e->sender->graphic->size = [20,20];
     }
 
@@ -365,14 +249,14 @@ class MainForm extends AbstractForm
      */
     function doGameSettingsButtonAction(UXEvent $e = null)
     {
-        if (app()->form('gameSettings')->gameName->graphic != null and app()->form('gameSettings')->gameName->graphic->isFree() == false)
-            app()->form('gameSettings')->gameName->graphic->free();
+        $form = app()->getNewForm('gameSettings');
         
-        app()->form('gameSettings')->data('gameName',$this->gamePanel->data('gameName'));
-        app()->form('gameSettings')->title = $this->gamePanel->data('gameName');
-        app()->form('gameSettings')->gameIcon->image = $this->gamePanel->data('opener')->children[3]->children[0]->graphic->image;
+        $form->data('gameName',$this->gamePanel->data('gameName'));
+        $form->title = $this->gamePanel->data('gameName');
+        $form->gameIcon->image = $this->gamePanel->data('opener')->children[3]->children[0]->graphic->image;
+        $form->banner->image = $this->gamePanel->data('opener')->children[1]->image;
         
-        app()->showForm('gameSettings');
+        $form->show();
     }
 
     /**
@@ -380,7 +264,7 @@ class MainForm extends AbstractForm
      */
     function doGameDeleteButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.DELETE');
+        $e->sender->text = Localization::getByCode('REMOVE');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/remove.png'));
         $e->sender->graphic->size = [15,15];
     }
@@ -390,7 +274,7 @@ class MainForm extends AbstractForm
      */
     function doGameDeleteButtonAction(UXEvent $e = null)
     {
-        app()->showForm('gameRemover');
+        quUI::showFormAndFocus('gameRemover');
     }
 
     /**
@@ -407,8 +291,9 @@ class MainForm extends AbstractForm
      */
     function doWinetricksButtonAction(UXEvent $e = null)
     {
-        $proton = filesWorker::getProtonExecutable($this->gamePanel->data('gameName'));
-        $prefixDir = fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix';
+        $proton = FilesWorker::getProtonExecutable($this->gamePanel->data('gameName'));
+        $prefixDir = $this->appModule()->games->get('prefixPath',$this->gamePanel->data('gameName')).'/pfx' ?? 
+                     fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix/pfx';
         if ($proton == false)
         {
             $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
@@ -494,13 +379,15 @@ class MainForm extends AbstractForm
         
         $gameFolder->on('action',function ()
         {
-            open($this->appModule()->games->get('mainPath',$this->gamePanel->data('gameName')) ?? fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))));
+            open($this->appModule()->games->get('mainPath',$this->gamePanel->data('gameName')) ?? 
+                 fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))));
         });
         $prefixFolder->on('action',function ()
         {
-            $prefixDir = fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix/pfx/drive_c';
-            if (fs::isDir($prefixDir))
-                open($prefixDir);
+            $prefixDir = app()->appModule()->games->get('prefixPath',$this->gamePanel->data('gameName')) ?? 
+                         fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix';
+            if (fs::isDir($prefixDir.'/pfx/drive_c'))
+                open($prefixDir.'/pfx/drive_c');
             else 
                 $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOPREFIX'));
         });
@@ -529,8 +416,9 @@ class MainForm extends AbstractForm
      */
     function doRunInPrefixButtonAction(UXEvent $e = null)
     {    
-        $proton = filesWorker::getProtonExecutable($this->gamePanel->data('gameName'));
-        $prefixDir = fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix';
+        $proton = FilesWorker::getProtonExecutable($this->gamePanel->data('gameName'));
+        $prefixDir = $this->appModule()->games->get('prefixPath',$this->gamePanel->data('gameName')) ?? 
+                     fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix';
         if ($proton == false)
         {
             $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
@@ -549,6 +437,62 @@ class MainForm extends AbstractForm
         new Process([$proton,'run',$exe],fs::parent($exe),['STEAM_COMPAT_DATA_PATH'=>$prefixDir,
                                                            'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>System::getProperty('user.home').'/.steam/steam'])->start();
     }
+
+    /**
+     * @event background.construct 
+     */
+    function doBackgroundConstruct(UXEvent $e = null)
+    {    
+        if (System::getProperty('prism.forceGPU') == false)
+            $e->sender->free();
+    }
+
+    /**
+     * @event addGame.click 
+     */
+    function doAddGameClick(UXMouseEvent $e = null)
+    {
+        if (fs::isFile('/usr/bin/aria2c'))
+            quUI::showFormAndFocus('addGame');
+        else 
+        {
+            Logger::info('No aria2c in /usr/bin, so skipping downloads window');
+            app()->form('addGame')->doAddGameAction();
+        }
+    }
+
+    /**
+     * @event addGame.construct 
+     */
+    function doAddGameConstruct(UXEvent $e = null)
+    {
+        $loadingGraphic = new UXMaterialProgressIndicator;
+        $loadingGraphic->size = [20,20];
+        $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/add.png'));
+        $e->sender->graphic->size = [20,20];
+        
+        $e->sender->data('add',$e->sender->graphic);
+        $e->sender->data('loading',$loadingGraphic);
+        
+        $e->sender->text = Localization::getByCode('MAINFORM.ADDGAME');
+    }
+
+    /**
+     * @event keyUp-Esc 
+     */
+    function doKeyUpEsc(UXKeyEvent $e = null)
+    {    
+        if ($this->gamePanel->visible)
+        {
+            $this->off('mouseDown');
+            $this->hideGameMenu();
+        }
+    }
+
+
+
+
+
 
 
 
@@ -577,17 +521,8 @@ class MainForm extends AbstractForm
         $clip = new UXRectangle;
         $clip->size = $gamePanel->children[1]->size;
         $clip->arcHeight = $clip->arcWidth = $gamePanel->borderRadius * 2;
+        MainForm::addBasicEffects($gamePanel);
         
-        $scaleAnim = new ScaleAnimationBehaviour;
-        $scaleAnim->duration = 400;
-        $scaleAnim->scale = 1.05;
-        $scaleAnim->when = 'HOVER';
-        $scaleAnim->apply($gamePanel);
-        
-        $shadow = new DropShadowEffectBehaviour;
-        $shadow->color = '#0000004d';
-        $shadow->apply($gamePanel);
-                
         $gamePanel->children[3]->children[0]->text = $gameName;
         $gamePanel->children[1]->image = new UXImage(fs::isFile($image) ? $image : 'res://.data/img/noBanner.png');
         $gamePanel->children[1]->clip = $clip;
@@ -596,24 +531,32 @@ class MainForm extends AbstractForm
         {
             $this->showGameMenu($gameName,$e->sender->children[1]->image,$e->sender);
         });
-        $gamePanel->on('mouseEnter',function ($e) use ($gamePanel)
-        {
-            $this->background->image = $gamePanel->children[1]->image;
-            quUI::animateWithoutConflict('FadeIn',$this->background,1.3);
-        });
-        $gamePanel->on('mouseExit',function ($e) use ($gamePanel)
-        {
-            if ($this->container->enabled)
-                quUI::animateWithoutConflict('FadeOut',$this->background,1.3);
-        });
-        
         
         $this->container->content->children->add($gamePanel);
         
         if ($this->noGamesHeader->visible)
-        {
             $this->noGamesHeader->visible = false;
-        }
+    }
+    
+    function addStubGame()
+    {
+        if ($this->noGamesHeader->visible)
+            $this->noGamesHeader->visible = false;
+            
+        $box = $this->instance('prototypes.gameStubBox');
+        MainForm::addBasicEffects($box);
+        $this->container->content->children->add($box);
+        
+        $childrens = $box->children->toArray();
+        return ['box'=>$box,'gameName'=>$childrens[0],'status'=>$childrens[2]];
+    }
+    
+    function removeStubGame($box)
+    {
+        $box->free();
+        
+        if ($this->container->content->children->isEmpty())
+            $this->noGamesHeader->visible = true;
     }
     
     function showGameMenu($name,$header,$sender)
@@ -626,14 +569,9 @@ class MainForm extends AbstractForm
         $this->on('mouseDown',function (UXMouseEvent $e)
         {
             if ($e->x < $this->gamePanel->x)
-            {
-                $this->off('mouseDown');
-                
-                $this->hideGameMenu();
-            }
+                $this->doKeyUpEsc();
         });
         
-        $this->container->enabled = false;
         $this->addGame->hide();
         
         $this->gameHeader->image = $header;
@@ -646,23 +584,45 @@ class MainForm extends AbstractForm
         else 
             $this->switchPlayButton('stop');
         
-        Animation::fadeTo($this->buttonBox,400,0.5);
+        if (System::getProperty('prism.forceGPU'))
+        {
+            $this->background->image = $sender->children[1]->image;
+            quUI::animateWithoutConflict('FadeIn',$this->background,1.4);
+        }
+           
+        Animation::fadeTo($this->buttonsBox,450,0.5,function (){$this->buttonsBox->enabled = false;});
+        Animation::fadeTo($this->container,450,0.5,function (){$this->container->enabled = false;});
         quUI::animateWithoutConflict('FadeInRight',$this->gamePanel,1.4);
     }
     
     function hideGameMenu()
     {
+        $this->off('mouseDown');
         $this->addGame->show();
         $this->container->enabled = true;
         
-        Animation::fadeIn($this->buttonBox,400);
+        Animation::fadeIn($this->buttonsBox,450,function (){$this->buttonsBox->enabled = true;});
+        Animation::fadeIn($this->container,450,function (){$this->container->enabled = true;});
         quUI::animateWithoutConflict('FadeOutRight',$this->gamePanel,1.4,function (){$this->gamePanel->hide();});
-        quUI::animateWithoutConflict('FadeOut',$this->background,1.4);
+        if (System::getProperty('prism.forceGPU')) {quUI::animateWithoutConflict('FadeOut',$this->background,1.4);}
+    }
+    
+    static function addBasicEffects($object)
+    {
+        $scaleAnim = new ScaleAnimationBehaviour;
+        $scaleAnim->duration = 300;
+        $scaleAnim->scale = 1.05;
+        $scaleAnim->when = 'HOVER';
+        $scaleAnim->apply($object);
+        
+        $shadow = new DropShadowEffectBehaviour;
+        $shadow->color = '#0000004d';
+        $shadow->apply($object);
     }
     
     function runGame($gameName,$debug = false)
     {
-        $process = filesWorker::generateProcess($gameName,$debug);
+        $process = FilesWorker::generateProcess($gameName,$debug);
         if ($process == null)
             return;
         
@@ -670,7 +630,7 @@ class MainForm extends AbstractForm
         
         new Thread(function () use ($process,$gameName,$debug)
         {
-            filesWorker::run($process,$gameName,$debug);
+            FilesWorker::run($process,$gameName,$debug);
             
             if ($this->gamePanel->data('gameName') == $gameName)
             {
@@ -683,20 +643,6 @@ class MainForm extends AbstractForm
                 });
             }
         })->start();
-    }
-    
-    function switchGameButton($status)
-    {
-        if ($status == 'add')
-        {
-            $this->addGame->graphic = $this->addGame->data('add');
-            $this->addGame->text = Localization::getByCode('MAINFORM.ADDGAME');
-        }
-        else 
-        {
-            $this->addGame->graphic = $this->addGame->data('loading');
-            $this->addGame->text = Localization::getByCode('MAINFORM.LOADINGGAME');
-        }
     }
     
     function switchPlayButton($status)

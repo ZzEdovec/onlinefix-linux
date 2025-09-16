@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="496" prefWidth="816" styleClass="">
   <children>
+    <LabelEx AnchorPane.bottomAnchor="153" AnchorPane.leftAnchor="275" AnchorPane.rightAnchor="293" AnchorPane.topAnchor="135" alignment="CENTER" autoSize="false" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="noGamesHeader" layoutX="275" layoutY="135" prefHeight="208" prefWidth="256" style="-fx-background-color:#333337;-fx-background-radius:15px;" styleClass="label " text="Добавьте игру" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+      <font>
+        <Font name="System Bold" size="25"/>
+      </font>
+    </LabelEx>
     <ImageViewEx AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" autoSize="false" centered="true" focusTraversable="false" height="496" id="background" layoutX="0" layoutY="0" mosaic="false" mosaicGap="0" opacity="0" proportional="false" stretch="true" styleClass="" textFill="#000000" width="816">
       <font>
         <Font name="System Regular" size="12"/>
       </font>
     </ImageViewEx>
-    <ScrollPane AnchorPane.bottomAnchor="64" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" hvalue="0" id="container" layoutX="0" layoutY="0" prefHeight="504" prefWidth="912" styleClass="scroll-pane " vbarPolicy="NEVER" vvalue="0">
+    <ScrollPane AnchorPane.bottomAnchor="64" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" hvalue="0" id="container" layoutX="0" layoutY="0" prefHeight="432" prefWidth="816" styleClass="scroll-pane " vbarPolicy="NEVER" vvalue="0">
       <content>
         <AnchorPane focusTraversable="false" id="" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="432" prefWidth="816" styleClass="">
           <children/>
@@ -14,29 +19,41 @@
       </content>
     </ScrollPane>
     <Data cursor="DEFAULT" enabled="1" id="data-container" visible="1"/>
-    <LabelEx AnchorPane.bottomAnchor="153" AnchorPane.leftAnchor="275" AnchorPane.rightAnchor="293" AnchorPane.topAnchor="135" alignment="CENTER" autoSize="false" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="noGamesHeader" layoutX="275" layoutY="135" prefHeight="208" prefWidth="256" style="-fx-background-color:#333337;-fx-background-radius:15px;" styleClass="label " text="Добавьте игру" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-      <font>
-        <Font name="System Bold" size="25"/>
-      </font>
-    </LabelEx>
     <Data cursor="DEFAULT" enabled="1" graphic=".data/img/game.png" id="data-noGamesHeader" visible="1"/>
+    <Data cursor="DEFAULT" enabled="1" id="data-background" image="" visible="1"/>
+    <Data cursor="DEFAULT" enabled="1" id="data-gamePanel" visible=""/>
+    <HBox AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16" alignment="TOP_LEFT" focusTraversable="false" id="buttonsBox" layoutX="16" layoutY="432" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="48" prefWidth="272" spacing="1" styleClass="">
+      <children>
+        <com.jfoenix.controls.JFXButton AnchorPane.bottomAnchor="76" AnchorPane.leftAnchor="16" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="donate" layoutX="0" layoutY="0" prefHeight="48" prefWidth="136" ripplerFill="#f2f2f2" style="-fx-background-color: #33333799;-fx-background-radius:50 0 0 50;" styleClass="button jfx-button " text="Поддержать" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="12"/>
+          </font>
+        </com.jfoenix.controls.JFXButton>
+        <Data cursor="HAND" enabled="1" graphic=".data/img/donate.png" id="data-donate" visible="1"/>
+        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="RIGHT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="about" layoutX="137" layoutY="0" prefHeight="48" prefWidth="136" ripplerFill="#f2f2f2" style="-fx-background-color: #33333799;-fx-background-radius:0 50 50 0;" styleClass="button jfx-button " text="Настройки" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="12"/>
+          </font>
+        </com.jfoenix.controls.JFXButton>
+        <Data cursor="HAND" enabled="1" graphic=".data/img/settings-hires.png" id="data-about" visible="1"/>
+      </children>
+    </HBox>
+    <Data cursor="DEFAULT" enabled="1" id="data-buttonsBox" visible="1"/>
     <com.jfoenix.controls.JFXButton AnchorPane.bottomAnchor="16" AnchorPane.rightAnchor="16" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="addGame" layoutX="656" layoutY="432" prefHeight="48" prefWidth="144" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Добавить игру" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
       <font>
         <Font name="System Bold" size="12"/>
       </font>
     </com.jfoenix.controls.JFXButton>
     <Data cursor="HAND" enabled="1" graphic=".data/img/add.png" id="data-addGame" visible="1"/>
-    <Data cursor="DEFAULT" enabled="1" id="data-background" image="" visible="1"/>
-    <Data cursor="DEFAULT" enabled="1" id="data-gamePanel" visible=""/>
     <Panel AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" backgroundColor="#333337db" borderColor="#c0c0c0" borderRadius="0" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="gamePanel" layoutX="504" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="496" prefWidth="312" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
       <children>
-        <ImageViewEx AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" autoSize="false" centered="false" focusTraversable="false" height="128" id="gameHeader" layoutX="0" layoutY="0" mosaic="false" mosaicGap="0" proportional="false" stretch="true" styleClass="" textFill="#000000" width="312">
+        <ImageViewEx AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" autoSize="false" centered="false" focusTraversable="false" height="144" id="gameHeader" layoutX="0" layoutY="0" mosaic="false" mosaicGap="0" proportional="false" stretch="true" styleClass="" textFill="#000000" width="312">
           <font>
             <Font name="System Regular" size="12"/>
           </font>
         </ImageViewEx>
         <Data cursor="DEFAULT" enabled="1" id="data-gameHeader" image="" visible="1"/>
-        <Panel backgroundColor="#4d4d4d99" borderColor="#c0c0c0" borderRadius="7" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="panel3" layoutX="24" layoutY="386" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="75" prefWidth="264" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
+        <Panel AnchorPane.bottomAnchor="21" backgroundColor="#4d4d4d99" borderColor="#c0c0c0" borderRadius="7" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="panel3" layoutX="24" layoutY="400" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="75" prefWidth="264" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
           <children>
             <org.controlsfx.control.ToggleSwitch alignment="CENTER_LEFT" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="desktopIcon" layoutX="32" layoutY="16" prefHeight="16" prefWidth="200" selected="false" styleClass="toggle-switch " text="Ярлык на рабочем столе" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
@@ -56,27 +73,27 @@
           </titleFont>
         </Panel>
         <Data cursor="DEFAULT" enabled="1" id="data-panel3" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="playButton" layoutX="24" layoutY="144" prefHeight="40" prefWidth="120" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Играть" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+        <com.jfoenix.controls.JFXButton AnchorPane.topAnchor="160" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="playButton" layoutX="24" layoutY="160" prefHeight="40" prefWidth="120" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Играть" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="13"/>
           </font>
         </com.jfoenix.controls.JFXButton>
         <Data cursor="HAND" enabled="1" graphic=".data/img/play.png" id="data-playButton" visible="1"/>
-        <LabelEx alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="timeHeader" layoutX="168" layoutY="145" prefHeight="19" prefWidth="120" styleClass="label " text="Времени в игре" textAlignment="RIGHT" textFill="#ffffff" underline="false" wrapText="false">
+        <LabelEx AnchorPane.topAnchor="160" alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="timeHeader" layoutX="168" layoutY="160" prefHeight="19" prefWidth="120" styleClass="label " text="Времени в игре" textAlignment="RIGHT" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="13"/>
           </font>
         </LabelEx>
         <Data cursor="DEFAULT" enabled="1" id="data-timeHeader" visible="1"/>
-        <LabelEx alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="timeLabel" layoutX="192" layoutY="162" prefHeight="16" prefWidth="96" styleClass="label " text="0 ч" textAlignment="RIGHT" textFill="#e6e6e6" underline="false" wrapText="false">
+        <LabelEx AnchorPane.topAnchor="178" alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="timeLabel" layoutX="192" layoutY="178" prefHeight="16" prefWidth="96" styleClass="label " text="0 ч" textAlignment="RIGHT" textFill="#e6e6e6" underline="false" wrapText="false">
           <font>
             <Font name="System Regular" size="12"/>
           </font>
         </LabelEx>
         <Data cursor="DEFAULT" enabled="1" id="data-timeLabel" visible="1"/>
-        <FlowPane alignment="TOP_LEFT" columnHalignment="LEFT" focusTraversable="false" hgap="12" id="flowPane" layoutX="24" layoutY="200" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" orientation="HORIZONTAL" prefHeight="168" prefWidth="264" rowValignment="CENTER" styleClass="" vgap="12">
+        <FlowPane AnchorPane.topAnchor="208" alignment="CENTER" columnHalignment="LEFT" focusTraversable="false" hgap="12" id="flowPane" layoutX="24" layoutY="208" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" orientation="HORIZONTAL" prefHeight="184" prefWidth="264" rowValignment="CENTER" styleClass="" vgap="12">
           <children>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameDebugButton" layoutX="0" layoutY="0" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Отладка" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameDebugButton" layoutX="0" layoutY="8" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Отладка" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -87,7 +104,7 @@
               </styleClass>
             </com.jfoenix.controls.JFXButton>
             <Data cursor="HAND" enabled="1" graphic=".data/img/debug.png" id="data-gameDebugButton" tooltipText="Запуск с отладкой" visible="1"/>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameSettingsButton" layoutX="92" layoutY="0" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Настройки" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameSettingsButton" layoutX="92" layoutY="8" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Настройки" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -98,7 +115,7 @@
               </styleClass>
             </com.jfoenix.controls.JFXButton>
             <Data cursor="HAND" enabled="1" graphic=".data/img/settings.png" id="data-gameSettingsButton" visible="1"/>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameDeleteButton" layoutX="184" layoutY="0" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Удалить" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameDeleteButton" layoutX="184" layoutY="8" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Удалить" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -109,7 +126,7 @@
               </styleClass>
             </com.jfoenix.controls.JFXButton>
             <Data cursor="HAND" enabled="1" graphic=".data/img/remove.png" id="data-gameDeleteButton" visible="1"/>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="winetricksButton" layoutX="0" layoutY="60" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Winetricks" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="winetricksButton" layoutX="0" layoutY="68" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Winetricks" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -119,7 +136,7 @@
                 <String fx:value="jfx-menu-button"/>
               </styleClass>
             </com.jfoenix.controls.JFXButton>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="runInPrefixButton" layoutX="92" layoutY="60" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Выполнить" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="true">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="runInPrefixButton" layoutX="92" layoutY="68" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Выполнить" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="true">
               <font>
                 <Font name="System Regular" size="11"/>
               </font>
@@ -129,7 +146,7 @@
                 <String fx:value="jfx-menu-button"/>
               </styleClass>
             </com.jfoenix.controls.JFXButton>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameFolderButton" layoutX="184" layoutY="60" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Папки" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="gameFolderButton" layoutX="184" layoutY="68" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Папки" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -139,7 +156,7 @@
                 <String fx:value="jfx-menu-button"/>
               </styleClass>
             </com.jfoenix.controls.JFXButton>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamDBButton" layoutX="0" layoutY="120" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="SteamDB" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamDBButton" layoutX="0" layoutY="128" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="SteamDB" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -149,7 +166,7 @@
                 <String fx:value="jfx-menu-button"/>
               </styleClass>
             </com.jfoenix.controls.JFXButton>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="protonDBButton" layoutX="92" layoutY="120" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="ProtonDB" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="protonDBButton" layoutX="92" layoutY="128" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="ProtonDB" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -159,7 +176,7 @@
                 <String fx:value="jfx-menu-button"/>
               </styleClass>
             </com.jfoenix.controls.JFXButton>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamButton" layoutX="184" layoutY="120" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Steam" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamButton" layoutX="184" layoutY="128" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Steam" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -183,22 +200,5 @@
         <Font name="System Regular" size="12"/>
       </titleFont>
     </Panel>
-    <HBox AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16" alignment="TOP_LEFT" focusTraversable="false" id="buttonBox" layoutX="16" layoutY="432" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="48" prefWidth="256" spacing="1" styleClass="">
-      <children>
-        <com.jfoenix.controls.JFXButton AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="donate" layoutX="0" layoutY="0" prefHeight="48" prefWidth="144" ripplerFill="#f2f2f2" style="-fx-background-color: #33333799;-fx-background-radius:50 0 0 50;" styleClass="button jfx-button " text="Поддержать" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Bold" size="12"/>
-          </font>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" graphic=".data/img/donate.png" id="data-donate" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="RIGHT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="about" layoutX="129" layoutY="0" prefHeight="48" prefWidth="144" ripplerFill="#f2f2f2" style="-fx-background-color: #33333799;-fx-background-radius:0 50 50 0;" styleClass="button jfx-button " text="О программе" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Bold" size="12"/>
-          </font>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" graphic=".data/img/about.png" id="data-about" visible="1"/>
-      </children>
-    </HBox>
-    <Data cursor="DEFAULT" enabled="1" id="data-buttonBox" visible="1"/>
   </children>
 </AnchorPane>

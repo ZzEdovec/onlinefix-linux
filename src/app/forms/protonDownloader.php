@@ -20,10 +20,18 @@ class protonDownloader extends AbstractForm
     
     function startDownload($name,$url)
     {
-        if ($url == null)
+        $protonPath = $this->appModule()->launcher->get('protonsPath','User Settings') ?? fs::abs('./protons');
+        
+        fs::ensureParent($protonPath);
+        fs::makeDir($protonPath);
+        
+        $isProtonPath = fs::isDir($protonPath);
+        
+        if ($url == null or $isProtonPath == false)
         {
-            $this->toast(Localization::getByCode('PROTONDOWNLOADER.NOURL'));
-            waitAsync('2s',function (){$this->hide();});
+            UXDialog::show($url == null ? Localization::getByCode('PROTONDOWNLOADER.NOURL') : Localization::getByCode('PROTONDOWNLOADER.NOPATH'),'ERROR');
+            
+            $this->hide();
             return;
         }
         
@@ -31,7 +39,7 @@ class protonDownloader extends AbstractForm
         
         $downloader = new HttpDownloader;
         $downloader->urls = [$url];
-        $downloader->destDirectory = './protons';
+        $downloader->destDirectory = $protonPath;
         $downloader->threadCount = 40;
         $downloadText = Localization::getByCode('PROTONDOWNLOADER.DOWNLOADING');
         $timer = Timer::every('1s',function () use ($downloader,$downloadText)
@@ -43,7 +51,7 @@ class protonDownloader extends AbstractForm
         {
             $this->progressBar->progress = ($e->progress / $e->max) * 100;
         });
-        $downloader->on('successOne',function ($e) use ($name,$timer,$downloader)
+        $downloader->on('successOne',function ($e) use ($name,$timer,$downloader,$protonPath)
         {
             $timer->cancel();
             $downloader->free();
@@ -53,35 +61,34 @@ class protonDownloader extends AbstractForm
             
             if (fs::isFile('/usr/bin/tar') == false)
             {
-                UXDialog::showAndWait(Localization::getByCode('PROTONDOWNLOADER.NOTAR'));
+                UXDialog::show(Localization::getByCode('PROTONDOWNLOADER.NOTAR'),'ERROR');
+                
+                fs::delete($e->file);
                 $this->hide();
                 return;
             }
             
-            new Thread(function () use ($e,$name)
+            new Thread(function () use ($e,$name,$protonPath)
             {
-                new Process(['tar','-xzf',fs::name($e->file)],fs::abs('./protons'))->startAndWait();
+                new Process(['tar','-xzf',fs::name($e->file)],$protonPath)->startAndWait();
                 fs::delete($e->file);
                 
                 uiLater(function () use ($name)
                 {
                     $this->hide();
-                    
-                    app()->form('gameSettings')->installedProtons->items->add($name);
-                    app()->form('gameSettings')->availableProtons->items->remove($name);
                 });
             })->start();
         });
-        $downloader->on('errorOne',function () use ($downloader)
+        $downloader->on('errorOne',function ($e) use ($downloader)
         {
             UXDialog::showAndWait(Localization::getByCode('PROTONDOWNLOADER.ERRORDOWNLOADING'),'ERROR');
             
+            fs::delete($e->file);
             $downloader->free();
             $this->hide();
         });
         
         $this->downloader = $downloader;
-        fs::makeDir('./protons');
         $downloader->start();
     }
 }

@@ -29,5 +29,56 @@
       </titleFont>
     </Panel>
     <Data cursor="DEFAULT" enabled="1" id="data-panel" visible="1"/>
+    <Panel backgroundColor="#333337" borderColor="#c0c0c0" borderRadius="15" borderStyle="NONE" borderWidth="0" focusTraversable="false" id="gameDLPanel" layoutX="104" layoutY="248" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="56" prefWidth="416" styleClass="" titleColor="#333333" titleOffset="15" titlePosition="TOP_LEFT">
+      <children>
+        <VBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="48" alignment="CENTER_LEFT" focusTraversable="false" id="vboxAlt" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="56" prefWidth="368" spacing="0" styleClass="">
+          <padding>
+            <Insets bottom="0" left="15" right="0" top="0"/>
+          </padding>
+          <children>
+            <LabelEx AnchorPane.leftAnchor="15" AnchorPane.rightAnchor="-119" alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="labelAlt" layoutX="15" layoutY="11" prefHeight="17" prefWidth="344" styleClass="label " text="Game name" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Bold" size="12"/>
+              </font>
+            </LabelEx>
+            <LabelEx AnchorPane.leftAnchor="15" AnchorPane.rightAnchor="-119" alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label3" layoutX="15" layoutY="28" prefHeight="18" prefWidth="344" styleClass="label " text="Game desc" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+              <font>
+                <Font name="System Regular" size="12"/>
+              </font>
+            </LabelEx>
+            <Data cursor="DEFAULT" enabled="1" id="data-label3" visible="1"/>
+            <Data cursor="DEFAULT" enabled="1" id="data-labelAlt" visible="1"/>
+          </children>
+        </VBox>
+        <Data cursor="DEFAULT" enabled="1" id="data-vboxAlt" visible="1"/>
+        <ImageViewEx AnchorPane.rightAnchor="16" autoSize="false" centered="true" focusTraversable="false" height="32" id="image" layoutX="376" layoutY="12" mosaic="false" mosaicGap="0" proportional="true" stretch="true" styleClass="" textFill="#000000" width="24">
+          <font>
+            <Font name="System Regular" size="12"/>
+          </font>
+        </ImageViewEx>
+        <Data cursor="HAND" enabled="1" id="data-image" image=".data/img/download.png" visible="1"/>
+      </children>
+      <titleFont>
+        <Font name="System Regular" size="13"/>
+      </titleFont>
+    </Panel>
+    <Data cursor="DEFAULT" enabled="1" id="data-gameDLPanel" visible="1"/>
+    <VBox alignment="CENTER" focusTraversable="false" id="gameStubBox" layoutX="272" layoutY="16" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="136" prefWidth="224" spacing="0" styleClass="modern-input-box ">
+      <children>
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label4" layoutX="16" layoutY="51" prefHeight="18" prefWidth="192" styleClass="label " text="" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="13"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" id="data-label4" visible="1"/>
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label5" layoutX="12" layoutY="69" prefHeight="16" prefWidth="200" styleClass="label " text="Please wait until game added" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="12"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" id="data-label5" visible="1"/>
+      </children>
+    </VBox>
+    <Data cursor="DEFAULT" enabled="1" id="data-gameStubBox" visible="1"/>
   </children>
 </AnchorPane>
