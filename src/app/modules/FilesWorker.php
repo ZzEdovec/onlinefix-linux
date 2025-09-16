@@ -95,7 +95,7 @@ class FilesWorker
         {
             if (str::contains($ex->getMessage(),'Invalid environment variable'))
             {
-                UXDialog::show(Localization::getByCode('FILESWORKER.REMOVEENV'),'ERROR');
+                UXDialog::showAndWait(Localization::getByCode('FILESWORKER.REMOVEENV'),'ERROR');
             }
             
             Logger::error($ex->getMessage());
