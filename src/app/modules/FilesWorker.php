@@ -285,6 +285,9 @@ class FilesWorker
             UXDialog::showAndWait(sprintf(Localization::getByCode('FILESWORKER.NOSUBMODULE'),$progs[$prog]));
             return;
         }
+
+        $progF = File::of($progs[$prog]);
+        $progF->setExecutable(true);
         
         return fs::abs($progs[$prog]);
     }
