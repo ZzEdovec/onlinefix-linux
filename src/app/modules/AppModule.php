@@ -33,7 +33,7 @@ class AppModule extends AbstractModule
             }
         }*/
         
-        $GLOBALS['version'] = '2.3-hf';
+        $GLOBALS['version'] = '2.3-hf2';
         
         $userhome = System::getProperty('user.home');
         $this->games->path = "$userhome/.config/OFME-Linux/Games.ini";
