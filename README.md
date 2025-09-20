@@ -33,7 +33,8 @@ Before using the launcher, make sure the following packages are installed:
 
 ‼️ These must be installed as regular packages. Flatpak and Snap versions **are not supported and will not be!** If you use them, the launcher will not work correctly – and this is not the developer's fault.
 ## ⬇️ Installation
-You can download a ready-to-use version with an installer from the [Releases](https://github.com/ZzEdovec/onlinefix-linux/releases) section.
+If you are using Arch Linux or an Arch-based distribution, install the package [onlinefix-linux-launcher-bin](https://aur.archlinux.org/packages/onlinefix-linux-launcher-bin) from the AUR (for example, `yay -S onlinefix-linux-launcher-bin`).
+If you are using a different distribution, use the installer from the [Releases](https://github.com/ZzEdovec/onlinefix-linux/releases) section.
 ## 🏗 Building from Source
 To build the launcher, you will need [DevelNext](https://develnext.org):
 1. Open DevelNext
