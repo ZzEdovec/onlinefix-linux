@@ -158,7 +158,7 @@ class newGameConfigurator extends AbstractForm
             $this->cleanAfterAdd->enabled = $this->cleanAfterAdd->data('quUIElement')->selected = false;
         }
         
-        $prefixPath = $this->appModule()->launcher->get('prefixesPath','User Settings') ?? fs::abs('./prefixes');
+        $prefixPath = launcherSettings::getBasePathFor('prefixes');
         
         $this->gamePath->text = $this->gameParams['path'] ?? $this->appModule()->launcher->get('installsPath','User Settings'); 
         $this->prefixPath->text = "$prefixPath/$nameNoExt";
@@ -222,9 +222,9 @@ class newGameConfigurator extends AbstractForm
     function doGameNameKeyUp(UXKeyEvent $e = null)
     {
         $parent = fs::parent($this->prefixPath->text);
-        $abs = fs::abs('./prefixes');
+        $default = launcherSettings::getBasePathFor('prefixes');
         
-        if ($parent == $abs)
+        if ($parent == $default)
             $this->prefixPath->text = $parent.'/'.$e->sender->text;
     }
 
@@ -391,7 +391,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doMainSelectLabelConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('ADDGAMECONFIG.SELECTMAIN');
+        $e->sender->text = Localization::getByCode('NEWGAMECONFIG.SELECTMAIN');
     }
 
     /**

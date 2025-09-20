@@ -37,7 +37,7 @@ class log extends AbstractForm
      */
     function doHide(UXWindowEvent $e = null)
     {    
-        $this->textArea->text = null;
+        $this->free();
     }
 
     /**

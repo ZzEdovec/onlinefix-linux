@@ -84,7 +84,7 @@ class launcherSettings extends AbstractForm
      */
     function doPrefixesPathConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = $this->appModule()->launcher->get('prefixesPath','User Settings') ?? fs::abs('./prefixes');
+        $e->sender->text = launcherSettings::getBasePathFor('prefixes');
     }
 
     /**
@@ -94,7 +94,7 @@ class launcherSettings extends AbstractForm
     {    
         $this->protonsList->setCellFactory(function (UXListCell $cell,$item)
         {
-            $protonPath = $this->appModule()->launcher->get('protonsPath','User Settings') ?? './protons';
+            $protonPath = launcherSettings::getBasePathFor('protons');
             $isInstalled = fs::isFile("$protonPath/".$item[0].'/proton');
             
             $label = new UXLabel($item[0]);
@@ -221,6 +221,7 @@ class launcherSettings extends AbstractForm
         $this->protonsList->items->clear();
         $this->defaultProton->items->clear();
         
+        $this->appModule()->launcher->remove('defaultProton','User Settings');
         $this->doDefaultProtonConstruct();
         
         $this->protonsList->items->addAll($items);
@@ -422,6 +423,23 @@ class launcherSettings extends AbstractForm
     function doLabel9Construct(UXEvent $e = null)
     {    
         $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.PROTON.HINT');
+    }
+    
+    static function getBasePathFor($for)
+    {
+        $userHome = System::getProperty('user.home');
+        $defaultDir = "$userHome/.local/share/OnlineFix Linux Launcher/$for";
+        $userDir = app()->appModule()->launcher->get("$for\Path",'User Settings');
+        
+        if ($userDir == null)
+        {
+            fs::ensureParent($defaultDir);
+            fs::makeDir($defaultDir);
+            
+            return $defaultDir;
+        }
+        
+        return $userDir;
     }
 
 }

@@ -310,7 +310,14 @@ class MainForm extends AbstractForm
             return;
         }
         
-        new Process(['winetricks'],null,['WINE'=>fs::parent($proton).'/files/bin/wine','WINEPREFIX'=>$prefixDir])->start();
+        $e->sender->enabled = false;
+        
+        $process = new Process(['winetricks'],null,['WINE'=>fs::parent($proton).'/files/bin/wine','WINEPREFIX'=>$prefixDir])->start();
+        new Thread(function () use ($process,$e)
+        {
+            FilesWorker::hookProcessOuts($process);
+            uiLater(function () use ($e){$e->sender->enabled = true;});
+        })->start();
     }
 
     /**
@@ -434,8 +441,11 @@ class MainForm extends AbstractForm
         if ($exe == null)
             return;
             
-        new Process([$proton,'run',$exe],fs::parent($exe),['STEAM_COMPAT_DATA_PATH'=>$prefixDir,
-                                                           'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>System::getProperty('user.home').'/.steam/steam'])->start();
+        $process = new Process([$proton,'run',$exe],fs::parent($exe),
+        ['STEAM_COMPAT_DATA_PATH'=>$prefixDir,'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>System::getProperty('user.home').'/.steam/steam']
+        )->start();
+                                                           
+        FilesWorker::hookProcessOuts($process,false,false);
     }
 
     /**

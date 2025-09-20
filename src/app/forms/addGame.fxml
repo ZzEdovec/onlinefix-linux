@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464" prefWidth="464" styleClass="">
   <children>
-    <VBox alignment="CENTER" focusTraversable="false" id="errorBox" layoutX="24" layoutY="88" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="352" prefWidth="416" spacing="5" styleClass="">
+    <VBox AnchorPane.bottomAnchor="24" AnchorPane.leftAnchor="24" AnchorPane.rightAnchor="24" AnchorPane.topAnchor="88" alignment="CENTER" focusTraversable="false" id="errorBox" layoutX="24" layoutY="88" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="352" prefWidth="416" spacing="5" styleClass="">
       <children>
         <LabelEx alignment="CENTER" autoSize="false" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="errorLabel" layoutX="32" layoutY="55" prefHeight="133" prefWidth="352" styleClass="label " text="Упс.." textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="true">
           <font>
@@ -42,7 +42,7 @@
     <Data cursor="HAND" enabled="1" graphic=".data/img/add.png" id="data-addGame" visible="1"/>
     <Separator AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="68" focusTraversable="false" id="separator" layoutX="0" layoutY="68" orientation="HORIZONTAL" prefHeight="8" prefWidth="584" styleClass="separator "/>
     <Data cursor="DEFAULT" enabled="1" id="data-separator" visible="1"/>
-    <VBox alignment="TOP_CENTER" focusTraversable="false" id="gamesBox" layoutX="24" layoutY="88" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="352" prefWidth="416" spacing="5" styleClass="">
+    <VBox AnchorPane.bottomAnchor="23" AnchorPane.leftAnchor="24" AnchorPane.rightAnchor="24" AnchorPane.topAnchor="88" alignment="CENTER" focusTraversable="false" id="gamesBox" layoutX="24" layoutY="88" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="353" prefWidth="416" spacing="5" styleClass="">
       <children>
         <TextField alignment="CENTER_LEFT" editable="true" focusTraversable="false" id="search" layoutX="0" layoutY="0" prefColumnCount="12" prefHeight="32" prefWidth="416" promptText="Поиск" style="-fx-background-radius:15px;" text="">
           <styleClass xmlns:fx="http://javafx.com/fxml">
@@ -54,7 +54,7 @@
             <Font name="System Regular" size="12"/>
           </font>
         </TextField>
-        <ScrollPane fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" hvalue="0" id="container" layoutX="0" layoutY="37" prefHeight="296" prefWidth="416" styleClass="scroll-pane " vbarPolicy="AS_NEEDED" vvalue="0">
+        <ScrollPane AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="37" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" hvalue="0" id="container" layoutX="0" layoutY="37" prefHeight="296" prefWidth="416" styleClass="scroll-pane " vbarPolicy="AS_NEEDED" vvalue="0">
           <content>
             <AnchorPane focusTraversable="false" id="" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="296" prefWidth="416" styleClass="">
               <children/>
@@ -73,7 +73,7 @@
     </VBox>
     <Data cursor="DEFAULT" enabled="1" id="data-gamesBox" visible=""/>
     <Data cursor="DEFAULT" enabled="1" id="data-errorBox" visible=""/>
-    <VBox alignment="CENTER" focusTraversable="false" id="noFoundOverlay" layoutX="48" layoutY="136" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="288" prefWidth="368" spacing="5" styleClass="">
+    <VBox AnchorPane.bottomAnchor="40" AnchorPane.leftAnchor="48" AnchorPane.rightAnchor="48" AnchorPane.topAnchor="136" alignment="CENTER" focusTraversable="false" id="noFoundOverlay" layoutX="48" layoutY="136" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="288" prefWidth="368" spacing="5" styleClass="">
       <children>
         <LabelEx alignment="CENTER" autoSize="false" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label4" layoutX="52" layoutY="67" prefHeight="133" prefWidth="264" styleClass="label " text="Ничего не найдено" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
           <font>

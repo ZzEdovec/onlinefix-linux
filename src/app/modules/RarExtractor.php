@@ -56,32 +56,32 @@ class RarExtractor
         }
         elseif (str::contains($this->stdErr,'Cannot open'))
         {
-            $partFile = str::replace($file,'.rar','.part');
-            if (fs::isFile($file) == false and fs::isFile($partFile.'1.rar'))
+            $parts = File::of(fs::parent($file))->findFiles(function ($p,$f)
+            {
+                if (str::contains($f,'.part') and str::contains($f,'.rar') and str::contains($f,fs::nameNoExt($file)))
+                    return true;
+                else 
+                    return false;
+            });
+            
+            if (fs::isFile($file) == false and $parts != [])
             {
                 Logger::info('Multipart archive detected');
                 
                 if (is_null($path))
                 {
                     $files = [];
-                    for ($part = 1; ; $part++) # Until next part is exists
+                    foreach ($parts as $part)
                     {
-                        if (fs::isFile("$partFile$part.rar"))
-                        {
-                            Logger::info("Trying to read $partFile$part.rar");
-                            $files = array_merge($files,$this->executeUnrar("$partFile$part.rar",$password));
-                        }
-                        else 
-                        {
-                            Logger::info('Readed all parts');
-                            break;
-                        }
+                        Logger::info("Trying to read $part");
+                        $files = array_merge($files,$this->executeUnrar($part,$password));
                     }
                     
+                    Logger::info('Readed all parts');
                     return $files;
                 }
                 else
-                    $this->executeUnrar("$partFile1.rar",$password,$path);
+                    $this->executeUnrar($parts[0],$password,$path);
             }
             else 
                 throw new Exception($this->stdErr);
@@ -117,7 +117,7 @@ class RarExtractor
         }
         else 
         {
-            uiLater(function (){UXDialog::show($catchedMessage,'ERROR');});
+            uiLater(function (){UXDialog::show($catchedMessage ?? Localization::getByCode('RAREXTRACTOR.FAIL'),'ERROR');});
             return;
         }
     }

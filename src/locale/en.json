@@ -30,8 +30,7 @@
     "BANNEREDITOR.STEAM.HEADER": "Get a new cover from Steam",
     "BANNEREDITOR.PROMPT": "Game AppID in Steam",
     "BANNEDEDITOR.STEAM.NOAPPID": "AppID not specified!",
-    "BANNEREDITOR.STEAM.FAILED": "Failed to get cover from Steam - the game may be unavailable in your region",
-    "BANNEREDITOR.FILE.FAILED": "Failed to get cover",
+    "BANNEREDITOR.FILE.FAILED": "Failed to get game cover - %s",
     "BANNEREDITOR.FILE.HEADER": "Set a new cover from file",
 
     "GAMESETTINGS.FOLDERS.BUTTON": "Folders",
@@ -90,7 +89,7 @@
     "NEWGAMECONFIG.PREFIXPATH": "Prefix path",
     "NEWGAMECONFIG.SELECTMAIN": "Select the main game file",
 
-    "ADDGAME.FILECHOOSER": "Select the root folder of the game or a folder with unextracted RAR archive(s)",
+    "ADDGAME.FILECHOOSER": "Select the root folder of the game OR a folder with unextracted RAR archive(s)",
     "ADDGAME.EMPTY": "No RAR archives or executables found! Try another folder",
     "ADDGAME.SOURCE.NO": "No network source",
     "ADDGAME.SOURCE.ADD": "Add an already downloaded game or specify a source for downloading games",
@@ -130,6 +129,7 @@
     "RAREXTRACTOR.FAILDEFPASSWD": "Default archive password did not work, enter your own?",
     "RAREXTRACTOR.PASSWD": "Archive password",
     "RAREXTRACTOR.FAILPASSWD": "Password did not fit",
+    "RAREXTRACTOR.FAIL": "Failed to read the archive",
 
     "APPMODULE.PIDEXISTS": "Application is already running with PID %s",
 

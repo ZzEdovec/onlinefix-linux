@@ -43,18 +43,18 @@ class FilesWorker
         }
         if (fs::isFile($executable) == false)
         {
-            UXDialog::showAndWait('Не найден исполняемый файл игры. Может, вы её удалили с диска?');
+            UXDialog::showAndWait(Localization::getByCode('FILESWORKER.NOGAME'),'ERROR');
             return;
         }
         
         $argsBeforeExec = app()->appModule()->games->get('argsBefore',$name);
         $argsAfterExec = app()->appModule()->games->get('argsAfter',$name);
         
-        $exec = "\"$proton\" run \"$executable\" $argsAfterExec";
+        $exec = [$proton,'run',$executable];
         $userHome = System::getProperty('user.home');
         $dxOverrides = 'd3d11=n;d3d10=n;d3d10core=n;dxgi=n;openvr_api_dxvk=n;d3d12=n;d3d12core=n;d3d9=n;d3d8=n;';
         $mainEnvironment = ['WINEDLLOVERRIDES'=>$dxOverrides.app()->appModule()->games->get('overrides',$name),
-                            'WINEDEBUG'=>$debug ? '+loaddll,+steam,+winsock,+seh,' : '-all',
+                            'WINEDEBUG'=>$debug ? '+loaddll,+steam,+winsock,+seh,+warn,+err,+trace' : '-all',
                             'STEAM_COMPAT_DATA_PATH'=>app()->appModule()->games->get('prefixPath',$name) ?? fs::parent($executable).'/OFME Prefix',
                             'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>"$userHome/.steam/steam"];
                             
@@ -71,32 +71,29 @@ class FilesWorker
             $mainEnvironment = array_merge($mainEnvironment,envViewer::parseEnvironmentArray($name));
         }
 
+        if ($argsAfterExec != null)
+            $exec = array_merge($exec,str::split($argsAfterExec,' '));
         if (app()->appModule()->games->get('steamRuntime',$name))
         {
             $steamRuntime = self::findSteamRuntime();
             if ($steamRuntime == false)
                 app()->appModule()->games->set('steamRuntime',false,$name);
             else 
-                $exec = "\"$steamRuntime\" $exec";
+                array_unshift($exec,$steamRuntime);
         }
         if ($argsBeforeExec != null)
-            $exec = $argsBeforeExec." $exec";
-            
-        if ($debug == false)
-            $exec .= ' > /dev/null 2>&1';
+            array_unshift($exec,$argsBeforeExec);
         
         fs::ensureParent($mainEnvironment['STEAM_COMPAT_DATA_PATH']);
         fs::makeDir($mainEnvironment['STEAM_COMPAT_DATA_PATH']);
         
         try 
         {
-            return new Process(['bash','-c',$exec],fs::parent($executable),$mainEnvironment);
+            return new Process($exec,fs::parent($executable),$mainEnvironment);
         } catch (Throwable $ex)
         {
             if (str::contains($ex->getMessage(),'Invalid environment variable'))
-            {
                 UXDialog::showAndWait(Localization::getByCode('FILESWORKER.REMOVEENV'),'ERROR');
-            }
             
             Logger::error($ex->getMessage());
             return;
@@ -107,31 +104,15 @@ class FilesWorker
     {
         $timeStart = Time::seconds();
         
-        FixParser::encodeRequest(base64_encode(base64_decode('KtCY0LPRgNCwINC30LDQv9GD0YnQtdC90LAhKgoK0J/QvtC70YzQt9C+0LLQsNGC0LXQu9GMIC0gYA==').
-                                 System::getProperty(base64_decode('dXNlci5uYW1l'))."`\n".base64_decode('0J3QsNC30LLQsNC90LjQtSAtIGA=').$gameName.'`'));
-        
         $GLOBALS['implicitDisableReason'] = 'game';
         UXApplication::setImplicitExit(false);
         fs::makeDir(app()->appModule()->games->get('prefixPath',$gameName) ?? fs::parent(app()->appModule()->games->get('executable',$gameName)).'/OFME Prefix');
         
-        /*if (app()->appModule()->games->get('fakeSteam',$gameName))
-        {
-            try
-            {
-                $gameExec = app()->appModule()->games->get('executable',$gameName);
-                $proton = self::getProtonExecutable($gameName);
-                $fakeSteam = new Process([$proton,'run',fs::abs('./fakeSteam/steam.exe')],null,['STEAM_COMPAT_DATA_PATH'=>app()->appModule()->games->get('prefixPath',$gameName) ?? 
-                                                                                                                          fs::parent($gameExec).'/OFME Prefix',
-                                                                                                'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>System::getProperty('user.home').'/.steam/steam'])->start();
-            } catch (Throwable $ex){uiLater(function () use ($ex){UXDialog::show($ex->getMessage(),'ERROR');});}
-        }*/
+        $process = $process->start();
+        self::hookProcessOuts($process,$debug);
         
-        $process = $process->startAndWait();
-        
-        /*if ($fakeSteam != null and $fakeSteam->getExitValue() === null)
-            $fakeSteam->getOutput()->write("end\n");*/
         if ($debug)
-            self::debug($process,$gameName);
+            self::debug($exit,$gameName);
         
         $timeStop = Time::seconds();
         app()->appModule()->games->set('timeSpent',($timeStop - $timeStart) + app()->appModule()->games->get('timeSpent',$gameName),$gameName);
@@ -140,11 +121,11 @@ class FilesWorker
             UXApplication::setImplicitExit(true);
     }
     
-    static function debug($process,$gameName)
+    static function debug($exitCode,$gameName)
     {
-        uiLaterAndWait(function () use ($process,$gameName){
+        uiLaterAndWait(function () use ($exitCode,$gameName){
             $info = 'Game name - '.$gameName."\n".
-                    'Exit code - '.$process->getExitValue()."\n".
+                    'Exit code - '.$exitCode."\n".
                     "Game settings:\n";
                     
             foreach (app()->appModule()->games->section($gameName) as $param => $value)
@@ -154,8 +135,7 @@ class FilesWorker
             foreach (str::split(file_get_contents('/etc/os-release'),"\n") as $line)
                 $info .= "\t$line\n";
             
-            app()->form('log')->textArea->text = $info."\nWine output:\n".$process->getError()->readFully();
-            app()->form('log')->textArea->text .= "\n\n\nGame output:\n".$process->getInput()->readFully();
+            app()->form('log')->textArea->text = "$info\n".app()->form('log')->textArea->text;
             app()->form('log')->data('gameName',$gameName);
             
             app()->showFormAndWait('log');
@@ -166,6 +146,30 @@ class FilesWorker
             if (app()->form('MainForm')->data('manualKill') == true)
                 app()->form('MainForm')->data('manualKill',false);
         });
+    }
+    
+    static function hookProcessOuts(Process $process,$debug = false,$wait = true)
+    {
+        $baseHook = function ($l,$std,$debug)
+        {
+            echo "$l\n";
+                
+            if ($debug)
+                uiLater(function () use ($l,$std){app()->form('log')->textArea->text .= "STD$std - $l\n";});
+        };
+        new Thread(function () use ($process,$debug,$baseHook)
+        {
+            $process->getError()->eachLine(function ($l) use ($debug,$baseHook) {$baseHook($l,'ERR',$debug);});
+        })->start();
+        new Thread(function () use ($process,$debug,$baseHook)
+        {
+            $process->getInput()->eachLine(function ($l) use ($debug,$baseHook) {$baseHook($l,'OUT',$debug);});
+        })->start();
+        
+        while ($process->getExitValue() === null and $wait == true)
+            sleep(2);
+        
+        return $process->getExitValue();
     }
     
     static function findSteamRuntime()
@@ -209,7 +213,7 @@ class FilesWorker
     
     static function findFirstAvailableProton()
     {
-        $protons = File::of(app()->appModule()->launcher->get('protonsPath','User Settings') ?? './protons')->find(function ($d,$f){return fs::isFile($d.'/'.$f.'/proton');});
+        $protons = File::of(launcherSettings::getBasePathFor('protons'))->find(function ($d,$f){return fs::isFile($d.'/'.$f.'/proton');});
         if ($protons == [])
             return false;
         else 
@@ -218,7 +222,7 @@ class FilesWorker
     
     static function getInstalledProtons()
     {
-        $protonPath = app()->appModule()->launcher->get('protonsPath','User Settings') ?? './protons';
+        $protonPath = launcherSettings::getBasePathFor('protons');
         if (fs::isDir($protonPath))
         {
             $dir = File::of($protonPath);
@@ -233,7 +237,7 @@ class FilesWorker
     static function getProtonExecutable($gameName)
     {
         $proton = app()->appModule()->games->get('proton',$gameName);
-        $protonPath = app()->appModule()->launcher->get('protonsPath','User Settings') ?? './protons';
+        $protonPath = launcherSettings::getBasePathFor('protons');
         
         if ($proton == 'GE-Proton Latest' or $proton == null)
         {
@@ -278,17 +282,17 @@ class FilesWorker
     
     static function getThirdParty($prog)
     {
-        $progs = ['7zip'=>'./thirdparty/7zip/7z','unrar'=>'./thirdparty/unrar/unrar'];
+        $progs = ['7zip'=>fs::isFile('/usr/bin/7z') ? '/usr/bin/7z' : './thirdparty/7zip/7z','unrar'=>fs::isFile('/usr/bin/unrar') ? '/usr/bin/unrar' : './thirdparty/unrar/unrar'];
         
         if (fs::isFile($progs[$prog]) == false)
         {
             UXDialog::showAndWait(sprintf(Localization::getByCode('FILESWORKER.NOSUBMODULE'),$progs[$prog]));
             return;
         }
-
+        
         $progF = File::of($progs[$prog]);
         $progF->setExecutable(true);
         
-        return fs::abs($progs[$prog]);
+        return $progF->getAbsolutePath();
     }
 }

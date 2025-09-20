@@ -19,49 +19,14 @@ class gameSettings extends AbstractForm
     {
         $this->module('SettingsModule')->activePage = $this->view;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
     /**
      * @event argsBefore.keyUp 
      */
     function doArgsBeforeKeyUp(UXKeyEvent $e = null)
     {
-        $this->gamemode->data('quUIElement')->selected = str::contains($e->sender->text,'gamemoderun');
-        $this->mangohud->data('quUIElement')->selected = str::contains($e->sender->text,'mangohud');
-        $this->gamescope->data('quUIElement')->selected = str::contains($e->sender->text,'gamescope');
-        
         $this->appModule()->games->set('argsBefore',$e->sender->text,$this->data('gameName'));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * @event envBox.click 
@@ -92,14 +57,7 @@ class gameSettings extends AbstractForm
     {
         $this->argsBefore->requestFocus();
     }
-
-
-
-
-
-
-
-
+    
     /**
      * @event steamOverlay.construct 
      */
@@ -120,8 +78,6 @@ class gameSettings extends AbstractForm
         quUI::generateSetButton($e->sender,Localization::getByCode('GAMESETTINGS.ADDITIONALS.USESTEAMRUNTIME'),$switch);
     }
 
-
-
     /**
      * @event label.construct 
      */
@@ -129,8 +85,6 @@ class gameSettings extends AbstractForm
     {
         $e->sender->text = Localization::getByCode('GAMESETTINGS.STARTSETTINGS');
     }
-
-
 
     /**
      * @event argsAfter.keyUp 
@@ -189,8 +143,6 @@ class gameSettings extends AbstractForm
         $this->doEnvBoxClick();
     }
 
-
-
     /**
      * @event vbox4.click 
      */
@@ -222,10 +174,6 @@ class gameSettings extends AbstractForm
     {
         $this->switchPage($this->startup);
     }
-
-
-
-
 
     /**
      * @event applyGameName.construct 
@@ -290,8 +238,6 @@ class gameSettings extends AbstractForm
         
         $e->sender->enabled = false;
     }
-
-
 
     /**
      * @event editIcon.construct 
@@ -645,6 +591,6 @@ class gameSettings extends AbstractForm
             
             $banner->save($bannersPath.'/'.$gameName.'.png');
             $this->appModule()->games->set('banner',$bannersPath.'/'.$gameName.'.png',$gameName);
-        } catch (Throwable $ex){UXDialog::show(Localization::getByCode('BANNEREDITOR.FILE.FAILED'),'ERROR');}
+        } catch (Throwable $ex){UXDialog::show(sprintf(Localization::getByCode('BANNEREDITOR.FILE.FAILED'),$ex->getMessage()),'ERROR');}
     }
 }

@@ -31,7 +31,7 @@
     "BANNEREDITOR.PROMPT": "Steam AppID игры",
     "BANNEDEDITOR.STEAM.NOAPPID": "AppID не указан!",
     "BANNEREDITOR.STEAM.FAILED": "Не удалось получить обложку из Steam - возможно, игра недоступна в регионе",
-    "BANNEREDITOR.FILE.FAILED":"Не удалось получить обложку",
+    "BANNEREDITOR.FILE.FAILED":"Не удалось получить обложку игры - %s",
     "BANNEREDITOR.FILE.HEADER": "Установить обложку из файла",
     
     "GAMESETTINGS.FOLDERS.BUTTON": "Папки",
@@ -88,7 +88,7 @@
     "NEWGAMECONFIG.PREFIXPATH": "Путь префикса",
     "NEWGAMECONFIG.SELECTMAIN": "Выберите основной файл игры",
 
-    "ADDGAME.FILECHOOSER": "Выберите корневую папку игры или папку с нераспакованным(и) RAR архивом(ами)",
+    "ADDGAME.FILECHOOSER": "Выберите корневую папку игры ИЛИ папку с нераспакованным(и) RAR архивом(ами)",
     "ADDGAME.EMPTY": "Не найдено ни RAR-архивов, ни исполняемых файлов! Попробуйте другую папку",
     "ADDGAME.SOURCE.NO": "Нет сетевого источника",
     "ADDGAME.SOURCE.ADD": "Добавьте уже скачанную игру или укажите источник для скачивания игр",
@@ -128,6 +128,7 @@
     "RAREXTRACTOR.FAILDEFPASSWD": "Стандартный пароль от архива не сработал, ввести свой?",
     "RAREXTRACTOR.PASSWD": "Пароль от архива",
     "RAREXTRACTOR.FAILPASSWD": "Пароль не подошёл",
+    "RAREXTRACTOR.FAIL": "Ошибка чтения архива",
 
     "APPMODULE.PIDEXISTS": "Приложение уже запущено с PID %s",
 

@@ -33,7 +33,7 @@ class AppModule extends AbstractModule
             }
         }*/
         
-        $GLOBALS['version'] = '2.3-hf2';
+        $GLOBALS['version'] = '2.4';
         
         $userhome = System::getProperty('user.home');
         $this->games->path = "$userhome/.config/OFME-Linux/Games.ini";
@@ -64,19 +64,22 @@ class AppModule extends AbstractModule
                 
                 Logger::error('Failed to fetch latest proton version');
             }
-                
-            try #Check updates
+            
+            if (fs::isFile('ofmeupd.jar'))
             {
-                if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != $GLOBALS['version'])
+                try #Check updates
                 {
-                    new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
-                    
-                    app()->shutdown();
-                    return;
+                    if (fs::get('https://zzedovec.github.io/resources/ofmelauncher/currentversion') != $GLOBALS['version'])
+                    {
+                        new Process(['./jre/bin/java','-jar','ofmeupd.jar'])->start();
+                        
+                        app()->shutdown();
+                        return;
+                    }
+                } catch (IOException $ex)
+                {
+                    Logger::error('Failed to fetch latest launcher version - '.$ex->getMessage());
                 }
-            } catch (IOException $ex)
-            {
-                Logger::error('Failed to fetch latest launcher version - '.$ex->getMessage());
             }
             
             Logger::info('Latest versions fetch thread completed. Latest Proton - '.$GLOBALS['LatestProton']);

@@ -227,7 +227,7 @@ class addGame extends AbstractForm
                 $this->doShow();
             }
             else 
-                UXDialog::show(Localization::getByCode('ADDGAME.SOURCE.FAIL'));
+                UXDialog::show(Localization::getByCode('ADDGAME.SOURCE.FAIL'),'ERROR');
         } catch (Throwable $ex){UXDialog::show($ex->getMessage(),'ERROR');}
     }
 

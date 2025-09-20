@@ -20,7 +20,7 @@ class protonDownloader extends AbstractForm
     
     function startDownload($name,$url)
     {
-        $protonPath = $this->appModule()->launcher->get('protonsPath','User Settings') ?? fs::abs('./protons');
+        $protonPath = launcherSettings::getBasePathFor('protons');
         
         fs::ensureParent($protonPath);
         fs::makeDir($protonPath);

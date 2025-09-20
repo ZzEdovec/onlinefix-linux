@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="416" prefWidth="656" styleClass="">
   <children>
+    <VBox alignment="CENTER" focusTraversable="false" id="launcher" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="360" prefWidth="656" spacing="1" styleClass="">
+      <children>
+        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="fullscreenLauncher" layoutX="328" layoutY="180" prefHeight="58" prefWidth="344" ripplerFill="#cccccc" style="-fx-background-color: #333337;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="13"/>
+          </font>
+        </com.jfoenix.controls.JFXButton>
+        <Data cursor="HAND" enabled="1" id="data-fullscreenLauncher" visible="1"/>
+      </children>
+    </VBox>
     <VBox AnchorPane.bottomAnchor="56" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER" focusTraversable="false" id="about" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="360" prefWidth="656" spacing="5" styleClass="">
       <children>
         <ImageViewEx autoSize="false" centered="false" focusTraversable="false" height="88" id="image" layoutX="284" layoutY="81" mosaic="false" mosaicGap="0" proportional="false" stretch="true" styleClass="" textFill="#000000" width="88">
@@ -195,16 +205,6 @@
           </font>
         </LabelEx>
         <Data cursor="DEFAULT" enabled="1" id="data-label9" visible="1"/>
-      </children>
-    </VBox>
-    <VBox alignment="CENTER" focusTraversable="false" id="launcher" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="360" prefWidth="656" spacing="1" styleClass="">
-      <children>
-        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="fullscreenLauncher" layoutX="156" layoutY="151" prefHeight="58" prefWidth="344" ripplerFill="#cccccc" style="-fx-background-color: #333337;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="13"/>
-          </font>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" id="data-fullscreenLauncher" visible="1"/>
       </children>
     </VBox>
     <HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" alignment="CENTER" focusTraversable="false" id="hbox" layoutX="0" layoutY="360" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="56" prefWidth="656" spacing="0" style="-fx-background-color:#333337;" styleClass="">

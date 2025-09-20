@@ -26,7 +26,7 @@
             <Data cursor="DEFAULT" enabled="1" id="data-label8" visible="1"/>
             <TextField alignment="CENTER_LEFT" editable="false" focusTraversable="true" id="prefixPath" layoutX="512" layoutY="6" prefColumnCount="12" prefHeight="28" prefWidth="168" promptText="" style="-fx-background-radius:50px;-fx-background-color:#333337;" styleClass="text-input text-field " text="">
               <font>
-                <Font name="System Regular" size="13"/>
+                <Font name="System Regular" size="12"/>
               </font>
             </TextField>
             <Data cursor="HAND" enabled="1" id="data-prefixPath" visible="1"/>
@@ -150,18 +150,18 @@
             <Separator focusTraversable="false" id="separatorAlt" layoutX="344" layoutY="0" orientation="VERTICAL" prefHeight="280" prefWidth="8" styleClass="separator "/>
             <VBox alignment="CENTER" focusTraversable="false" id="vbox6" layoutX="382" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="272" prefWidth="279" spacing="1" styleClass="">
               <children>
-                <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label3" layoutX="16" layoutY="61" prefHeight="32" prefWidth="248" styleClass="label " text="Дополнительные функции" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
+                <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label3" layoutX="16" layoutY="90" prefHeight="32" prefWidth="248" styleClass="label " text="Дополнительные функции" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
                   <font>
                     <Font name="System Bold" size="13"/>
                   </font>
                 </LabelEx>
-                <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamOverlay" layoutX="4" layoutY="94" prefHeight="58" prefWidth="272" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:15 15 0 0px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+                <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamOverlay" layoutX="4" layoutY="123" prefHeight="58" prefWidth="272" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:15 15 0 0px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
                   <font>
                     <Font name="System Regular" size="13"/>
                   </font>
                 </com.jfoenix.controls.JFXButton>
                 <Data cursor="HAND" enabled="1" id="data-steamOverlay" visible="1"/>
-                <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamRuntime" layoutX="4" layoutY="153" prefHeight="58" prefWidth="272" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:0 0 15 15px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+                <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="steamRuntime" layoutX="140" layoutY="182" prefHeight="58" prefWidth="272" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:0 0 15 15px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
                   <font>
                     <Font name="System Regular" size="13"/>
                   </font>
@@ -230,12 +230,12 @@
         <Data cursor="DEFAULT" enabled="1" id="data-hbox4" visible="1"/>
         <HBox alignment="CENTER" focusTraversable="false" id="hbox3" layoutX="0" layoutY="253" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="32" prefWidth="704" spacing="5" styleClass="">
           <children>
-            <TextField alignment="CENTER" editable="true" focusTraversable="false" id="gameName" layoutX="242" layoutY="0" prefColumnCount="12" prefHeight="32" prefWidth="184" promptText="game name" style="-fx-background-radius:50px;-fx-background-color:#333337;" styleClass="text-input text-field " text="">
+            <TextField alignment="CENTER" editable="true" focusTraversable="false" id="gameName" layoutX="258" layoutY="0" prefColumnCount="12" prefHeight="32" prefWidth="184" promptText="game name" style="-fx-background-radius:50px;-fx-background-color:#333337;" styleClass="text-input text-field " text="">
               <font>
                 <Font name="System Regular" size="13"/>
               </font>
             </TextField>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="applyGameName" layoutX="431" layoutY="0" prefHeight="32" prefWidth="32" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Button" textAlignment="CENTER" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="applyGameName" layoutX="447" layoutY="16" prefHeight="32" prefWidth="32" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Button" textAlignment="CENTER" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="13"/>
               </font>
