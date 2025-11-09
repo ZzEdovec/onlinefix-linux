@@ -14,6 +14,9 @@ class ftpInstaller
         $proton = FilesWorker::getProtonExecutable();
         $installPathConverted = self::convertToWindowsPath($installPath);
         
+        $GLOBALS['implicitDisableReason'] = 'ftpInstalling';
+        UXApplication::setImplicitExit(false);
+        
         new Thread(function () use ($panel,$proton,$installPath,$installPathConverted,$installers,$prefixPath,$removeAfterInstall,$gameName)
         {
             foreach ($installers as $installer)
@@ -36,6 +39,10 @@ class ftpInstaller
                     });
                     
                     new Process(['rm','-rf',$prefixPath])->start();
+                    
+                    if ($GLOBALS['implicitDisableReason'] == 'ftpInstalling')
+                        UXApplication::setImplicitExit(true);
+                        
                     return;
                 }
             }
@@ -55,6 +62,9 @@ class ftpInstaller
                     $form->prefixPath->text = $prefixPath;
                     
                     $form->prepareForGame($files,$installPath);
+                    
+                    if ($GLOBALS['implicitDisableReason'] == 'ftpInstalling')
+                        UXApplication::setImplicitExit(true);
                 });
             });
         })->start();

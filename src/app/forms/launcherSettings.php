@@ -520,6 +520,8 @@ class launcherSettings extends AbstractForm
     {    
         if ($this->protonsList->data('allowRefresh'))
         {
+            $this->protonsList->data('allowRefresh',false);
+            
             $this->protonsList->items->clear();
             $this->doProtonsListConstruct();
         }

@@ -110,7 +110,7 @@ class newGameConfigurator extends AbstractForm
         
         if ($this->ftpInstallerBox->enabled != true and $gameDir->find() != [])
         {
-            UXDialog::show('Папка не пуста!','ERROR');
+            UXDialog::show(Localization::getByCode('NEWGAMECONFIG.PATH.NONEMPTY'),'ERROR');
             $this->doGamePathClick();
             
             return;

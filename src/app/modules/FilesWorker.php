@@ -127,7 +127,7 @@ class FilesWorker
         UXApplication::setImplicitExit(false);
         
         $process = $process->start();
-        self::hookProcessOuts($process,boolval($debug));
+        $exit = self::hookProcessOuts($process,boolval($debug));
         
         if ($debug)
             self::debug($exit,$gameName);
@@ -141,7 +141,7 @@ class FilesWorker
     
     static function debug($exitCode,$gameName)
     {
-        uiLaterAndWait(function () use ($exitCode,$gameName){
+        uiLater(function () use ($exitCode,$gameName){
             $info = 'Game name - '.$gameName."\n".
                     'Exit code - '.$exitCode."\n".
                     "Game settings:\n";
@@ -157,7 +157,7 @@ class FilesWorker
             app()->form('log')->data('gameName',$gameName);
             app()->form('log')->title = "$gameName log";
             
-            app()->showFormAndWait('log');
+            app()->showForm('log');
         });
     }
     

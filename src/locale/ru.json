@@ -86,6 +86,7 @@
     "SETTINGSMODULE.USEWINED3D": "Использовать WINED3D",
     "SETTINGSMODULE.NATIVEWAYLAND": "Использовать нативный Wayland",
 
+    "NEWGAMECONFIG.PATH.NONEMPTY": "Папка не пуста!",
     "NEWGAMECONFIG.PREFIX.PATHNONEMPTY": "Папка не пуста! При удалении игры из лаунчера она может быть удалена, учитывайте это",
     "NEWGAMECONFIG.EMPTYRAR": "Архив пуст",
     "NEWGAMECONFIG.ARESURE": "Вы уверены? Это удалит скачанные файлы",
@@ -104,7 +105,7 @@
     "NEWGAMECONFIG.FREETP.FILECHOOSER": "Исполняемый файл установщика (exe)",
     "NEWGAMECONFIG.SELECTMAIN": "Выберите основной файл игры",
 
-    "ADDGAME.FILECHOOSER": "Выберите корневую папку игры ИЛИ папку с нераспакованным(и) RAR архивом(ами)",
+    "ADDGAME.FILECHOOSER": "Выберите корневую папку игры или с её установочными файлами (RAR/установщик FreeTP)",
     "ADDGAME.EMPTY": "Не найдено ни RAR-архивов, ни исполняемых файлов! Попробуйте другую папку",
     "ADDGAME.SOURCE.NO": "Нет сетевого источника",
     "ADDGAME.SOURCE.ADD": "Добавьте уже скачанную игру или укажите источник для скачивания игр",

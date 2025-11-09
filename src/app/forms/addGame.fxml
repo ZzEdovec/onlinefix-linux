@@ -25,7 +25,7 @@
           </font>
         </LabelEx>
         <Data cursor="DEFAULT" enabled="1" id="data-label" visible="1"/>
-        <LabelEx alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="labelAlt" layoutX="64" layoutY="30" prefHeight="17" prefWidth="200" styleClass="label " text="Добавьте её в лаунчер" textAlignment="LEFT" textFill="#e6e6e6" underline="false" wrapText="false">
+        <LabelEx alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="labelAlt" layoutX="0" layoutY="30" prefHeight="17" prefWidth="272" styleClass="label " text="Добавьте её в лаунчер" textAlignment="LEFT" textFill="#e6e6e6" underline="false" wrapText="false">
           <font>
             <Font name="System Regular" size="12"/>
           </font>

@@ -86,6 +86,7 @@
     "SETTINGSMODULE.USEWINED3D": "Use WINED3D",
     "SETTINGSMODULE.NATIVEWAYLAND": "Use native Wayland",
 
+    "NEWGAMECONFIG.PATH.NONEMPTY": "Folder is not empty!",
     "NEWGAMECONFIG.PREFIX.PATHNONEMPTY": "Folder is not empty! When removing the game from the launcher, it may be deleted, keep this in mind",
     "NEWGAMECONFIG.EMPTYRAR": "Archive is empty",
     "NEWGAMECONFIG.ARESURE": "Are you sure? This will delete downloaded files",
@@ -104,7 +105,7 @@
     "NEWGAMECONFIG.FREETP.FILECHOOSER": "Installer executable file (exe)",
     "NEWGAMECONFIG.SELECTMAIN": "Select the main game file",
 
-    "ADDGAME.FILECHOOSER": "Select the root folder of the game OR a folder with unextracted RAR archive(s)",
+    "ADDGAME.FILECHOOSER": "Select the root folder of the game or with its installation files (RAR/FreeTP installer)",
     "ADDGAME.EMPTY": "No RAR archives or executables found! Try another folder",
     "ADDGAME.SOURCE.NO": "No network source",
     "ADDGAME.SOURCE.ADD": "Add an already downloaded game or specify a source for downloading games",

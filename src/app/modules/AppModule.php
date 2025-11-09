@@ -13,7 +13,7 @@ class AppModule extends AbstractModule
      */
     function doAction(ScriptEvent $e = null)
     {
-        $GLOBALS['version'] = '2.5';
+        $GLOBALS['version'] = '2.5.1';
         
         $userhome = System::getProperty('user.home');
         $this->games->path = "$userhome/.config/OFME-Linux/Games.ini";
