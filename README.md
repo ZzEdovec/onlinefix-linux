@@ -8,6 +8,7 @@
 - Launch games without manually configuring `WINEDLLOVERRIDES` and other parameters
 - Automatically fetch game covers from Steam
 - Steam overlay support
+- Automatic installation of OnlineFix and FreeTP games
 - Specific patches for certain types of fixes
 - Automatic extraction of icons from games
 - Create desktop and application menu shortcuts for games
