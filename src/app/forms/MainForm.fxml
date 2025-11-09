@@ -73,7 +73,7 @@
           </titleFont>
         </Panel>
         <Data cursor="DEFAULT" enabled="1" id="data-panel3" visible="1"/>
-        <com.jfoenix.controls.JFXButton AnchorPane.topAnchor="160" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="playButton" layoutX="24" layoutY="160" prefHeight="40" prefWidth="120" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Играть" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+        <com.jfoenix.controls.JFXButton AnchorPane.topAnchor="160" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="2" id="playButton" layoutX="24" layoutY="160" prefHeight="40" prefWidth="120" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Играть" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="13"/>
           </font>
@@ -126,7 +126,7 @@
               </styleClass>
             </com.jfoenix.controls.JFXButton>
             <Data cursor="HAND" enabled="1" graphic=".data/img/remove.png" id="data-gameDeleteButton" visible="1"/>
-            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="winetricksButton" layoutX="0" layoutY="68" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Winetricks" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="utilitiesButton" layoutX="0" layoutY="68" prefHeight="48" prefWidth="80" ripplerFill="#f2f2f2" text="Утилиты" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
@@ -186,7 +186,7 @@
                 <String fx:value="jfx-menu-button"/>
               </styleClass>
             </com.jfoenix.controls.JFXButton>
-            <Data cursor="HAND" enabled="1" graphic=".data/img/wine.png" id="data-winetricksButton" visible="1"/>
+            <Data cursor="HAND" enabled="1" graphic=".data/img/wine.png" id="data-utilitiesButton" visible="1"/>
             <Data cursor="HAND" enabled="1" graphic=".data/img/protondb.png" id="data-protonDBButton" visible="1"/>
             <Data cursor="HAND" enabled="1" graphic=".data/img/steam.png" id="data-steamButton" visible="1"/>
             <Data cursor="HAND" enabled="1" graphic=".data/img/db.png" id="data-steamDBButton" visible="1"/>

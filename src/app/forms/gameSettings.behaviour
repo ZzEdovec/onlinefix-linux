@@ -24,4 +24,13 @@
   <target id="envBox">
     <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
   </target>
+  <target id="noSteamPath">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="wined3d">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="useWayland">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
 </behaviours>

@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<behaviours/>
+<behaviours>
+  <target id="buttonAlt">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+</behaviours>

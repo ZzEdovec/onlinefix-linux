@@ -45,7 +45,6 @@ class MainForm extends AbstractForm
         }
     }
 
-
     /**
      * @event noGamesHeader.construct 
      */
@@ -54,16 +53,6 @@ class MainForm extends AbstractForm
         $e->sender->text = Localization::getByCode('MAINFORM.HEADER');
     }
 
-
-
-
-
-
-
-
-
-
-
     /**
      * @event playButton.construct 
      */
@@ -71,17 +60,16 @@ class MainForm extends AbstractForm
     {
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/play.png'));
         $stopGraphic = new UXImageArea(new UXImage('res://.data/img/stop.png'));
-        $e->sender->graphic->size = $stopGraphic->size = [20,20];
+        $waitGraphic = new UXImageArea(new UXImage('res://.data/img/wait.png'));
+        $e->sender->graphic->size = $stopGraphic->size = $waitGraphic->size = [20,20];
         
         $e->sender->data('play',$e->sender->graphic);
         $e->sender->data('stop',$stopGraphic);
+        $e->sender->data('wait',$waitGraphic);
         
         $e->sender->text = Localization::getByCode('MAINFORM.PLAY');
     }
-
-
-
-
+    
     /**
      * @event desktopIcon.construct 
      */
@@ -150,23 +138,19 @@ class MainForm extends AbstractForm
     {    
         if ($e->sender->graphic == $e->sender->data('stop'))
         {
-            $exec = $this->appModule()->games->get('executable',$this->gamePanel->data('gameName'));
-            $kill = new Process(['pkill','-f',fs::name($exec)])->startAndWait();
+            $wineserver = FilesWorker::getProtonExecutable($this->gamePanel->data('gameName'),'wineserver',true);
+            $prefixDir = FilesWorker::getProtonPrefixPath($this->gamePanel->data('gameName'),'wine');
+                         
+            try{$kill = new Process([$wineserver,'-k'],null,['WINEPREFIX'=>$prefixDir])->startAndWait();}
+            catch (Throwable $ex){$kill = new Process(['pkill','-f',fs::name($this->appModule()->games->get('executable',$this->gamePanel->data('gameName')))])->startAndWait();}
             
             if ($kill->getExitValue() != 0)
-            {
                 $this->toast(Localization::getByCode('MAINFORM.KILLFAILED'));
-                $this->data('manualKill',false);
-            }
             else
-            {
                 $this->switchPlayButton('play');
-            }
         }
         else 
-        {
             $this->runGame($this->gamePanel->data('gameName'));
-        }
     }
 
 
@@ -231,7 +215,11 @@ class MainForm extends AbstractForm
      */
     function doGameDebugButtonAction(UXEvent $e = null)
     {
-        $this->runGame($this->gamePanel->data('gameName'),true);
+        $debug = UXDialog::input('WINEDEBUG:','+err,+warn,+seh');
+        if ($debug == null)
+            return;
+            
+        $this->runGame($this->gamePanel->data('gameName'),$debug);
     }
 
     /**
@@ -278,46 +266,75 @@ class MainForm extends AbstractForm
     }
 
     /**
-     * @event winetricksButton.construct 
+     * @event utilitiesButton.construct 
      */
-    function doWinetricksButtonConstruct(UXEvent $e = null)
+    function doUtilitiesButtonConstruct(UXEvent $e = null)
     {
+        $e->sender->text = Localization::getByCode('MAINFORM.MENU.UTILITIES');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/wine.png'));
         $e->sender->graphic->size = [15,15];
+        
+        $runner = function ($util) use ($e)
+        {
+            $wine = FilesWorker::getProtonExecutable($this->gamePanel->data('gameName'),'wine');
+            $prefix = FilesWorker::getProtonPrefixPath($this->gamePanel->data('gameName'),'wine');
+            if ($wine == false)
+            {
+                $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
+                return;
+            }
+            
+            $e->sender->enabled = false;
+            new Thread(function () use ($wine,$prefix,$e,$util)
+            {
+                switch ($util)
+                {
+                    case ('winetricks'):
+                        $process = new Process(['winetricks'],null,['WINE'=>$wine,'WINEPREFIX'=>$prefix])->start();
+                    break;
+                    case ('wineconsole'):
+                        $process = new Process([$wine,'start','cmd.exe'],null,['WINEPREFIX'=>$prefix])->start();
+                    break;
+                    default: 
+                        $process = new Process([$wine,"$prefix/drive_c/windows/syswow64/$util"],null,['WINEPREFIX'=>$prefix])->start();
+                    break;
+                }
+                
+                FilesWorker::hookProcessOuts($process);
+                uiLater(function () use ($e){$e->sender->enabled = true;});
+            })->start();
+        };
+        
+        $menu = new UXContextMenu;
+        $winecfg = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.WINECFG'));
+        $taskmgr = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.TASKMGR'));
+        $control = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.CONTROL'));
+        $explorer = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.EXPLORER'));
+        $cmd = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.CMD'));
+        $regedit = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.REGEDIT'));
+        $winetricks = new UXMenuItem('Winetricks');
+        
+        $winecfg->on('action',function () use ($runner){$runner('winecfg.exe');});
+        $taskmgr->on('action',function () use ($runner){$runner('taskmgr.exe');});
+        $control->on('action',function () use ($runner){$runner('control.exe');});
+        $explorer->on('action',function () use ($runner){$runner('explorer.exe');});
+        $cmd->on('action',function () use ($runner){$runner('wineconsole');});
+        $regedit->on('action',function () use ($runner){$runner('regedit.exe');});
+        $winetricks->on('action',function () use ($runner){$runner('winetricks');});
+        
+        if (fs::isFile('/usr/bin/winetricks') == false)
+            $winetricks->enabled = false;
+        
+        $menu->items->addAll([$winecfg,$taskmgr,$control,$explorer,$cmd,$regedit,UXMenuItem::createSeparator(),$winetricks]);
+        $e->sender->data('menu',$menu);
     }
 
     /**
-     * @event winetricksButton.action 
+     * @event utilitiesButton.click 
      */
-    function doWinetricksButtonAction(UXEvent $e = null)
+    function doUtilitiesButtonClick(UXMouseEvent $e = null)
     {
-        $proton = FilesWorker::getProtonExecutable($this->gamePanel->data('gameName'));
-        $prefixDir = $this->appModule()->games->get('prefixPath',$this->gamePanel->data('gameName')).'/pfx' ?? 
-                     fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix/pfx';
-        if ($proton == false)
-        {
-            $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
-            return;
-        }
-        if (fs::isFile('/usr/bin/winetricks') == false)
-        {
-            $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOTFOUND'));
-            return;
-        }
-        if (fs::isDir($prefixDir) == false)
-        {
-            $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOPREFIX'));
-            return;
-        }
-        
-        $e->sender->enabled = false;
-        
-        $process = new Process(['winetricks'],null,['WINE'=>fs::parent($proton).'/files/bin/wine','WINEPREFIX'=>$prefixDir])->start();
-        new Thread(function () use ($process,$e)
-        {
-            FilesWorker::hookProcessOuts($process);
-            uiLater(function () use ($e){$e->sender->enabled = true;});
-        })->start();
+        $e->sender->data('menu')->showByNode($e->sender,$e->x,$e->y);
     }
 
     /**
@@ -391,10 +408,9 @@ class MainForm extends AbstractForm
         });
         $prefixFolder->on('action',function ()
         {
-            $prefixDir = app()->appModule()->games->get('prefixPath',$this->gamePanel->data('gameName')) ?? 
-                         fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix';
-            if (fs::isDir($prefixDir.'/pfx/drive_c'))
-                open($prefixDir.'/pfx/drive_c');
+            $prefixDir = FilesWorker::getProtonPrefixPath($this->gamePanel->data('gameName'));
+            if (fs::isDir($prefixDir))
+                open($prefixDir);
             else 
                 $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOPREFIX'));
         });
@@ -424,8 +440,7 @@ class MainForm extends AbstractForm
     function doRunInPrefixButtonAction(UXEvent $e = null)
     {    
         $proton = FilesWorker::getProtonExecutable($this->gamePanel->data('gameName'));
-        $prefixDir = $this->appModule()->games->get('prefixPath',$this->gamePanel->data('gameName')) ?? 
-                     fs::parent($this->appModule()->games->get('executable',$this->gamePanel->data('gameName'))).'/OFME Prefix';
+        $prefixDir = FilesWorker::getProtonPrefixPath($this->gamePanel->data('gameName'));
         if ($proton == false)
         {
             $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
@@ -442,8 +457,7 @@ class MainForm extends AbstractForm
             return;
             
         $process = new Process([$proton,'run',$exe],fs::parent($exe),
-        ['STEAM_COMPAT_DATA_PATH'=>$prefixDir,'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>System::getProperty('user.home').'/.steam/steam']
-        )->start();
+        ['STEAM_COMPAT_DATA_PATH'=>$prefixDir,'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>System::getProperty('user.home').'/.steam/steam'])->start();
                                                            
         FilesWorker::hookProcessOuts($process,false,false);
     }
@@ -497,6 +511,15 @@ class MainForm extends AbstractForm
             $this->off('mouseDown');
             $this->hideGameMenu();
         }
+    }
+
+    /**
+     * @event close 
+     */
+    function doClose(UXWindowEvent $e = null)
+    {    
+        if (app()->form('addGame')->ariaDownloader == null or app()->form('addGame')->ariaDownloader->isRunning() == false)
+            fs::delete('/tmp/ofllpid');
     }
 
 
@@ -585,14 +608,11 @@ class MainForm extends AbstractForm
         $this->addGame->hide();
         
         $this->gameHeader->image = $header;
-        $this->updateTimeSpent($name);
         $this->gamePanel->data('gameName',$name); 
         $this->gamePanel->data('opener',$sender);  
         $this->protonDBButton->enabled = $this->steamButton->enabled = $this->steamDBButton->enabled = $this->appModule()->games->get('steamID',$name) != null;
-        if (new Process(['pgrep','-af',fs::name($this->appModule()->games->get('executable',$name))])->startAndWait()->getExitValue() == 1)
-            $this->switchPlayButton('play');
-        else 
-            $this->switchPlayButton('stop');
+        $this->switchPlayButton('stop');
+        new Thread(function () use ($name){$this->waitForWineServerTerminate($name);})->start();
         
         if (System::getProperty('prism.forceGPU'))
         {
@@ -632,43 +652,67 @@ class MainForm extends AbstractForm
     
     function runGame($gameName,$debug = false)
     {
-        $process = FilesWorker::generateProcess($gameName,$debug);
-        if ($process == null)
-            return;
-        
-        $this->switchPlayButton('stop');
-        
         new Thread(function () use ($process,$gameName,$debug)
         {
+            $process = FilesWorker::generateProcess($gameName,$debug);
+            if ($process == null)
+                return;
+            
+            uiLater(function (){$this->switchPlayButton('stop');});
+            
             FilesWorker::run($process,$gameName,$debug);
             
-            if ($this->gamePanel->data('gameName') == $gameName)
-            {
-                uiLater(function () use ($gameName)
-                {
-                    if ($this->gamePanel->data('gameName') == $gameName)
-                        $this->switchPlayButton('play');
-                        
-                    $this->updateTimeSpent($gameName);
-                });
-            }
+            Logger::info("$gameName process has finished, waiting for the wineprefix to complete");
+            $this->waitForWineServerTerminate($gameName);
+            Logger::info("$gameName fully terminated");
         })->start();
+    }
+    
+    function waitForWineServerTerminate($gameName)
+    {
+        $protonExec = FilesWorker::getProtonExecutable($gameName,'wineserver',true);
+        $prefixDir = FilesWorker::getProtonPrefixPath($this->gamePanel->data('gameName'),'wine');
+        
+        if (fs::isDir($prefixDir) and $protonExec != false)
+        {
+            try{new Process([$protonExec,'-w'],null,['WINEPREFIX'=>$prefixDir])->startAndWait();}
+            catch (Throwable $ex){}
+        }
+        
+        uiLater(function () use ($gameName)
+        {
+            if ($this->gamePanel->data('gameName') == $gameName)
+            {    
+                if ($this->gamePanel->data('gameName') == $gameName)
+                    $this->switchPlayButton('play');
+                    
+                $this->updateTimeSpent($gameName);
+            }
+        });
     }
     
     function switchPlayButton($status)
     {
-        if ($status == 'stop')
+        switch ($status)
         {
-            $this->playButton->text = Localization::getByCode('MAINFORM.STOP');
-            $this->playButton->graphic = $this->playButton->data('stop');
-            $this->gameDebugButton->enabled = false;
+            case ('stop'):
+                $this->playButton->text = Localization::getByCode('MAINFORM.STOP');
+                $this->playButton->graphic = $this->playButton->data('stop');
+                $this->gameDebugButton->enabled = false;
+            break;
+            case ('wait'):
+                $this->playButton->text = Localization::getByCode('MAINFORM.WAIT');
+                $this->playButton->graphic = $this->playButton->data('wait');
+                $this->gameDebugButton->enabled = $this->playButton->enabled = false;
+            return;
+            default: 
+                $this->playButton->text = Localization::getByCode('MAINFORM.PLAY');
+                $this->playButton->graphic = $this->playButton->data('play');
+                $this->gameDebugButton->enabled = true;
+            break;
         }
-        else 
-        {
-            $this->playButton->text = Localization::getByCode('MAINFORM.PLAY');
-            $this->playButton->graphic = $this->playButton->data('play');
-            $this->gameDebugButton->enabled = true;
-        }
+        
+        $this->playButton->enabled = true;
     }
     
     function updateTimeSpent($gameName)

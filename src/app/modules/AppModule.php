@@ -13,27 +13,7 @@ class AppModule extends AbstractModule
      */
     function doAction(ScriptEvent $e = null)
     {
-        /*if (System::getProperty('prism.forceGPU') != true) #MIGRATION FROM LEGACY, REMOVE IN V2.4
-        {
-            Logger::info('Setting forceGPU to true (migration from legacy launcher installation)');
-            
-            $desktops = [str::trim(execute('xdg-user-dir DESKTOP',true)->getInput()->readFully()).'/OnlineFix Linux Launcher.desktop',
-                         System::getProperty('user.home').'/.local/share/applications/OnlineFix Linux Launcher.desktop'];
-            foreach ($desktops as $desktop)
-            {
-                $content = file_get_contents($desktop);
-                if (fs::isFile($desktop) and str::contains($content,'-Dprism.forceGPU') == false)
-                    file_put_contents($desktop,str::replace($content,'-jar','-Dprism.forceGPU=true -jar'));
-            }
-            
-            if (fs::isFile('./jre/bin/java'))
-            {
-                new Process(array_merge([fs::abs('./jre/bin/java'),'-Dprism.forceGPU=true','-jar'],$GLOBALS['argv']))->start();
-                System::halt(0);
-            }
-        }*/
-        
-        $GLOBALS['version'] = '2.4';
+        $GLOBALS['version'] = '2.5';
         
         $userhome = System::getProperty('user.home');
         $this->games->path = "$userhome/.config/OFME-Linux/Games.ini";

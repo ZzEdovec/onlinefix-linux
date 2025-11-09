@@ -70,12 +70,6 @@ class addGame extends AbstractForm
             {
                 try{$this->switchGameButton('add','addGame');} catch (Throwable $ex){}
                 
-                if ($files == null or $files == [])
-                {
-                    UXDialog::show(Localization::getByCode('ADDGAME.EMPTY'),'ERROR');
-                    return;
-                }
-                
                 $form = quUI::showFormAndFocus('newGameConfigurator',true);
                 uiLater(function () use ($files,$path,$form)
                 {
@@ -232,22 +226,6 @@ class addGame extends AbstractForm
     }
 
     /**
-     * @event errorLabel.construct 
-     */
-    function doErrorLabelConstruct(UXEvent $e = null)
-    {    
-        $e->sender->text = Localization::getByCode('ADDGAME.SOURCE.GETFAIL');
-    }
-
-    /**
-     * @event errorSubLabel.construct 
-     */
-    function doErrorSubLabelConstruct(UXEvent $e = null)
-    {    
-        $e->sender->text = Localization::getByCode('ADDGAME.SOURCE.HINT');
-    }
-
-    /**
      * @event label.construct 
      */
     function doLabelConstruct(UXEvent $e = null)
@@ -301,6 +279,14 @@ class addGame extends AbstractForm
     function doLabel5Construct(UXEvent $e = null)
     {    
         $e->sender->text = Localization::getByCode('ADDGAME.SEARCH.NOTFOUND.SUB');
+    }
+
+    /**
+     * @event keyUp-Esc 
+     */
+    function doKeyUpEsc(UXKeyEvent $e = null)
+    {    
+        $this->hide();
     }
 
 
@@ -383,8 +369,7 @@ class addGame extends AbstractForm
                                  function (File $f)
                                  {
                                      if ($f->isDirectory() or 
-                                          Regex::match('\.(exe|vbs|bat|rar)$',$f) == false or
-                                          Regex::match('(?i)^unitycrashhandler.*\.exe$',fs::name($f)))
+                                          Regex::match('\.(exe|vbs|bat|rar)$',$f) == false)
                                           return false;
                                      
                                      return $f;

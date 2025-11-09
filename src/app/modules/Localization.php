@@ -12,6 +12,6 @@ class Localization
         if (ResourceStream::exists('res://locale/'.$locale.'.json') == false)
             $locale = 'en';
         
-        return Json::decode(ResourceStream::of('res://locale/'.$locale.'.json')->readFully())[str::upper($code)];
+        return Json::decode(ResourceStream::of('res://locale/'.$locale.'.json')->readFully())[$code];
     }
 }

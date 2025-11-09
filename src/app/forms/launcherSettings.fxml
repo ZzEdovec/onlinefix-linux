@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="416" prefWidth="656" styleClass="">
   <children>
-    <VBox alignment="CENTER" focusTraversable="false" id="launcher" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="360" prefWidth="656" spacing="1" styleClass="">
-      <children>
-        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="fullscreenLauncher" layoutX="328" layoutY="180" prefHeight="58" prefWidth="344" ripplerFill="#cccccc" style="-fx-background-color: #333337;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
-          <font>
-            <Font name="System Regular" size="13"/>
-          </font>
-        </com.jfoenix.controls.JFXButton>
-        <Data cursor="HAND" enabled="1" id="data-fullscreenLauncher" visible="1"/>
-      </children>
-    </VBox>
     <VBox AnchorPane.bottomAnchor="56" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER" focusTraversable="false" id="about" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="360" prefWidth="656" spacing="5" styleClass="">
       <children>
         <ImageViewEx autoSize="false" centered="false" focusTraversable="false" height="88" id="image" layoutX="284" layoutY="81" mosaic="false" mosaicGap="0" proportional="false" stretch="true" styleClass="" textFill="#000000" width="88">
@@ -207,32 +197,76 @@
         <Data cursor="DEFAULT" enabled="1" id="data-label9" visible="1"/>
       </children>
     </VBox>
+    <VBox AnchorPane.bottomAnchor="56" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER" focusTraversable="false" id="graphics" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="360" prefWidth="656" spacing="1" styleClass="">
+      <children>
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label10" layoutX="140" layoutY="130" prefHeight="40" prefWidth="376" styleClass="label " text="Стандартные настройки графики для новых игр" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="13"/>
+          </font>
+        </LabelEx>
+        <Data cursor="DEFAULT" enabled="1" id="data-label10" visible="1"/>
+        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="wined3d" layoutX="192" layoutY="171" prefHeight="58" prefWidth="272" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:15 15 0 0px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="13"/>
+          </font>
+        </com.jfoenix.controls.JFXButton>
+        <Data cursor="HAND" enabled="1" id="data-wined3d" visible="1"/>
+        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="useWayland" layoutX="328" layoutY="230" prefHeight="58" prefWidth="272" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:0 0 15 15px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="13"/>
+          </font>
+        </com.jfoenix.controls.JFXButton>
+        <Data cursor="HAND" enabled="1" id="data-useWayland" visible="1"/>
+      </children>
+    </VBox>
+    <VBox AnchorPane.bottomAnchor="56" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER" focusTraversable="false" id="launcher" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="360" prefWidth="656" spacing="1" styleClass="">
+      <children>
+        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="fullscreenLauncher" layoutX="172" layoutY="151" prefHeight="58" prefWidth="312" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:15 15 0 0px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="13"/>
+          </font>
+        </com.jfoenix.controls.JFXButton>
+        <Data cursor="HAND" enabled="1" id="data-fullscreenLauncher" visible="1"/>
+        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="requestSteam" layoutX="328" layoutY="210" prefHeight="58" prefWidth="312" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:0 0 15 15px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+          <font>
+            <Font name="System Regular" size="13"/>
+          </font>
+        </com.jfoenix.controls.JFXButton>
+        <Data cursor="HAND" enabled="1" id="data-requestSteam" visible="1"/>
+      </children>
+    </VBox>
     <HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" alignment="CENTER" focusTraversable="false" id="hbox" layoutX="0" layoutY="360" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="56" prefWidth="656" spacing="0" style="-fx-background-color:#333337;" styleClass="">
       <children>
-        <ToggleButton alignment="CENTER" contentDisplay="TOP" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="pathsButton" layoutX="164" layoutY="0" prefHeight="56" prefWidth="72" selected="true" styleClass="toggle-button " text="Пути" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
+        <ToggleButton alignment="CENTER" contentDisplay="TOP" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="pathsButton" layoutX="128" layoutY="0" prefHeight="56" prefWidth="72" selected="true" styleClass="toggle-button " text="Пути" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="11"/>
           </font>
         </ToggleButton>
         <Data cursor="DEFAULT" enabled="1" graphic=".data/img/fileview.png" id="data-pathsButton" toggleGroup="" visible="1"/>
-        <ToggleButton alignment="CENTER" contentDisplay="TOP" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="protonsButton" layoutX="236" layoutY="0" prefHeight="56" prefWidth="72" styleClass="toggle-button " text="Протоны" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
+        <ToggleButton alignment="CENTER" contentDisplay="TOP" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="protonsButton" layoutX="200" layoutY="0" prefHeight="56" prefWidth="72" styleClass="toggle-button " text="Протоны" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="11"/>
           </font>
         </ToggleButton>
         <Data cursor="DEFAULT" enabled="1" graphic=".data/img/proton17.png" id="data-protonsButton" toggleGroup="" visible="1"/>
-        <ToggleButton alignment="CENTER" contentDisplay="TOP" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="launcherButton" layoutX="308" layoutY="0" prefHeight="56" prefWidth="72" styleClass="toggle-button " text="Лаунчер" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
+        <ToggleButton alignment="CENTER" contentDisplay="TOP" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="graphicsButton" layoutX="272" layoutY="0" prefHeight="56" prefWidth="72" styleClass="toggle-button " text="Графика" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
+          <font>
+            <Font name="System Bold" size="11"/>
+          </font>
+        </ToggleButton>
+        <ToggleButton alignment="CENTER" contentDisplay="TOP" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="launcherButton" layoutX="344" layoutY="0" prefHeight="56" prefWidth="72" styleClass="toggle-button " text="Лаунчер" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="11"/>
           </font>
         </ToggleButton>
         <Data cursor="DEFAULT" enabled="1" graphic=".data/img/oflogonegate17.png" id="data-launcherButton" toggleGroup="" visible="1"/>
-        <ToggleButton alignment="CENTER" contentDisplay="TOP" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="aboutButton" layoutX="380" layoutY="0" prefHeight="56" prefWidth="112" styleClass="toggle-button " text="О программе" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
+        <ToggleButton alignment="CENTER" contentDisplay="TOP" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="aboutButton" layoutX="416" layoutY="0" prefHeight="56" prefWidth="112" styleClass="toggle-button " text="О программе" textAlignment="CENTER" textFill="#e6e6e6" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="11"/>
           </font>
         </ToggleButton>
         <Data cursor="DEFAULT" enabled="1" graphic=".data/img/about.png" id="data-aboutButton" toggleGroup="" visible="1"/>
+        <Data cursor="DEFAULT" enabled="1" graphic=".data/img/graphics.png" id="data-graphicsButton" toggleGroup="" visible="1"/>
       </children>
     </HBox>
     <Data cursor="DEFAULT" enabled="1" id="data-hbox" visible="1"/>
@@ -240,5 +274,6 @@
     <Data cursor="DEFAULT" enabled="1" id="data-protons" visible=""/>
     <Data cursor="DEFAULT" enabled="1" id="data-launcher" visible=""/>
     <Data cursor="DEFAULT" enabled="1" id="data-about" visible=""/>
+    <Data cursor="DEFAULT" enabled="1" id="data-graphics" visible=""/>
   </children>
 </AnchorPane>

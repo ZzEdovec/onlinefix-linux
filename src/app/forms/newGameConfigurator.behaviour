@@ -15,4 +15,7 @@
   <target id="cancelButton">
     <behaviour brightness="0.05" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
   </target>
+  <target id="ftpInstallerBox">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
 </behaviours>

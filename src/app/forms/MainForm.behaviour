@@ -15,13 +15,13 @@
   <target id="about">
     <behaviour brightness="0.05" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
   </target>
-  <target id="winetricksButton">
-    <behaviour brightness="0.05" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
-  </target>
   <target id="gameFolderButton">
     <behaviour brightness="0.05" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
   </target>
   <target id="runInPrefixButton">
+    <behaviour brightness="0.05" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="utilitiesButton">
     <behaviour brightness="0.05" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
   </target>
 </behaviours>

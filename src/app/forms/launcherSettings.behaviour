@@ -21,4 +21,13 @@
   <target id="github">
     <behaviour threshold="0.10487804878049" type="behaviour\custom\BloomEffectBehaviour" when="HOVER"/>
   </target>
+  <target id="wined3d">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="useWayland">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
+  <target id="requestSteam">
+    <behaviour brightness="0.01" contrast="0" hue="0" saturation="0" type="behaviour\custom\ColorAdjustEffectBehaviour" when="HOVER"/>
+  </target>
 </behaviours>

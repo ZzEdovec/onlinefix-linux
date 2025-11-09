@@ -120,16 +120,22 @@ class launcherSettings extends AbstractForm
                     if ($cellItem[0] == $item[0])
                     {
                         $this->protonsList->items->removeByIndex($index);
-                        $this->protonsList->items->insert($index,[$item[0],$item[1]]);
-                        
+                        if ($item[1] != null)
+                            $this->protonsList->items->insert($index,[$item[0],$item[1]]);
                         break;
                     }
                 }
             };
-            $dnFunc = function () use ($item,$refreshFunc,$protonPath)
+            $dnFunc = function () use ($item,$refreshFunc,$protonPath,$dnBtn)
             {
-                app()->form('protonDownloader')->startDownload($item[0],$item[1]);
-                app()->showFormAndWait('protonDownloader');
+                $dnBtn->enabled = false;
+                
+                $downloader = app()->getNewForm('protonDownloader');
+                
+                $downloader->startDownload($item[0],$item[1]);
+                $downloader->showAndWait();
+                
+                $dnBtn->enabled = true;
                 
                 if (fs::isFile("$protonPath/".$item[0].'/proton'))
                 {
@@ -141,6 +147,12 @@ class launcherSettings extends AbstractForm
             };
             $rmFunc = function () use ($item,$refreshFunc,$protonPath)
             {
+                if (File::of(fs::abs("$protonPath/".$item[0]))->canWrite() == false)
+                {
+                    UXDialog::show(Localization::getByCode('ARIA.EXITCODE.17'),'ERROR');
+                    return;
+                }
+                
                 new Process(['rm','-rf',fs::abs("$protonPath/".$item[0])])->startAndWait();
                 
                 $refreshFunc();
@@ -177,25 +189,50 @@ class launcherSettings extends AbstractForm
             return $cell;
         });
         
-        $releases = FilesWorker::fetchProtonReleases();
-        if ($releases == false or str::contains($releases,'tar.gz'))
-        {
-            uiLater(function (){$this->toast(Localization::getByCode('GAMESETTINGS.NOGITHUBAPI'),4000);});
-            return;
-        }
+        $installedProtons = FilesWorker::getInstalledProtons();
+        foreach ($installedProtons as $proton)
+            $this->protonsList->items->add([$proton]);
         
-        foreach ($releases as $release)
+        new Thread(function () use ($installedProtons)
         {
-            foreach ($release['assets'] as $asset)
+            $releases = FilesWorker::fetchProtonReleases();
+            if ($releases == false or str::contains($releases,'tar.gz'))
             {
-                if (Regex::match('^application/(gzip|x-gtar)$',$asset['content_type']) == false or 
-                    $asset['state'] != 'uploaded' or 
-                    $asset['browser_download_url'] == null)
-                    continue;
+                uiLater(function (){$this->toast(Localization::getByCode('GAMESETTINGS.NOGITHUBAPI'),4000);});
                 
-                $this->protonsList->items->add([$release['tag_name'],$asset['browser_download_url']]);
+                $this->protonsList->data('allowRefresh',true);
+                return;
             }
-        }
+            
+            foreach ($releases as $release)
+            {
+                foreach ($release['assets'] as $asset)
+                {
+                    if (Regex::match('^application/(gzip|x-gtar)$',$asset['content_type']) == false or 
+                        $asset['state'] != 'uploaded' or 
+                        $asset['browser_download_url'] == null)
+                        continue;
+                    
+                    if (in_array($release['tag_name'],$installedProtons))
+                    {
+                        foreach ($this->protonsList->items->toArray() as $index => $item)
+                        {
+                            if ($item[0] == $release['tag_name'] and $item[1] == null)
+                            {
+                                uiLater(function () use ($index,$release,$asset)
+                                {
+                                    $this->protonsList->items->removeByIndex($index);
+                                    $this->protonsList->items->insert($index,[$release['tag_name'],$asset['browser_download_url']]);
+                                });
+                                break;
+                            }
+                        }
+                    }
+                    else
+                        uiLater(function () use ($release,$asset){$this->protonsList->items->add([$release['tag_name'],$asset['browser_download_url']]);});
+                }
+            }
+        })->start();
     }
 
 
@@ -216,15 +253,12 @@ class launcherSettings extends AbstractForm
         if ($result == false)
             return;
         
-        $items = $this->protonsList->items->toArray();
-        
         $this->protonsList->items->clear();
         $this->defaultProton->items->clear();
         
         $this->appModule()->launcher->remove('defaultProton','User Settings');
         $this->doDefaultProtonConstruct();
-        
-        $this->protonsList->items->addAll($items);
+        $this->doProtonsListConstruct();
     }
 
     /**
@@ -327,6 +361,7 @@ class launcherSettings extends AbstractForm
         $this->appModule()->launcher->set('fullscreen',!$this->fullscreenLauncher->data('quUIElement')->selected,'User Settings');
         
         app()->form('MainForm')->fullScreen = !$this->fullscreenLauncher->data('quUIElement')->selected;
+        uiLater(function (){$this->requestFocus();});
     }
 
     /**
@@ -423,6 +458,106 @@ class launcherSettings extends AbstractForm
     function doLabel9Construct(UXEvent $e = null)
     {    
         $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.PROTON.HINT');
+    }
+
+    /**
+     * @event graphicsButton.action 
+     */
+    function doGraphicsButtonAction(UXEvent $e = null)
+    {
+        $this->switchPage($this->graphics);
+    }
+
+    /**
+     * @event graphicsButton.construct 
+     */
+    function doGraphicsButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->text = Localization::getByCode('SETTINGSMODULE.GRAPHICS');
+    }
+
+    /**
+     * @event wined3d.construct 
+     */
+    function doWined3dConstruct(UXEvent $e = null)
+    {
+        $switch = new UXToggleSwitch;
+        $switch->selected = $this->appModule()->launcher->get('gamesUsesWined3d','User Settings');
+        quUI::generateSetButton($e->sender,Localization::getByCode('SETTINGSMODULE.USEWINED3D'),$switch);
+    }
+
+    /**
+     * @event wined3d.action 
+     */
+    function doWined3dAction(UXEvent $e = null)
+    {
+        $this->appModule()->launcher->set('gamesUsesWined3d',!($e->sender->data('quUIElement')->selected),'User Settings');
+    }
+
+    /**
+     * @event useWayland.construct 
+     */
+    function doUseWaylandConstruct(UXEvent $e = null)
+    {
+        $switch = new UXToggleSwitch;
+        $switch->selected = $this->appModule()->launcher->get('gamesUsesWayland','User Settings');
+        
+        quUI::generateSetButton($e->sender,Localization::getByCode('SETTINGSMODULE.NATIVEWAYLAND'),$switch);
+    }
+
+    /**
+     * @event useWayland.action 
+     */
+    function doUseWaylandAction(UXEvent $e = null)
+    {
+        $this->appModule()->launcher->set('gamesUsesWayland',!($e->sender->data('quUIElement')->selected),'User Settings');
+    }
+
+    /**
+     * @event show 
+     */
+    function doShow(UXWindowEvent $e = null)
+    {    
+        if ($this->protonsList->data('allowRefresh'))
+        {
+            $this->protonsList->items->clear();
+            $this->doProtonsListConstruct();
+        }
+    }
+
+    /**
+     * @event requestSteam.construct 
+     */
+    function doRequestSteamConstruct(UXEvent $e = null)
+    {
+        $switch = new UXToggleSwitch;
+        $switch->selected = $this->appModule()->launcher->get('noSteamRequest','User Settings');
+        
+        quUI::generateSetButton($e->sender,Localization::getByCode('LAUNCHERSETTINGS.LAUNCHER.REQUESTSTEAM'),$switch);
+    }
+
+    /**
+     * @event requestSteam.action 
+     */
+    function doRequestSteamAction(UXEvent $e = null)
+    {
+        $this->appModule()->launcher->set('noSteamRequest',!$this->requestSteam->data('quUIElement')->selected,'User Settings');
+    }
+
+    /**
+     * @event keyUp-Esc 
+     */
+    function doKeyUpEsc(UXKeyEvent $e = null)
+    {    
+        $this->hide();
+    }
+
+    /**
+     * @event label10.construct 
+     */
+    function doLabel10Construct(UXEvent $e = null)
+    {    
+        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.GRAPHICS.HEADER');
     }
     
     static function getBasePathFor($for)

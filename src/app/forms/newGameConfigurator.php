@@ -106,7 +106,16 @@ class newGameConfigurator extends AbstractForm
         $gameDir = $dc->showDialog($this);
         if ($gameDir == null)
             return;
+        
+        
+        if ($this->ftpInstallerBox->enabled != true and $gameDir->find() != [])
+        {
+            UXDialog::show('Папка не пуста!','ERROR');
+            $this->doGamePathClick();
             
+            return;
+        }
+        
         $this->gamePath->text = $gameDir;
     }
     
@@ -136,34 +145,48 @@ class newGameConfigurator extends AbstractForm
         $ext = fs::ext($candidate);
         
         $isLauncher = str::contains(str::lower($nameNoExt),'launcher');
-        if ($canInstall)
+        if ($canInstall and $ext == 'rar')
         {
-            Logger::info('RAR selected, so parsing archive content');
-            
             $this->gameParams['originalFile'] = $candidate;
             $this->parseFromRar($candidate);
             
             return;
         }
-        elseif ($ext == 'exe' and $isLauncher == false) {$this->gameName->text = $nameNoExt;}
-        else
+        
+        $this->gameParams['mainFile'] = $candidate;
+        $this->gameParams['canInstall'] = $canInstall;
+        
+        $defaultInstallPath = $this->appModule()->launcher->get('installsPath','User Settings');
+        if ($canInstall == false or $ext != 'exe')
+        {
+            $this->gamePath->text = $this->gameParams['path'] ?? $defaultInstallPath;
+            $this->ftpInstallerBox->enabled = false;
+        }
+        elseif ($defaultInstallPath != null and $ext == 'exe' and $canInstall)
+            $this->gamePath->text = $defaultInstallPath.'/'.fs::name(fs::parent($candidate));
+        
+        if ($this->gameParams['skipConfig'])
+        {
+            $this->doAddGameAction();
+            return;
+        }
+        
+        if ($ext == 'exe' and $isLauncher == false and $canInstall == false)
+            $this->gameName->text = $nameNoExt;
+        else 
         {
             $this->gameName->text = fs::name(fs::parent($candidate));
             $nameNoExt = $this->gameName->text;
         }
         
-        if ($this->gameParams['path'] != null)
+        if ($this->gameParams['path'] != null and $this->ftpInstallerBox->enabled == false)
         {
             $this->gamePathBox->enabled = false;
             $this->cleanAfterAdd->enabled = $this->cleanAfterAdd->data('quUIElement')->selected = false;
         }
         
         $prefixPath = launcherSettings::getBasePathFor('prefixes');
-        
-        $this->gamePath->text = $this->gameParams['path'] ?? $this->appModule()->launcher->get('installsPath','User Settings'); 
         $this->prefixPath->text = "$prefixPath/$nameNoExt";
-        
-        $this->gameParams['mainFile'] = $candidate;
         
         $this->mainSelectBox->free();
         $this->gameParamsBox->show();
@@ -212,6 +235,11 @@ class newGameConfigurator extends AbstractForm
             new Process(['rm','-rf',$origParent])->start();
             $this->hide();
         }
+        elseif ($this->gameParams['skipConfig'] and $this->isFree() == false)
+        {
+            new Process(['rm','-rf',$this->prefixPath->text])->start();
+            $this->hide();
+        }
         elseif ($this->gameParams['openedFromAria'] == false and $this->isFree() == false)
             $this->hide();
     }
@@ -221,33 +249,48 @@ class newGameConfigurator extends AbstractForm
      */
     function doGameNameKeyUp(UXKeyEvent $e = null)
     {
-        $parent = fs::parent($this->prefixPath->text);
-        $default = launcherSettings::getBasePathFor('prefixes');
+        $installPathDefault = $this->appModule()->launcher->get('installsPath','User Settings');
+        $prefixParent = fs::parent($this->prefixPath->text);
+        $prefixDefault = launcherSettings::getBasePathFor('prefixes');
         
-        if ($parent == $default)
-            $this->prefixPath->text = $parent.'/'.$e->sender->text;
+        if ($prefixParent == $prefixDefault)
+            $this->prefixPath->text = $prefixParent.'/'.$e->sender->text;
+        if (fs::isDir($this->gamePath->text) == false)
+            $this->gamePath->text = $installPathDefault.'/'.$e->sender->text;
     }
 
     /**
      * @event addGame.action 
      */
     function doAddGameAction(UXEvent $e = null)
-    {    
-        $isAddPossible = $this->checkAreAddPossible();
-        if (is_bool($isAddPossible) == false or $isAddPossible != true)
+    {
+        if ($this->gameParams['skipConfig'] == false)
         {
-            UXDialog::show($isAddPossible,'ERROR');
-            return;
+            $isAddPossible = $this->checkAreAddPossible();
+            if (is_bool($isAddPossible) == false or $isAddPossible != true)
+            {
+                UXDialog::show($isAddPossible,'ERROR');
+                return;
+            }
         }
         
         $this->free();
+        
+        if ($this->gameParams['canInstall'])
+        {
+            ftpInstaller::install($this->gameName->text,
+                                  [$this->gameParams['mainFile'],$this->ftpInstallerPath->text],
+                                  $this->prefixPath->text,$this->gamePath->text,
+                                  $this->cleanAfterAdd->data('quUIElement')->selected);
+            return;
+        }
         
         $box = app()->form('MainForm')->addStubGame();
         $box['gameName']->text = $this->gameName->text;
         
         new Thread(function () use ($box)
         {
-            if ($this->gameParams['originalFile'] != null)
+            if ($this->gameParams['originalFile'] != null and fs::ext($this->gameParams['originalFile']) == 'rar')
             {
                 uiLater(function () use ($box){$box['status']->text = Localization::getByCode('NEWGAMECONFIG.UNPACKING');});
                 
@@ -311,13 +354,15 @@ class newGameConfigurator extends AbstractForm
                                             'mainPath'=>$path ?? $this->gamePath->text,
                                             'prefixPath'=>$this->prefixPath->text,
                                             'proton'=>$this->appModule()->launcher->get('defaultProton','User Settings') ?? 'GE-Proton Latest',
-                                            'steamRuntime'=>FilesWorker::findSteamRuntime() != false ? true : false,
-                                            'steamOverlay'=>true],$this->gameName->text);
+                                            'steamRuntime'=>boolval(FilesWorker::findSteamRuntime()),
+                                            'steamOverlay'=>true,
+                                            'wined3d'=>$this->appModule()->launcher->get('gamesUsesWined3d','User Settings'),
+                                            'nativeWayland'=>$this->appModule()->launcher->get('gamesUsesWayland','User Settings'),
+                                            'fixPath'=>$parsed['fixPath']],$this->gameName->text);
                                             
             uiLater(function () use ($parsed,$bannerPath,$appIcon,$box)
             {
                 app()->form('MainForm')->removeStubGame($box['box']);
-                
                 app()->form('MainForm')->addGame($this->gameName->text,$this->gameParams['mainFile'],$parsed['overrides'],$bannerPath,$appIcon);
             });
             
@@ -410,6 +455,51 @@ class newGameConfigurator extends AbstractForm
         $e->sender->text = Localization::getByCode('ADD');
     }
 
+
+
+    /**
+     * @event ftpInstallerPath.click 
+     */
+    function doFtpInstallerPathClick(UXMouseEvent $e = null)
+    {
+        $fc = new UXFileChooser;
+        
+        $fc->extensionFilters = [['extensions'=>['*.exe'],'description'=>Localization::getByCode('NEWGAMECONFIG.FREETP.FILECHOOSER')]];
+        $installer = $fc->showOpenDialog($this);
+        if ($installer == null)
+            return;
+            
+        $this->ftpInstallerPath->text = $installer;
+    }
+
+    /**
+     * @event ftpInstallerBox.click 
+     */
+    function doFtpInstallerBoxClick(UXMouseEvent $e = null)
+    {
+        $this->doFtpInstallerPathClick();
+    }
+
+    /**
+     * @event labelAlt.construct 
+     */
+    function doLabelAltConstruct(UXEvent $e = null)
+    {
+        $e->sender->text = Localization::getByCode('NEWGAMECONFIG.FREETP');
+    }
+
+    /**
+     * @event keyUp-Esc 
+     */
+    function doKeyUpEsc(UXKeyEvent $e = null)
+    {    
+        $this->hide();
+    }
+
+
+
+
+
     
     function prepareForGame($files,$path = null)
     {
@@ -477,7 +567,7 @@ class newGameConfigurator extends AbstractForm
     
     private function checkAreAddPossible()
     {
-        if ($this->gameName->text == null or $this->gamePath->text == null or $this->prefixPath->text == null)
+        if ($this->gameName->text == null or $this->gamePath->text == null or $this->prefixPath->text == null/* or ($this->ftpInstallerBox->enabled and $this->ftpInstallerPath->text == null)*/)
             return Localization::getByCode('NEWGAMECONFIG.FIELDSEMPTY');
         elseif ($this->appModule()->games->section($this->gameName->text) != [])
             return Localization::getByCode('MAINFORM.GAMEEXISTS');
@@ -548,7 +638,7 @@ class newGameConfigurator extends AbstractForm
             '^ndp[A-Za-z0-9._-]*(?=.*-KB\d+)(?=.*-(?:x86|x64))(?=.*-AllOS)(?=.*-ENU)[A-Za-z0-9._-]*\.exe$',
         
             // Installers / uninstallers
-            '^setup.*\.exe$',
+            #'^setup.*\.exe$', commented because of ftp installers support lol
             '^install.*\.exe$',
             '^uninstall.*\.exe$',
             '^unins[0-9]+\.exe$',
@@ -602,8 +692,14 @@ class newGameConfigurator extends AbstractForm
     
     static function checkAreInstallPossible($file)
     {
-        $allowExts = ['rar']; #maybe more in future lol
-        
-        return in_array(fs::ext($file),$allowExts);
+        switch (fs::ext($file))
+        {
+            case ('rar'):
+                return true;
+            break;
+            case ('exe'):
+                return File::of(fs::parent($file))->find(function ($d,$f){return fs::ext($f) == 'ftp';}) != [];
+            break;
+        }
     }
 }

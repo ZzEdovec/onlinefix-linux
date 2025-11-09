@@ -119,6 +119,7 @@ class AriaDownloader
                 uiLater(function () use ($dn){app()->form('MainForm')->removeStubGame($dn['box']['box']);});
                 $dn['timer']->cancel();
             }
+            
             unset($this->downloads);
             unset($this->checkTimer);
             

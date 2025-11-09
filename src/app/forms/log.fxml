@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520" prefWidth="648" styleClass="">
+<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552" prefWidth="648" styleClass="">
   <children>
     <LabelEx AnchorPane.leftAnchor="32" AnchorPane.rightAnchor="32" AnchorPane.topAnchor="24" alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label" layoutX="32" layoutY="24" prefHeight="21" prefWidth="584" styleClass="label " text="Лог работы игры" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
       <font>
@@ -7,29 +7,35 @@
       </font>
     </LabelEx>
     <Data cursor="DEFAULT" enabled="1" id="data-label" visible="1"/>
-    <TextArea AnchorPane.bottomAnchor="64" AnchorPane.leftAnchor="32" AnchorPane.rightAnchor="32" AnchorPane.topAnchor="104" editable="false" focusTraversable="true" id="textArea" layoutX="32" layoutY="104" prefColumnCount="40" prefHeight="352" prefWidth="584" promptText="" styleClass="text-input text-area " text="" wrapText="true">
+    <TextArea AnchorPane.bottomAnchor="80" AnchorPane.leftAnchor="32" AnchorPane.rightAnchor="32" AnchorPane.topAnchor="104" editable="false" focusTraversable="true" id="textArea" layoutX="32" layoutY="104" prefColumnCount="40" prefHeight="368" prefWidth="584" promptText="" styleClass="text-input text-area " text="" wrapText="true">
       <font>
         <Font name="System Regular" size="13"/>
       </font>
     </TextArea>
     <Data cursor="DEFAULT" enabled="1" id="data-textArea" visible="1"/>
-    <LabelEx AnchorPane.leftAnchor="32" AnchorPane.rightAnchor="32" AnchorPane.topAnchor="48" alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="labelAlt" layoutX="32" layoutY="48" prefHeight="40" prefWidth="584" styleClass="label " text="Если в нём есть ошибки, вы можете разобраться самостоятельно или отправить лог разработчику для помощи" textAlignment="LEFT" textFill="#e6e6e6" underline="false" wrapText="true">
+    <LabelEx AnchorPane.leftAnchor="32" AnchorPane.rightAnchor="32" AnchorPane.topAnchor="48" alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="labelAlt" layoutX="32" layoutY="48" prefHeight="40" prefWidth="584" styleClass="label " text="Если в нём есть ошибки, вы можете разобраться самостоятельно или отправить лог сообществу и вам помогут" textAlignment="LEFT" textFill="#e6e6e6" underline="false" wrapText="true">
       <font>
         <Font name="System Regular" size="13"/>
       </font>
     </LabelEx>
     <Data cursor="DEFAULT" enabled="1" id="data-labelAlt" visible="1"/>
-    <Button AnchorPane.bottomAnchor="16" AnchorPane.rightAnchor="32" alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="button" layoutX="472" layoutY="472" prefHeight="32" prefWidth="144" styleClass="button def-button " text="Отправить" textAlignment="CENTER" underline="false" wrapText="false">
+    <com.jfoenix.controls.JFXButton AnchorPane.topAnchor="488" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="3" id="button3" layoutX="504" layoutY="488" prefHeight="40" prefWidth="112" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Сохранить" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
       <font>
         <Font name="System Bold" size="12"/>
       </font>
-    </Button>
-    <Data cursor="HAND" enabled="1" id="data-button" visible="1"/>
-    <Button AnchorPane.bottomAnchor="16" AnchorPane.rightAnchor="192" alignment="CENTER" contentDisplay="LEFT" ellipsisString="..." focusTraversable="true" graphicTextGap="4" id="buttonAlt" layoutX="312" layoutY="472" prefHeight="32" prefWidth="144" styleClass="button def-button " text="Не отправлять" textAlignment="CENTER" underline="false" wrapText="false">
+    </com.jfoenix.controls.JFXButton>
+    <Data cursor="HAND" enabled="1" graphic=".data/img/save.png" id="data-button3" visible="1"/>
+    <com.jfoenix.controls.JFXButton AnchorPane.topAnchor="488" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="3" id="button" layoutX="32" layoutY="488" prefHeight="40" prefWidth="112" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Telegram" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
       <font>
-        <Font name="System Regular" size="12"/>
+        <Font name="System Bold" size="12"/>
       </font>
-    </Button>
-    <Data cursor="HAND" enabled="1" id="data-buttonAlt" visible="1"/>
+    </com.jfoenix.controls.JFXButton>
+    <Data cursor="HAND" enabled="1" graphic=".data/img/telegram.png" id="data-button" visible="1"/>
+    <com.jfoenix.controls.JFXButton AnchorPane.topAnchor="488" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="3" id="buttonAlt" layoutX="376" layoutY="488" prefHeight="40" prefWidth="112" ripplerFill="#f2f2f2" style="-fx-background-color: #333337;" styleClass="button jfx-button " text="Закрыть" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+      <font>
+        <Font name="System Bold" size="12"/>
+      </font>
+    </com.jfoenix.controls.JFXButton>
+    <Data cursor="HAND" enabled="1" graphic="" id="data-buttonAlt" visible="1"/>
   </children>
 </AnchorPane>

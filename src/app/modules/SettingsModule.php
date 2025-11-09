@@ -9,9 +9,15 @@ class SettingsModule extends AbstractModule
     $activePage;
     
     function switchPage($newPage)
-    {
+    {   
         $oldPage = $this->activePage;
         $oldPageButtonID = $oldPage->id.'Button';
+        
+        if ($oldPage == $newPage)
+        {
+            $this->$oldPageButtonID->selected = true;
+            return;
+        }
         
         $this->$oldPageButtonID->selected = false;
         $this->activePage = $newPage;

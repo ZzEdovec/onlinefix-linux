@@ -8,14 +8,35 @@ use std, gui, framework, app;
 
 class protonDownloader extends AbstractForm
 {
-
+    /**
+     * @var HttpDownloader
+     */
+    $downloader;
+    
     /**
      * @event hide 
      */
     function doHide(UXWindowEvent $e = null)
     {    
         if (isset($this->downloader) and $this->downloader->isFree() == false and $this->downloader->isBreak() == false)
+        {
             $this->downloader->stop();
+            
+            foreach ($this->downloader->urls as $url)
+                fs::delete($this->downloader->destDirectory.'/'.fs::name($url));
+            
+            $this->downloader->free();
+        }
+        
+        $this->free();
+    }
+
+    /**
+     * @event keyUp-Esc 
+     */
+    function doKeyUpEsc(UXKeyEvent $e = null)
+    {    
+        $this->hide();
     }
     
     function startDownload($name,$url)
@@ -31,7 +52,7 @@ class protonDownloader extends AbstractForm
         {
             UXDialog::show($url == null ? Localization::getByCode('PROTONDOWNLOADER.NOURL') : Localization::getByCode('PROTONDOWNLOADER.NOPATH'),'ERROR');
             
-            $this->hide();
+            uiLater(function (){$this->hide();});
             return;
         }
         
@@ -73,10 +94,7 @@ class protonDownloader extends AbstractForm
                 new Process(['tar','-xzf',fs::name($e->file)],$protonPath)->startAndWait();
                 fs::delete($e->file);
                 
-                uiLater(function () use ($name)
-                {
-                    $this->hide();
-                });
+                uiLater(function () use ($name){$this->hide();});
             })->start();
         });
         $downloader->on('errorOne',function ($e) use ($downloader)

@@ -49,8 +49,11 @@ class FixParser
                 }
                 
                 $ini->free();
-                    
                 continue;
+            }
+            elseif (Regex::match('(?i)^steamfix.*\.dll',$regexFile))
+            {
+                $fixPath = fs::parent($file);
             }
             elseif (str::lower($regexFile) == 'onlinefix.json' and fs::isFile(fs::parent($file).'/Launcher.exe'))
             {
@@ -86,7 +89,7 @@ class FixParser
         if (str::endsWith($overrides,';'))
             $overrides = str::sub($overrides,0,str::length($overrides) - 1);
         
-        return ['overrides'=>$overrides,'realAppId'=>$realAppID,'fakeAppId'=>$fakeAppID];
+        return ['overrides'=>$overrides,'realAppId'=>$realAppID,'fakeAppId'=>$fakeAppID,'fixPath'=>$fixPath];
     }
     
     static function parseBanner($appId)
@@ -137,6 +140,7 @@ class FixParser
             foreach ($iconsPath->findFiles() as $file)
             {
                 $fileSize = $file->length();
+                
                 if ($fileSize > $largestFileSize)
                 {
                     $largestFileSize = $fileSize;

@@ -127,5 +127,13 @@ class gameRemover extends AbstractForm
         $e->sender->text = Localization::getByCode('GAMEREMOVER.PREFIXREMOVE');
     }
 
+    /**
+     * @event keyUp-Esc 
+     */
+    function doKeyUpEsc(UXKeyEvent $e = null)
+    {    
+        $this->hide();
+    }
+
 
 }

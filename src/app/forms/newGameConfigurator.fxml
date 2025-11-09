@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456" prefWidth="416" styleClass="">
+<?import javafx.scene.*?><?import javafx.collections.*?><?import javafx.scene.layout.*?><?import javafx.scene.control.*?><?import javafx.scene.text.*?><?import javafx.scene.image.*?><?import javafx.scene.shape.*?><?import javafx.scene.paint.*?><?import javafx.scene.web.*?><?import javafx.geometry.*?><?import java.lang.*?><?import org.develnext.jphp.ext.javafx.classes.data.*?><?import org.develnext.jphp.ext.javafx.support.*?><?import org.develnext.jphp.ext.javafx.support.control.*?><?import org.develnext.jphp.ext.game.support.*?><AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" focusTraversable="false" id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480" prefWidth="416" styleClass="">
   <children>
-    <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER" focusTraversable="false" id="mainSelectBox" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="456" prefWidth="416" spacing="10" styleClass="">
+    <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER" focusTraversable="false" id="mainSelectBox" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="480" prefWidth="416" spacing="10" styleClass="">
       <padding>
         <Insets bottom="0" left="58" right="58" top="0"/>
       </padding>
       <children>
-        <VBox alignment="TOP_LEFT" focusTraversable="false" id="vbox7" layoutX="58" layoutY="87" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="232" prefWidth="300" spacing="8" styleClass="modern-input-box ">
+        <VBox alignment="TOP_LEFT" focusTraversable="false" id="vbox7" layoutX="58" layoutY="99" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="232" prefWidth="300" spacing="8" styleClass="modern-input-box ">
           <padding>
             <Insets bottom="8" left="18" right="18" top="8"/>
           </padding>
@@ -26,7 +26,7 @@
           </children>
         </VBox>
         <Data cursor="DEFAULT" enabled="1" id="data-vbox7" visible="1"/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="selectFileButton" layoutX="136" layoutY="329" prefHeight="40" prefWidth="144" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Далее" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+        <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="selectFileButton" layoutX="136" layoutY="341" prefHeight="40" prefWidth="144" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Далее" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="12"/>
           </font>
@@ -34,17 +34,17 @@
         <Data cursor="HAND" enabled="1" id="data-selectFileButton" visible="1"/>
       </children>
     </VBox>
-    <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER" focusTraversable="false" id="gameParamsBox" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="456" prefWidth="416" spacing="10" styleClass="">
+    <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER" focusTraversable="false" id="gameParamsBox" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="480" prefWidth="416" spacing="10" styleClass="">
       <padding>
         <Insets bottom="0" left="58" right="58" top="0"/>
       </padding>
       <children>
-        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label" layoutX="58" layoutY="39" prefHeight="21" prefWidth="312" styleClass="label " text="Добавление новой игры" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+        <LabelEx alignment="CENTER" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label" layoutX="58" layoutY="22" prefHeight="21" prefWidth="312" styleClass="label " text="Добавление новой игры" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Bold" size="15"/>
           </font>
         </LabelEx>
-        <VBox alignment="TOP_LEFT" focusTraversable="false" id="vbox6" layoutX="58" layoutY="70" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="58" prefWidth="300" spacing="0" styleClass="modern-input-box ">
+        <VBox alignment="TOP_LEFT" focusTraversable="false" id="vbox6" layoutX="58" layoutY="53" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="58" prefWidth="300" spacing="0" styleClass="modern-input-box ">
           <padding>
             <Insets bottom="8" left="18" right="18" top="8"/>
           </padding>
@@ -68,8 +68,8 @@
             <Data cursor="DEFAULT" enabled="1" id="data-gameName" visible="1"/>
           </children>
         </VBox>
-        <Separator focusTraversable="false" id="separator" layoutX="58" layoutY="138" orientation="HORIZONTAL" prefHeight="8" prefWidth="144" styleClass="separator "/>
-        <VBox alignment="TOP_LEFT" focusTraversable="false" id="vbox3" layoutX="58" layoutY="156" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="117" prefWidth="300" spacing="1" styleClass="">
+        <Separator focusTraversable="false" id="separator" layoutX="58" layoutY="121" orientation="HORIZONTAL" prefHeight="8" prefWidth="144" styleClass="separator "/>
+        <VBox alignment="CENTER" focusTraversable="false" id="vbox3" layoutX="58" layoutY="139" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="176" prefWidth="300" spacing="1" styleClass="">
           <children>
             <VBox alignment="TOP_LEFT" focusTraversable="false" id="gamePathBox" layoutX="0" layoutY="0" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="58" prefWidth="300" spacing="0" style="-fx-background-radius:15 15 0 0;" styleClass="modern-input-box ">
               <padding>
@@ -96,7 +96,31 @@
               </children>
             </VBox>
             <Data cursor="HAND" enabled="1" id="data-gamePathBox" visible="1"/>
-            <VBox alignment="TOP_LEFT" focusTraversable="false" id="vbox4" layoutX="0" layoutY="59" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="58" prefWidth="300" spacing="0" style="-fx-background-radius:0 0 15 15;" styleClass="modern-input-box ">
+            <VBox alignment="TOP_LEFT" focusTraversable="false" id="ftpInstallerBox" layoutX="0" layoutY="59" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="58" prefWidth="300" spacing="0" style="-fx-background-radius:0;" styleClass="modern-input-box ">
+              <padding>
+                <Insets bottom="8" left="18" right="18" top="8"/>
+              </padding>
+              <children>
+                <LabelEx alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="labelAlt" layoutX="18" layoutY="8" prefHeight="17" prefWidth="272" styleClass="label " text="Установщик сетевого фикса FreeTP" textAlignment="LEFT" textFill="#b3b3b3" underline="false" wrapText="false">
+                  <font>
+                    <Font name="System Regular" size="12"/>
+                  </font>
+                </LabelEx>
+                <TextField alignment="CENTER_LEFT" editable="true" focusTraversable="false" id="ftpInstallerPath" layoutX="18" layoutY="25" prefColumnCount="12" prefHeight="16" prefWidth="280" promptText="" text="">
+                  <styleClass xmlns:fx="http://javafx.com/fxml">
+                    <String fx:value="text-input"/>
+                    <String fx:value="text-field"/>
+                    <String fx:value="modern-text-input"/>
+                  </styleClass>
+                  <font>
+                    <Font name="System Regular" size="12"/>
+                  </font>
+                </TextField>
+                <Data cursor="DEFAULT" enabled="1" id="data-labelAlt" visible="1"/>
+                <Data cursor="HAND" enabled="1" id="data-ftpInstallerPath" visible="1"/>
+              </children>
+            </VBox>
+            <VBox alignment="TOP_LEFT" focusTraversable="false" id="vbox4" layoutX="0" layoutY="118" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="58" prefWidth="300" spacing="0" style="-fx-background-radius:0 0 15 15;" styleClass="modern-input-box ">
               <padding>
                 <Insets bottom="8" left="18" right="18" top="8"/>
               </padding>
@@ -121,19 +145,20 @@
               </children>
             </VBox>
             <Data cursor="HAND" enabled="1" id="data-vbox4" visible="1"/>
+            <Data cursor="HAND" enabled="1" id="data-ftpInstallerBox" visible="1"/>
           </children>
         </VBox>
         <Data cursor="DEFAULT" enabled="1" id="data-vbox3" visible="1"/>
         <Data cursor="DEFAULT" enabled="1" id="data-separator" visible="1"/>
         <Data cursor="DEFAULT" enabled="1" id="data-label" visible="1"/>
         <Data cursor="DEFAULT" enabled="1" id="data-vbox6" visible="1"/>
-        <Separator focusTraversable="false" id="separatorAlt" layoutX="58" layoutY="283" orientation="HORIZONTAL" prefHeight="8" prefWidth="144" styleClass="separator "/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="cleanAfterAdd" layoutX="58" layoutY="301" prefHeight="58" prefWidth="304" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:15px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+        <Separator focusTraversable="false" id="separatorAlt" layoutX="58" layoutY="325" orientation="HORIZONTAL" prefHeight="8" prefWidth="144" styleClass="separator "/>
+        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="cleanAfterAdd" layoutX="58" layoutY="343" prefHeight="58" prefWidth="304" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:15px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Regular" size="13"/>
           </font>
         </com.jfoenix.controls.JFXButton>
-        <HBox alignment="CENTER" focusTraversable="false" id="hbox" layoutX="58" layoutY="369" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="48" prefWidth="300" spacing="10" styleClass="">
+        <HBox alignment="CENTER" focusTraversable="false" id="hbox" layoutX="58" layoutY="411" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="48" prefWidth="300" spacing="10" styleClass="">
           <children>
             <com.jfoenix.controls.JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="addGame" layoutX="41" layoutY="4" prefHeight="40" prefWidth="104" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Добавить" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>

@@ -554,6 +554,118 @@ class gameSettings extends AbstractForm
         $e->sender->text = Localization::getByCode('GAMESETTINGS.TABS.RUN');
     }
 
+    /**
+     * @event noSteamPath.construct 
+     */
+    function doNoSteamPathConstruct(UXEvent $e = null)
+    {
+        $fixPath = $this->appModule()->games->get('fixPath',$this->data('gameName'));
+        
+        $switch = new UXToggleSwitch;
+        $e->sender->enabled = $fixPath != null;
+        $switch->selected = File::of($fixPath)->findFiles(function ($p,$f){return str::endsWith($f,'.noofllpath');}) != [];
+        
+        quUI::generateSetButton($e->sender,Localization::getByCode('GAMESETTINGS.ADDITIONALS.USEFAKESTEAM'),$switch);
+    }
+
+    /**
+     * @event noSteamPath.action 
+     */
+    function doNoSteamPathAction(UXEvent $e = null)
+    {
+        $dlls = File::of($this->appModule()->games->get('fixPath',$this->data('gameName')))->findFiles(function ($p,$f){return Regex::match('(?i)^steamfix(32|64)\.dll$',$f);});
+        
+        if ($dlls == [])
+        {
+            UXDialog::show(Localization::getByCode('GAMESETTINGS.FAKESTEAM.FAILED'));
+            
+            uiLater(function () use ($e){$e->sender->data('quUIElement')->selected = false;});
+            return;
+        }
+        
+        if (!$e->sender->data('quUIElement')->selected)
+        {
+            foreach ($dlls as $dll)
+            {
+                Logger::info("Pathing $dll");
+                
+                fs::rename($dll,fs::name($dll).'.noofllpath');
+                fs::copy(ResourceStream::of(str::endsWith($dll,'32.dll') ? 'res://.data/ftpPath/ftpPath32.dll' : 'res://.data/ftpPath/ftpPath64.dll'),$dll);
+            }
+        }
+        else 
+        {
+            foreach ($dlls as $dll)
+            {
+                Logger::info("Restoring $dll");
+                
+                fs::delete($dll);
+                fs::rename("$dll.noofllpath",fs::name($dll));
+            }
+        }
+    }
+
+    /**
+     * @event graphicsButton.action 
+     */
+    function doGraphicsButtonAction(UXEvent $e = null)
+    {
+        $this->switchPage($this->graphics);
+    }
+
+    /**
+     * @event graphicsButton.construct 
+     */
+    function doGraphicsButtonConstruct(UXEvent $e = null)
+    {
+        $e->sender->text = Localization::getByCode('SETTINGSMODULE.GRAPHICS');
+    }
+
+    /**
+     * @event wined3d.construct 
+     */
+    function doWined3dConstruct(UXEvent $e = null)
+    {
+        $switch = new UXToggleSwitch;
+        $switch->selected = $this->appModule()->games->get('wined3d',$this->data('gameName'));
+        quUI::generateSetButton($e->sender,Localization::getByCode('SETTINGSMODULE.USEWINED3D'),$switch);
+    }
+
+    /**
+     * @event wined3d.action 
+     */
+    function doWined3dAction(UXEvent $e = null)
+    {
+        $this->appModule()->games->set('wined3d',!($e->sender->data('quUIElement')->selected),$this->data('gameName'));
+    }
+
+    /**
+     * @event useWayland.construct 
+     */
+    function doUseWaylandConstruct(UXEvent $e = null)
+    {
+        $switch = new UXToggleSwitch;
+        $switch->selected = $this->appModule()->games->get('nativeWayland',$this->data('gameName'));
+        
+        quUI::generateSetButton($e->sender,Localization::getByCode('SETTINGSMODULE.NATIVEWAYLAND'),$switch);
+    }
+
+    /**
+     * @event useWayland.action 
+     */
+    function doUseWaylandAction(UXEvent $e = null)
+    {
+        $this->appModule()->games->set('nativeWayland',!($e->sender->data('quUIElement')->selected),$this->data('gameName'));
+    }
+
+    /**
+     * @event keyUp-Esc 
+     */
+    function doKeyUpEsc(UXKeyEvent $e = null)
+    {    
+        $this->hide();
+    }
+
 
 
 

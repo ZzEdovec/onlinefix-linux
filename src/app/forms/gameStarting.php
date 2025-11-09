@@ -13,9 +13,20 @@ class gameStarting extends AbstractForm
      */
     function doShow(UXWindowEvent $e = null)
     {
-        $process = filesWorker::generateProcess($GLOBALS['argv'][1]) ?? app()->shutdown();
-        waitAsync('5s',function (){$this->hide();});
-        new Thread(function () use ($process){filesWorker::run($process,$GLOBALS['argv'][1]);})->start();
+        new Thread(function ()
+        {
+            $process = FilesWorker::generateProcess($GLOBALS['argv'][1]);
+            
+            if ($process == null)
+            {
+                app()->shutdown();
+                return;
+            }
+            
+            waitAsync('5s',function (){$this->hide();});
+            
+            FilesWorker::run($process,$GLOBALS['argv'][1]);
+        })->start();
     }
 
     /**

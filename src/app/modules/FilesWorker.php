@@ -15,36 +15,50 @@ class FilesWorker
     static function generateDesktopEntry($name,$icon = null)
     {
         $pwd = fs::abs('./');
-        $java = System::getProperty('java.home').'/bin/java';
         $forceGPU = System::getProperty('prism.forceGPU');
+        $exec = fs::isFile('/usr/bin/onlinefix-linux-launcher') ? '/usr/bin/onlinefix-linux-launcher' : fs::abs('./onlinefix-linux-launcher');
+        
         return "[Desktop Entry]\n".
                "Name=$name\n".
                "GenericName=Play this game with OnlineFix Launcher\n".
-               "Exec=env GDK_BACKEND=x11 \"$java\" -Dprism.forceGPU=$forceGPU -jar \"".$GLOBALS['argv'][0]."\" \"$name\"\n".
+               "Exec=\"$exec\" \"$name\"\n".
                "Icon=$icon\n".
                "Path=$pwd\n".
                "Type=Application\n".
-               "Categories=Game";
+               "Categories=Game;";
     }
     
     static function generateProcess($name,$debug = false)
     {
-        if (execute('pidof steam',true)->getExitValue() == 1)
+        if (app()->appModule()->launcher->get('noSteamRequest','User Settings') == false and execute('pidof steam',true)->getExitValue() == 1)
         {
-            UXDialog::showAndWait(Localization::getByCode('FILESWORKER.STEAMNOTSTARTED'),'ERROR');
-            return;
+            $steam = self::runSteam();
+            
+            if ($steam == false)
+            {
+                uiLater(function ()
+                {
+                    UXDialog::showAndWait(Localization::getByCode('FILESWORKER.STEAMNOTSTARTED'),'ERROR');
+                    
+                    $mainForm = app()->form('MainForm');
+                    if ($mainForm->visible)
+                        $mainForm->switchPlayButton('play');
+                });
+                return;
+            }
         }
         
         $executable = app()->appModule()->games->get('executable',$name);
         $proton = self::getProtonExecutable($name);
+
         if ($proton == false)
         {
-            UXDialog::showAndWait(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'),'ERROR');
+            uiLater(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'),'ERROR');});
             return;
         }
         if (fs::isFile($executable) == false)
         {
-            UXDialog::showAndWait(Localization::getByCode('FILESWORKER.NOGAME'),'ERROR');
+            uiLater(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.NOGAME'),'ERROR');});
             return;
         }
         
@@ -53,11 +67,17 @@ class FilesWorker
         
         $exec = [$proton,'run',$executable];
         $userHome = System::getProperty('user.home');
-        $dxOverrides = 'd3d11=n;d3d10=n;d3d10core=n;dxgi=n;openvr_api_dxvk=n;d3d12=n;d3d12core=n;d3d9=n;d3d8=n;';
+        $wined3d = app()->appModule()->games->get('wined3d',$name);
+        
+        if ($wined3d == false)
+            $dxOverrides = 'd3d11=n;d3d10=n;d3d10core=n;dxgi=n;openvr_api_dxvk=n;d3d12=n;d3d12core=n;d3d9=n;d3d8=n;';
+        
         $mainEnvironment = ['WINEDLLOVERRIDES'=>$dxOverrides.app()->appModule()->games->get('overrides',$name),
-                            'WINEDEBUG'=>$debug ? '+loaddll,+steam,+winsock,+seh,+warn,+err,+trace' : '-all',
-                            'STEAM_COMPAT_DATA_PATH'=>app()->appModule()->games->get('prefixPath',$name) ?? fs::parent($executable).'/OFME Prefix',
-                            'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>"$userHome/.steam/steam"];
+                            'WINEDEBUG'=>$debug ?: '-all',
+                            'STEAM_COMPAT_DATA_PATH'=>self::getProtonPrefixPath($name),
+                            'STEAM_COMPAT_CLIENT_INSTALL_PATH'=>"$userHome/.steam/steam",
+                            'PROTON_USE_WINED3D'=>$wined3d,
+                            'PROTON_ENABLE_WAYLAND'=>app()->appModule()->games->get('nativeWayland',$name)];
                             
         if (app()->appModule()->games->get('steamOverlay',$name))
         {
@@ -68,9 +88,7 @@ class FilesWorker
         }
         
         if (app()->appModule()->games->get('environment',$name) != null)
-        {
             $mainEnvironment = array_merge($mainEnvironment,envViewer::parseEnvironmentArray($name));
-        }
 
         if ($argsAfterExec != null)
             $exec = array_merge($exec,str::split($argsAfterExec,' '));
@@ -94,7 +112,7 @@ class FilesWorker
         } catch (Throwable $ex)
         {
             if (str::contains($ex->getMessage(),'Invalid environment variable'))
-                UXDialog::showAndWait(Localization::getByCode('FILESWORKER.REMOVEENV'),'ERROR');
+                uiLater(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.REMOVEENV'),'ERROR');});
             
             Logger::error($ex->getMessage());
             return;
@@ -107,10 +125,9 @@ class FilesWorker
         
         $GLOBALS['implicitDisableReason'] = 'game';
         UXApplication::setImplicitExit(false);
-        fs::makeDir(app()->appModule()->games->get('prefixPath',$gameName) ?? fs::parent(app()->appModule()->games->get('executable',$gameName)).'/OFME Prefix');
         
         $process = $process->start();
-        self::hookProcessOuts($process,$debug);
+        self::hookProcessOuts($process,boolval($debug));
         
         if ($debug)
             self::debug($exit,$gameName);
@@ -138,14 +155,9 @@ class FilesWorker
             
             app()->form('log')->textArea->text = "$info\n".app()->form('log')->textArea->text;
             app()->form('log')->data('gameName',$gameName);
+            app()->form('log')->title = "$gameName log";
             
             app()->showFormAndWait('log');
-        });
-        
-        uiLaterAndWait(function ()
-        {
-            if (app()->form('MainForm')->data('manualKill') == true)
-                app()->form('MainForm')->data('manualKill',false);
         });
     }
     
@@ -212,13 +224,26 @@ class FilesWorker
         }
     }
     
-    static function findFirstAvailableProton()
+    static function findNewestAvailableProton()
     {
-        $protons = File::of(launcherSettings::getBasePathFor('protons'))->find(function ($d,$f){return fs::isFile($d.'/'.$f.'/proton');});
-        if ($protons == [])
+        $protonsPath = launcherSettings::getBasePathFor('protons');
+        
+        foreach (File::of($protonsPath)->findFiles(function ($d,$f){return fs::isFile("$d/$f/proton");}) as $proton)
+        {
+            $protonExec = File::of("$proton/proton");
+            $protonDate = $protonExec->lastModified();
+            
+            if ($protonDate > $latestProtonDate)
+            {
+                $latestProtonDate = $protonDate;
+                $latestProton = $proton;
+            }
+        }
+        
+        if ($latestProton == null)
             return false;
         else 
-            return $protons[0];
+            return $latestProton->getName();
     }
     
     static function getInstalledProtons()
@@ -235,50 +260,113 @@ class FilesWorker
             return [];
     }
 
-    static function getProtonExecutable($gameName)
+    static function getProtonExecutable($gameName = null,$exec = 'proton',$skipIfNotFound = false)
     {
-        $proton = app()->appModule()->games->get('proton',$gameName);
+        $proton = $gameName != null ? app()->appModule()->games->get('proton',$gameName) : app()->appModule()->launcher->get('defaultProton','User Settings') ?? 'GE-Proton Latest';
         $protonPath = launcherSettings::getBasePathFor('protons');
         
         if ($proton == 'GE-Proton Latest' or $proton == null)
         {
             while ($GLOBALS['LatestProton'] == 'fetching') #Block main thread until fetched
-                wait(50);
+                wait(300);
                 
             if (isset($GLOBALS['LatestProton']) == false)
-                $availableName = self::findFirstAvailableProton();
+                $availableName = self::findNewestAvailableProton();
             else 
             {
                 $availableName = str::sub($GLOBALS['LatestProton'],str::lastPos($GLOBALS['LatestProton'],'/') + 1,str::pos($GLOBALS['LatestProton'],'.tar'));
-                if (fs::isFile("$protonPath/$availableName/proton") == false)
+                if (($exec == 'proton' and fs::isFile("$protonPath/$availableName/proton") == false) or fs::isFile("$protonPath/$availableName/files/bin/$exec") == false)
                 {
-                    app()->form('MainForm')->gameDebugButton->enabled = app()->form('MainForm')->playButton->enabled = false;
+                    if ($skipIfNotFound == false)
+                    {
+                        $mainForm = app()->form('MainForm');
+                        if ($mainForm->visible) {uiLater(function () use ($mainForm){$mainForm->switchPlayButton('wait');});}
+                        
+                        uiLaterAndWait(function () use ($availableName)
+                        {
+                            app()->form('protonDownloader')->startDownload($availableName,$GLOBALS['LatestProton']);
+                            app()->showFormAndWait('protonDownloader');
+                        });
+                    }
                     
-                    app()->form('protonDownloader')->startDownload($availableName,$GLOBALS['LatestProton']);
-                    app()->showFormAndWait('protonDownloader');
-                    
-                    app()->form('MainForm')->gameDebugButton->enabled = app()->form('MainForm')->playButton->enabled = true;
-                    
-                    if (fs::isFile("$protonPath/$availableName/proton") == false) #Check again after download
-                        $availableName = self::findFirstAvailableProton();
+                    if ($skipIfNotFound or ($exec == 'proton' and fs::isFile("$protonPath/$availableName/proton") == false) or fs::isFile("$protonPath/$availableName/files/bin/$exec") == false) #Check again after download
+                        $availableName = self::findNewestAvailableProton();
                 }
             }
             
-            if (fs::isFile("$protonPath/$availableName/proton"))
-                return fs::abs("$protonPath/$availableName/proton");
+            if (($exec == 'proton' and fs::isFile("$protonPath/$availableName/proton")) or fs::isFile("$protonPath/$availableName/files/bin/$exec"))
+                return $exec == 'proton' ? fs::abs("$protonPath/$availableName/proton") : fs::abs("$protonPath/$availableName/files/bin/$exec");
             else 
                 return false;
         }
-        elseif (fs::isFile("$protonPath/$proton/proton"))
-            return fs::abs("$protonPath/$proton/proton");
+        elseif (($exec == 'proton' and fs::isFile("$protonPath/$proton/proton")) or fs::isFile("$protonPath/$proton/files/bin/$exec"))
+            return $exec == 'proton' ? fs::abs("$protonPath/$proton/proton") : fs::abs("$protonPath/$proton/files/bin/$exec");
         else
         {
-            $proton = self::findFirstAvailableProton();
+            $proton = self::findNewestAvailableProton();
             if ($proton == false)
                 return false;
             else 
-                return $proton;
+            {
+                $gameName != null ? app()->appModule()->games->set('proton',$proton,$gameName) : app()->appModule()->launcher->set('defaultProton',$proton);
+                
+                return $exec == 'proton' ? fs::abs("$protonPath/$proton/proton") : fs::abs("$protonPath/$proton/files/bin/$exec");
+            }
         }
+    }
+    
+    static function getProtonPrefixPath($gameName,$type = 'proton')
+    {
+        $prefixPath = app()->appModule()->games->get('prefixPath',$gameName) ?? fs::parent(app()->appModule()->games->get('executable',$gameName)).'/OFME Prefix';
+        if ($type == 'wine')
+            $prefixPath .= '/pfx';
+        
+        fs::ensureParent($prefixPath);
+        fs::makeDir($prefixPath);
+        
+        return $prefixPath;
+    }
+    
+    static function runSteam()
+    {
+        $switchButton = function ($enabled)
+        {
+            uiLater(function () use ($enabled)
+            {
+                $mainForm = app()->form('MainForm');
+                if ($mainForm->visible == false)
+                    return;
+                
+                $mainForm->switchPlayButton('wait');
+            });
+        };
+        
+        $switchButton(false);
+        
+        try
+        {
+            $steam = execute('/usr/bin/steam -silent');
+            self::hookProcessOuts($steam,false,false);
+        
+            $logUsers = File::of(System::getProperty('user.home').'/.local/share/Steam/config/loginusers.vdf');
+            $lastMod = $logUsers->lastModified();
+            
+            while ($attempts <= 420 and ($logUsers->exists() == false or $logUsers->lastModified() == $lastMod)) # 420 attempts = 7 minutes
+            {
+                if ($steam->getExitValue() !== null)
+                    $attempts = 420;
+                    
+                $attempts += 1;
+                wait('1s');
+            }
+        } catch (Throwable $ex) {$attempts = 421;}
+        
+        $switchButton(true);
+        
+        if ($attempts > 420)
+            return false;
+        else 
+            return true;
     }
     
     static function getThirdParty($prog)

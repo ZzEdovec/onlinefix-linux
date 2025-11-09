@@ -2,12 +2,12 @@
 
 .jfx-button{
     -fx-background-radius:50px;
-    -fx-background-color: #3a944a;
+    -fx-background-color: #c88800;
     -jfx-button-type: RAISED;
 }
 
 .jfx-button:hover{
-    -fx-background-color:#57a465;
+    -fx-background-color:#d09926;
 }
 
 .jfx-menu-button{
@@ -146,7 +146,7 @@
 }
 
 .toggle-switch:selected .thumb-area{
-    -fx-background-color:linear-gradient(to right,#3a944a,#57a465);
+    -fx-background-color:linear-gradient(to right,#c88800,#d09926);
 }
 
 .modern-input-box, .combo-box-base, .combo-box-base .list-cell{

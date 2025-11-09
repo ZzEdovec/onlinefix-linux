@@ -23,14 +23,14 @@ class envEditor extends AbstractForm
             return;
         }
         
-        if ($this->env->text == 'WINEDLLOVERRIDES')
-        {
-            UXDialog::show(Localization::getByCode('ENVEDITOR.WINEDLLOVERRIDES'),'ERROR');
-            return;
-        }
         if ($this->env->text == 'LD_PRELOAD' and app()->form('gameSettings')->steamOverlay->data('quUIElement')->selected == true)
         {
             UXDialog::show(Localization::getByCode('ENVEDITOR.STEAMOVERLAY'),'ERROR');
+            return;
+        }
+        elseif (envEditor::isBlacklistedEnv($this->env->text))
+        {
+            UXDialog::show(Localization::getByCode('ENVEDITOR.BLACKLISTED'),'ERROR');
             return;
         }
         
@@ -95,5 +95,13 @@ class envEditor extends AbstractForm
     function doValueKeyUpEnter(UXKeyEvent $e = null)
     {    
         $this->doSaveButtonAction();
+    }
+    
+    static function isBlacklistedEnv($env)
+    {
+        $blacklist = ['WINEDLLOVERRIDES','PROTON_ENABLE_WAYLAND','PROTON_USE_WINED3D'];
+        
+        if (in_array($env,$blacklist))
+            return true;
     }
 }

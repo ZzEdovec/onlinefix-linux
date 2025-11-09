@@ -128,6 +128,14 @@ class envViewer extends AbstractForm
         if ($e->sender->selectedItem != null)
             $e->sender->data('menu')->showByNode($e->sender,$e->x,$e->y);
     }
+
+    /**
+     * @event keyUp-Esc 
+     */
+    function doKeyUpEsc(UXKeyEvent $e = null)
+    {    
+        $this->hide();
+    }
     
     static function parseEnvironmentArray($game)
     {
