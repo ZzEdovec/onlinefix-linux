@@ -162,6 +162,7 @@
     "FILESWORKER.NOGAME": "No game executable found. Maybe you deleted it from disk?",
     "FILESWORKER.NOSUBMODULE": "No submodule found - %s",
     "FILESWORKER.REMOVEENV": "The environment variables are specified incorrectly, look at the game settings",
+    "FILESWORKER.NOSTEAM": "Steam is not installed or installed via Flatpak/Snap. Install as a native package",
 
     "GAMESTARTER.STARTING": "%s is starting",
 

@@ -162,6 +162,7 @@
     "FILESWORKER.NOGAME": "Не найден исполняемый файл игры. Может, вы её удалили с диска?",
     "FILESWORKER.NOSUBMODULE": "Не найдено сабмодуля - %s",
     "FILESWORKER.REMOVEENV": "Неправильно указаны переменные среды, посмотрите настройки игры",
+    "FILESWORKER.NOSTEAM": "Steam не установлен или установлен через Flatpak/Snap. Установите как нативный пакет",
 
     "GAMESTARTER.STARTING": "%s запускается",
 
