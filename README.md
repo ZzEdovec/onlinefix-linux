@@ -1,3 +1,4 @@
+
 [English](https://github.com/ZzEdovec/onlinefix-linux/blob/main/README.md) | [Русский](https://github.com/ZzEdovec/onlinefix-linux/blob/main/README_ru.md)
 
 ![OFME Window](https://zzedovec.github.io/images/ofmeBanner.png)
@@ -44,7 +45,11 @@ To build the launcher, you will need [DevelNext](https://develnext.org):
 git clone https://github.com/ZzEdovec/onlinefix-linux
 ```
 3. Open the `.dnproject` file in DevelNext
-4. A message about missing dependencies will appear, find and install them from GitHub
+4. A message about missing dependencies will appear, install them in the `Project > Packages` tab:
+	- [jphp-animatefx-ext](https://github.com/jphp-group/jphp-animatefx-ext/releases)
+	- [jphp-controlsfx-ext](https://github.com/jphp-group/jphp-controlsfx-ext/releases)
+	- [jphp-vdf-ext](https://github.com/GIGNIGHT/jphp-vdf-ext) (manual compilation to `dnbundle` via [jppm](https://github.com/jphp-group/jphp/releases) is required)
+	- [jphp-websocket-client](https://github.com/jphp-group/jphp-websocket-client/releases)
 5. Click the build button at the top of the window
 
 After building, you will get the launcher executable file.

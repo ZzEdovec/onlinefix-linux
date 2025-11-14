@@ -13,7 +13,11 @@ class AppModule extends AbstractModule
      */
     function doAction(ScriptEvent $e = null)
     {
-        $GLOBALS['version'] = '2.5.1';
+        $startupScript = File::of('onlinefix-linux-launcher'); #bypassing the update program issue, remove in 2.7
+        if ($startupScript->exists() and $startupScript->canExecute() == false)
+            new Process(['chmod','+x',fs::abs('./onlinefix-linux-launcher')])->start();
+        
+        $GLOBALS['version'] = '2.5.2';
         
         $userhome = System::getProperty('user.home');
         $this->games->path = "$userhome/.config/OFME-Linux/Games.ini";

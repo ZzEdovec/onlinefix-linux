@@ -164,7 +164,7 @@
         <Insets bottom="10" left="25" right="25" top="25"/>
       </padding>
       <children>
-        <HBox alignment="CENTER_LEFT" focusTraversable="false" id="hboxAlt" layoutX="25" layoutY="25" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="25" prefWidth="606" spacing="5" styleClass="">
+        <HBox alignment="CENTER_LEFT" focusTraversable="false" id="hboxAlt" layoutX="25" layoutY="25" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="18" prefWidth="606" spacing="5" styleClass="">
           <children>
             <LabelEx AnchorPane.leftAnchor="140" AnchorPane.rightAnchor="252" alignment="CENTER_LEFT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label3" layoutX="0" layoutY="0" prefHeight="48" prefWidth="264" styleClass="label " text="Proton по умолчанию для новых игр:" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
@@ -180,8 +180,8 @@
             <Data cursor="DEFAULT" enabled="1" id="data-label3" visible="1"/>
           </children>
         </HBox>
-        <Separator focusTraversable="false" id="separator" layoutX="25" layoutY="58" orientation="HORIZONTAL" prefHeight="8" prefWidth="144" styleClass="separator "/>
-        <ListViewEx editable="false" fixedCellSize="40" focusTraversable="true" id="protonsList" layoutX="25" layoutY="67" prefHeight="296" prefWidth="656" styleClass="list-view ">
+        <Separator focusTraversable="false" id="separator" layoutX="25" layoutY="51" orientation="HORIZONTAL" prefHeight="8" prefWidth="144" styleClass="separator "/>
+        <ListViewEx editable="false" fixedCellSize="40" focusTraversable="true" id="protonsList" layoutX="25" layoutY="59" prefHeight="296" prefWidth="656" styleClass="list-view ">
           <items xmlns:fx="http://javafx.com/fxml">
             <FXCollections fx:factory="observableArrayList"/>
           </items>

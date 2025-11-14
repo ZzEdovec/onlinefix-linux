@@ -30,21 +30,29 @@ class FilesWorker
     
     static function generateProcess($name,$debug = false)
     {
-        if (app()->appModule()->launcher->get('noSteamRequest','User Settings') == false and execute('pidof steam',true)->getExitValue() == 1)
+        if (app()->appModule()->launcher->get('noSteamRequest','User Settings') == false)
         {
-            $steam = self::runSteam();
-            
-            if ($steam == false)
+            if (fs::isFile('/usr/bin/steam') == false)
             {
-                uiLater(function ()
-                {
-                    UXDialog::showAndWait(Localization::getByCode('FILESWORKER.STEAMNOTSTARTED'),'ERROR');
-                    
-                    $mainForm = app()->form('MainForm');
-                    if ($mainForm->visible)
-                        $mainForm->switchPlayButton('play');
-                });
+                uiLaterAndWait(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.NOSTEAM'),'ERROR');});
                 return;
+            }
+            elseif (execute('pidof steam',true)->getExitValue() == 1)
+            {
+                $steam = self::runSteam();
+                
+                if ($steam == false)
+                {
+                    uiLaterAndWait(function ()
+                    {
+                        UXDialog::showAndWait(Localization::getByCode('FILESWORKER.STEAMNOTSTARTED'),'ERROR');
+                        
+                        $mainForm = app()->form('MainForm');
+                        if ($mainForm->visible)
+                            $mainForm->switchPlayButton('play');
+                    });
+                    return;
+                }
             }
         }
         
@@ -53,12 +61,12 @@ class FilesWorker
 
         if ($proton == false)
         {
-            uiLater(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'),'ERROR');});
+            uiLaterAndWait(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'),'ERROR');});
             return;
         }
         if (fs::isFile($executable) == false)
         {
-            uiLater(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.NOGAME'),'ERROR');});
+            uiLaterAndWait(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.NOGAME'),'ERROR');});
             return;
         }
         
@@ -112,7 +120,7 @@ class FilesWorker
         } catch (Throwable $ex)
         {
             if (str::contains($ex->getMessage(),'Invalid environment variable'))
-                uiLater(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.REMOVEENV'),'ERROR');});
+                uiLaterAndWait(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.REMOVEENV'),'ERROR');});
             
             Logger::error($ex->getMessage());
             return;
@@ -346,7 +354,6 @@ class FilesWorker
         try
         {
             $steam = execute('/usr/bin/steam -silent');
-            self::hookProcessOuts($steam,false,false);
         
             $logUsers = File::of(System::getProperty('user.home').'/.local/share/Steam/config/loginusers.vdf');
             $lastMod = $logUsers->lastModified();

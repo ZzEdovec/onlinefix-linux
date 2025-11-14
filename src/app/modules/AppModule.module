@@ -1,8 +1,8 @@
 {
   "props": {
     "author": "queinu",
-    "version": "2.4",
-    "description": "OFMELL Initialization Module",
+    "version": "2.5.2",
+    "description": "OFLL Initialization Module",
     "singleton": true
   },
   "components": {

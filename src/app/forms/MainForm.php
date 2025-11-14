@@ -611,6 +611,9 @@ class MainForm extends AbstractForm
         $this->gamePanel->data('gameName',$name); 
         $this->gamePanel->data('opener',$sender);  
         $this->protonDBButton->enabled = $this->steamButton->enabled = $this->steamDBButton->enabled = $this->appModule()->games->get('steamID',$name) != null;
+        
+        $this->updateTimeSpent($name);
+        
         $this->switchPlayButton('stop');
         new Thread(function () use ($name){$this->waitForWineServerTerminate($name);})->start();
         
@@ -627,6 +630,9 @@ class MainForm extends AbstractForm
     
     function hideGameMenu()
     {
+        if ($this->playButton->graphic == $this->playButton->data('wait'))
+            return;
+            
         $this->off('mouseDown');
         $this->addGame->show();
         $this->container->enabled = true;

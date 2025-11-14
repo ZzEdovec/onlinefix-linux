@@ -8,6 +8,7 @@
 - Запуск игр без необходимости вручную настраивать `WINEDLLOVERRIDES` и другие параметры
 - Автоматическое получение обложек игр из Steam
 - Оверлей Steam
+- Автоматическая установка игр с OnlineFix и FreeTP
 - Специфичные патчи для некоторых типов фиксов
 - Автоматическое извлечение иконок из игр
 - Создание ярлыков на рабочем столе и в меню приложений для игр
@@ -43,7 +44,11 @@
 git clone https://github.com/ZzEdovec/onlinefix-linux
 ```
 3. Откройте файл `.dnproject` в DevelNext
-4. Появится сообщение о недостающих зависимостях, найдите и установите их с GitHub
+4. Покажется сообщение об отсутствующих зависимостях, установите их во вкладке `Проект > Пакеты`:
+	- [jphp-animatefx-ext](https://github.com/jphp-group/jphp-animatefx-ext/releases)
+	- [jphp-controlsfx-ext](https://github.com/jphp-group/jphp-controlsfx-ext/releases)
+	- [jphp-vdf-ext](https://github.com/GIGNIGHT/jphp-vdf-ext) (требуется ручная компиляция в `dnbundle` через [jppm](https://github.com/jphp-group/jphp/releases))
+	- [jphp-websocket-client](https://github.com/jphp-group/jphp-websocket-client/releases)
 5. Нажмите кнопку сборки в верхней части окна
 
 После сборки вы получите исполняемый файл лаунчера.

@@ -406,13 +406,8 @@ class gameSettings extends AbstractForm
      */
     function doVboxAltClick(UXMouseEvent $e = null)
     {
-        if ($this->appModule()->games->get('environment',$this->data('gameName')) != null)
-            app()->form('envViewer')->loadByGame($this->data('gameName'));
-            
-        quUI::showFormAndFocus('envViewer');
+        $this->overrides->requestFocus();
     }
-
-
 
     /**
      * @event overrides.construct 

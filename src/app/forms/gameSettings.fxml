@@ -105,13 +105,13 @@
             </ComboBox>
             <Data cursor="DEFAULT" enabled="1" id="data-proton" visible="1"/>
             <Separator focusTraversable="false" id="separator3" layoutX="348" layoutY="0" orientation="VERTICAL" prefHeight="40" prefWidth="8" styleClass="separator "/>
-            <LabelEx alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label8" layoutX="369" layoutY="11" prefHeight="18" prefWidth="120" styleClass="label " text="Путь префикса:" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+            <LabelEx alignment="CENTER_RIGHT" autoSize="false" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="4" id="label8" layoutX="368" layoutY="11" prefHeight="18" prefWidth="120" styleClass="label " text="Путь префикса:" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
               <font>
                 <Font name="System Bold" size="13"/>
               </font>
             </LabelEx>
             <Data cursor="DEFAULT" enabled="1" id="data-label8" visible="1"/>
-            <TextField alignment="CENTER_LEFT" editable="false" focusTraversable="true" id="prefixPath" layoutX="501" layoutY="6" prefColumnCount="12" prefHeight="28" prefWidth="168" promptText="" style="-fx-background-radius:50px;-fx-background-color:#333337;" styleClass="text-input text-field " text="">
+            <TextField alignment="CENTER_LEFT" editable="false" focusTraversable="true" id="prefixPath" layoutX="500" layoutY="6" prefColumnCount="12" prefHeight="28" prefWidth="168" promptText="" style="-fx-background-radius:50px;-fx-background-color:#333337;" styleClass="text-input text-field " text="">
               <font>
                 <Font name="System Regular" size="12"/>
               </font>
