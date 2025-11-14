@@ -507,10 +507,7 @@ class MainForm extends AbstractForm
     function doKeyUpEsc(UXKeyEvent $e = null)
     {    
         if ($this->gamePanel->visible)
-        {
-            $this->off('mouseDown');
             $this->hideGameMenu();
-        }
     }
 
     /**
