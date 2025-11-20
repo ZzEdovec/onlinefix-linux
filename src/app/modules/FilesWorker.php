@@ -32,7 +32,9 @@ class FilesWorker
     {
         if (app()->appModule()->launcher->get('noSteamRequest','User Settings') == false)
         {
-            if (fs::isFile('/usr/bin/steam') == false)
+            if (fs::isFile('/usr/bin/steam') == false and
+                fs::isFile('/usr/lib/steam/steam') == false and
+                fs::isFile('/usr/games/steam') == false)
             {
                 uiLaterAndWait(function (){UXDialog::showAndWait(Localization::getByCode('FILESWORKER.NOSTEAM'),'ERROR');});
                 return;
@@ -353,7 +355,7 @@ class FilesWorker
         
         try
         {
-            $steam = execute('/usr/bin/steam -silent');
+            $steam = execute('steam -silent');
         
             $logUsers = File::of(System::getProperty('user.home').'/.local/share/Steam/config/loginusers.vdf');
             $lastMod = $logUsers->lastModified();

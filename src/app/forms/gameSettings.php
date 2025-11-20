@@ -110,7 +110,7 @@ class gameSettings extends AbstractForm
         if (Filesworker::findSteamRuntime() == false and !($e->sender->data('quUIElement')->selected))
         {
             if (uiConfirm(Localization::getByCode('GAMESETTINGS.STEAM.NORUNTIME')))
-                execute('/usr/bin/steam steam://install/1628350');
+                execute('steam steam://install/1628350');
             
             uiLater(function () use ($e){$e->sender->data('quUIElement')->selected = false;});
             return;
