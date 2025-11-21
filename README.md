@@ -19,9 +19,9 @@
     - OnlineFix – full support for 64-bit, 32-bit may have issues
     - FreeTP – full support
 - Custom OnlineFix servers (Photon Launcher)
-    - Full support
+    - full support, but known problems with Phasmophobia, they will be fixed soon. See the [temporary solution](https://github.com/ZzEdovec/onlinefix-linux/issues/24#issuecomment-3559415325)
 - SteamFix and EOSFix (combined)
-    - FreeTP – full support
+    - FreeTP – doesn't work in most cases, and a solution is being sought
     - OnlineFix – full support
 - EOSFix
     - OnlineFix – with EOSAuthHooker, old type not tested

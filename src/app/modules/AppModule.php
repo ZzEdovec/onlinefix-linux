@@ -17,7 +17,7 @@ class AppModule extends AbstractModule
         if ($startupScript->exists() and $startupScript->canExecute() == false)
             new Process(['chmod','+x',fs::abs('./onlinefix-linux-launcher')])->start();
         
-        $GLOBALS['version'] = '2.5.2';
+        $GLOBALS['version'] = '2.5.3';
         
         $userhome = System::getProperty('user.home');
         $this->games->path = "$userhome/.config/OFME-Linux/Games.ini";
