@@ -91,7 +91,7 @@ class newGameConfigurator extends AbstractForm
         if ($prefixDir == null)
             return;
         elseif (File::of($prefixDir)->findFiles() != [])
-            UXDialog::show(Localization::getByCode('NEWGAMECONFIG.PREFIX.PATHNONEMPTY'),'WARNING');
+            UXDialog::show($this->_('NEWGAMECONFIG.PREFIX.PATHNONEMPTY'),'WARNING');
         
         $this->prefixPath->text = $prefixDir;
     }
@@ -110,7 +110,7 @@ class newGameConfigurator extends AbstractForm
         
         if ($this->ftpInstallerBox->enabled != true and $gameDir->find() != [])
         {
-            UXDialog::show(Localization::getByCode('NEWGAMECONFIG.PATH.NONEMPTY'),'ERROR');
+            UXDialog::show($this->_('NEWGAMECONFIG.PATH.NONEMPTY'),'ERROR');
             $this->doGamePathClick();
             
             return;
@@ -126,7 +126,7 @@ class newGameConfigurator extends AbstractForm
     {    
         if (is_null($this->listView->selectedIndex))
         {
-            $this->toast(Localization::getByCode('NOTHING.SELECTED'));
+            $this->toast($this->_('NOTHING.SELECTED'));
             return;
         }
         
@@ -215,7 +215,7 @@ class newGameConfigurator extends AbstractForm
             
         if ($parsedFiles == [])
         {
-            UXDialog::showAndWait(Localization::getByCode('NEWGAMECONFIG.EMPTYRAR'),'ERROR');
+            UXDialog::showAndWait($this->_('NEWGAMECONFIG.EMPTYRAR'),'ERROR');
             $this->hide();
             return;
         }
@@ -228,7 +228,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doCancelButtonAction(UXEvent $e = null)
     {
-        if ($this->gameParams['openedFromAria'] and ($this->isFree() or uiConfirm(Localization::getByCode('NEWGAMECONFIG.ARESURE'))))
+        if ($this->gameParams['openedFromAria'] and ($this->isFree() or uiConfirm($this->_('NEWGAMECONFIG.ARESURE'))))
         {
             $origParent = fs::parent($this->gameParams['originalFile']);
 
@@ -292,7 +292,7 @@ class newGameConfigurator extends AbstractForm
         {
             if ($this->gameParams['originalFile'] != null and fs::ext($this->gameParams['originalFile']) == 'rar')
             {
-                uiLater(function () use ($box){$box['status']->text = Localization::getByCode('NEWGAMECONFIG.UNPACKING');});
+                uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.UNPACKING');});
                 
                 $extractor = new RarExtractor;
                 try 
@@ -315,7 +315,7 @@ class newGameConfigurator extends AbstractForm
             if ($this->gameParams['unpackedPath'] != null)
                 $path = $this->gamePath->text .= $this->gameParams['unpackedPath'];
             
-            uiLater(function () use ($box){$box['status']->text = Localization::getByCode('NEWGAMECONFIG.DLLS');});
+            uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.DLLS');});
             
             $parsed = FixParser::parseDlls($path ?? $this->gamePath->text);
             if ($parsed['fakeAppId'] != null)
@@ -332,7 +332,7 @@ class newGameConfigurator extends AbstractForm
                 $this->appModule()->games->set('steamID',$parsed['realAppId'],$this->gameName->text);
             }
                 
-            uiLater(function () use ($box){$box['status']->text = Localization::getByCode('NEWGAMECONFIG.ICOEXTRACT');});
+            uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.ICOEXTRACT');});
             
             try
             {
@@ -343,18 +343,19 @@ class newGameConfigurator extends AbstractForm
             {
                 uiLater(function () use ($ex)
                 {
-                    UXDialog::show(sprintf(Localization::getByCode('MAINFORM.ICONPARSERERROR'),$ex->getMessage()),'ERROR');
+                    UXDialog::show(sprintf($this->_('MAINFORM.ICONPARSERERROR'),$ex->getMessage()),'ERROR');
                 });
             }
             
-            uiLater(function () use ($box){$box['status']->text = Localization::getByCode('NEWGAMECONFIG.SETTINGS');});
+            uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.SETTINGS');});
             
+            $defaultProton = $this->appModule()->launcher->get('defaultProton','User Settings') ?? 'GE-Proton Latest';
             $this->appModule()->games->put(['overrides'=>$parsed['overrides'],
                                             'executable'=>$this->gameParams['mainFile'],
                                             'mainPath'=>$path ?? $this->gamePath->text,
                                             'prefixPath'=>$this->prefixPath->text,
-                                            'proton'=>$this->appModule()->launcher->get('defaultProton','User Settings') ?? 'GE-Proton Latest',
-                                            'steamRuntime'=>boolval(FilesWorker::findSteamRuntime()),
+                                            'proton'=>$defaultProton,
+                                            'steamRuntime'=>boolval(FilesWorker::findSteamRuntime($defaultProton)),
                                             'steamOverlay'=>true,
                                             'wined3d'=>$this->appModule()->launcher->get('gamesUsesWined3d','User Settings'),
                                             'nativeWayland'=>$this->appModule()->launcher->get('gamesUsesWayland','User Settings'),
@@ -371,7 +372,7 @@ class newGameConfigurator extends AbstractForm
                 $origParent = fs::parent($this->gameParams['originalFile']);
                 if (str::contains($path,$origParent))
                 {
-                    uiLater(function (){UXDialog::show(Localization::getByCode('NEWGAMECONFIG.CLEANSKIPPED'),'WARNING');});
+                    uiLater(function (){UXDialog::show($this->_('NEWGAMECONFIG.CLEANSKIPPED'),'WARNING');});
                     return;
                 }
                 
@@ -388,7 +389,7 @@ class newGameConfigurator extends AbstractForm
         $switch = new UXToggleSwitch;
         $switch->selected = true;
         
-        quUI::generateSetButton($e->sender,Localization::getByCode('NEWGAMECONFIG.CLEANAFTERADD'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('NEWGAMECONFIG.CLEANAFTERADD'),$switch);
     }
 
     /**
@@ -396,7 +397,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doLabelConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('NEWGAMECONFIG.HEADER');
+        $e->sender->text = $this->_('NEWGAMECONFIG.HEADER');
     }
 
     /**
@@ -404,7 +405,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doLabel3Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('NEWGAMECONFIG.NAME');
+        $e->sender->text = $this->_('NEWGAMECONFIG.NAME');
     }
 
     /**
@@ -412,7 +413,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doLabel4Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('NEWGAMECONFIG.GAMEPATH');
+        $e->sender->text = $this->_('NEWGAMECONFIG.GAMEPATH');
     }
 
     /**
@@ -420,7 +421,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doLabel7Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('NEWGAMECONFIG.PREFIXPATH');
+        $e->sender->text = $this->_('NEWGAMECONFIG.PREFIXPATH');
     }
 
     /**
@@ -428,7 +429,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doCancelButtonConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('CANCEL');
+        $e->sender->text = $this->_('CANCEL');
     }
 
     /**
@@ -436,7 +437,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doMainSelectLabelConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('NEWGAMECONFIG.SELECTMAIN');
+        $e->sender->text = $this->_('NEWGAMECONFIG.SELECTMAIN');
     }
 
     /**
@@ -444,7 +445,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doSelectFileButtonConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('NEXT');
+        $e->sender->text = $this->_('NEXT');
     }
 
     /**
@@ -452,7 +453,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doAddGameConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('ADD');
+        $e->sender->text = $this->_('ADD');
     }
 
 
@@ -464,7 +465,7 @@ class newGameConfigurator extends AbstractForm
     {
         $fc = new UXFileChooser;
         
-        $fc->extensionFilters = [['extensions'=>['*.exe'],'description'=>Localization::getByCode('NEWGAMECONFIG.FREETP.FILECHOOSER')]];
+        $fc->extensionFilters = [['extensions'=>['*.exe'],'description'=>$this->_('NEWGAMECONFIG.FREETP.FILECHOOSER')]];
         $installer = $fc->showOpenDialog($this);
         if ($installer == null)
             return;
@@ -485,7 +486,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doLabelAltConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('NEWGAMECONFIG.FREETP');
+        $e->sender->text = $this->_('NEWGAMECONFIG.FREETP');
     }
 
     /**
@@ -547,7 +548,7 @@ class newGameConfigurator extends AbstractForm
         $candidatesCount = arr::count($candidates);
         if ($candidatesCount == 0)
         {
-            UXDialog::show(Localization::getByCode('NOTHING.FOUND'),'ERROR');
+            UXDialog::show($this->_('NOTHING.FOUND'),'ERROR');
             
             $this->hide();
             return;
@@ -568,9 +569,9 @@ class newGameConfigurator extends AbstractForm
     private function checkAreAddPossible()
     {
         if ($this->gameName->text == null or $this->gamePath->text == null or $this->prefixPath->text == null/* or ($this->ftpInstallerBox->enabled and $this->ftpInstallerPath->text == null)*/)
-            return Localization::getByCode('NEWGAMECONFIG.FIELDSEMPTY');
+            return $this->_('NEWGAMECONFIG.FIELDSEMPTY');
         elseif ($this->appModule()->games->section($this->gameName->text) != [])
-            return Localization::getByCode('MAINFORM.GAMEEXISTS');
+            return $this->_('MAINFORM.GAMEEXISTS');
         else 
             return true;
     }

@@ -19,18 +19,18 @@ class envEditor extends AbstractForm
     {    
         if ($this->env->text == null)
         {
-            UXDialog::show(Localization::getByCode('ENVEDITOR.NOVARIABLE'),'ERROR');
+            UXDialog::show($this->_('ENVEDITOR.NOVARIABLE'),'ERROR');
             return;
         }
         
         if ($this->env->text == 'LD_PRELOAD' and app()->form('gameSettings')->steamOverlay->data('quUIElement')->selected == true)
         {
-            UXDialog::show(Localization::getByCode('ENVEDITOR.STEAMOVERLAY'),'ERROR');
+            UXDialog::show($this->_('ENVEDITOR.STEAMOVERLAY'),'ERROR');
             return;
         }
         elseif (envEditor::isBlacklistedEnv($this->env->text))
         {
-            UXDialog::show(Localization::getByCode('ENVEDITOR.BLACKLISTED'),'ERROR');
+            UXDialog::show($this->_('ENVEDITOR.BLACKLISTED'),'ERROR');
             return;
         }
         
@@ -62,7 +62,7 @@ class envEditor extends AbstractForm
      */
     function doLabelConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('ENVEDITOR.VARIABLE');
+        $e->sender->text = $this->_('ENVEDITOR.VARIABLE');
     }
 
     /**
@@ -70,7 +70,7 @@ class envEditor extends AbstractForm
      */
     function doLabelAltConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('ENVEDITOR.VALUE');
+        $e->sender->text = $this->_('ENVEDITOR.VALUE');
     }
 
     /**
@@ -78,7 +78,7 @@ class envEditor extends AbstractForm
      */
     function doSaveButtonConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('SAVE');
+        $e->sender->text = $this->_('SAVE');
     }
 
     /**

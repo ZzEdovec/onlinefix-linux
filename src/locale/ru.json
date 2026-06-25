@@ -47,7 +47,7 @@
     "GAMESETTINGS.WINETRICKS.NOPREFIX": "Запустите игру хотя бы один раз",
     "GAMESETTINGS.WINETRICKS.NOTFOUND": "winetricks не найден в /usr/bin/winetricks",
     "GAMESETTINGS.NOGITHUBAPI": "Ошибка обращения к API GitHub! Не удалось получить версии Proton. Выключите VPN, Comss/Xbox DNS и попробуйте снова",
-    "GAMESETTINGS.STEAM.NORUNTIME": "Steam Runtime не найден! Хотите установить его?",
+    "GAMESETTINGS.STEAM.NORUNTIME": "Steam Runtime не найден",
     "GAMESETTINGS.STARTSETTINGS": "Параметры запуска",
     "GAMESETTINGS.ADDITIONALS": "Дополнительные функции",
     "GAMESETTINGS.ADDITIONALS.USESTEAMOVERLAY": "Использовать оверлей Steam",

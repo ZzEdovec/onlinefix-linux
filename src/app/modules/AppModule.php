@@ -15,27 +15,11 @@ class AppModule extends AbstractModule
     {
         $GLOBALS['LatestProton'] = 'fetching';
         $releases = FilesWorker::fetchProtonReleases();
-        if ($releases != false and str::contains($releases,'tar.gz') == false)
+        if (arr::count($releases) > 0)
         {
-            foreach ($releases as $release)
-            {
-                foreach ($release['assets'] as $asset)
-                {
-                    if (Regex::match('^application/(gzip|x-gtar)$',$asset['content_type']) == false or 
-                        $asset['state'] != 'uploaded' or 
-                        $asset['browser_download_url'] == null)
-                        continue;
-                    
-                    $GLOBALS['LatestProton'] = $asset['browser_download_url'];
-                    break;
-                }
-                
-                if ($GLOBALS['LatestProton'] != 'fetching')
-                    break;
-            }
+            $latest = reset($releases);
+            $GLOBALS['LatestProton'] = $latest["url"];
         }
-        elseif (str::contains($releases,'tar.gz'))
-            $GLOBALS['LatestProton'] = $releases;
         else
         {
             unset($GLOBALS['LatestProton']);
@@ -72,11 +56,7 @@ class AppModule extends AbstractModule
      */
     function doAction(ScriptEvent $e = null)
     {
-        $startupScript = File::of('onlinefix-linux-launcher'); #bypassing the update program issue, remove in 2.7
-        if ($startupScript->exists() and $startupScript->canExecute() == false)
-            new Process(['chmod','+x',fs::abs('./onlinefix-linux-launcher')])->start();
-        
-        $GLOBALS['version'] = '2.6';
+        $GLOBALS['version'] = '2.7';
         
         $userhome = System::getProperty('user.home');
         $this->games->path = "$userhome/.config/OFME-Linux/Games.ini";
@@ -96,11 +76,11 @@ class AppModule extends AbstractModule
         }
         
         Async::parallel([[$this,'fetchLatestProton'],[$this,'checkUpdates']]);
-
+        
         $pid = file_get_contents('/tmp/ofllpid');
         if ($pid != null and fs::isDir("/proc/$pid"))
         {
-            UXDialog::showAndWait(sprintf(Localization::getByCode('APPMODULE.PIDEXISTS'),$pid),'ERROR');
+            UXDialog::showAndWait(sprintf(app()->module('Localization')->_('APPMODULE.PIDEXISTS'),$pid),'ERROR');
             
             app()->shutdown();
             return;
@@ -118,6 +98,4 @@ class AppModule extends AbstractModule
         
         Logger::info('Initialization complete. OnlineFix Linux Launcher '.$GLOBALS['version']);
     }
-
-
 }

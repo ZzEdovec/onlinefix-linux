@@ -6,7 +6,7 @@
         <Insets bottom="0" left="58" right="58" top="0"/>
       </padding>
       <children>
-        <VBox alignment="TOP_LEFT" focusTraversable="false" id="vbox7" layoutX="58" layoutY="99" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="232" prefWidth="300" spacing="8" styleClass="modern-input-box ">
+        <VBox AnchorPane.bottomAnchor="149" AnchorPane.leftAnchor="58" AnchorPane.rightAnchor="58" AnchorPane.topAnchor="99" alignment="TOP_LEFT" focusTraversable="false" id="vbox7" layoutX="58" layoutY="99" maxHeight="-1" maxWidth="-1" minHeight="-1" minWidth="-1" prefHeight="232" prefWidth="300" spacing="8" styleClass="modern-input-box ">
           <padding>
             <Insets bottom="8" left="18" right="18" top="8"/>
           </padding>
@@ -153,7 +153,7 @@
         <Data cursor="DEFAULT" enabled="1" id="data-label" visible="1"/>
         <Data cursor="DEFAULT" enabled="1" id="data-vbox6" visible="1"/>
         <Separator focusTraversable="false" id="separatorAlt" layoutX="58" layoutY="325" orientation="HORIZONTAL" prefHeight="8" prefWidth="144" styleClass="separator "/>
-        <com.jfoenix.controls.JFXButton alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="cleanAfterAdd" layoutX="58" layoutY="343" prefHeight="58" prefWidth="304" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:15px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
+        <com.jfoenix.controls.JFXButton AnchorPane.leftAnchor="58" AnchorPane.rightAnchor="58" alignment="CENTER_LEFT" buttonType="FLAT" contentDisplay="GRAPHIC_ONLY" ellipsisString="..." focusTraversable="false" graphicTextGap="0" id="cleanAfterAdd" layoutX="58" layoutY="343" prefHeight="58" prefWidth="304" ripplerFill="#cccccc" style="-fx-background-color: #333337;-jfx-button-type: FLAT;-fx-background-radius:15px;" styleClass="button jfx-button " text="" textAlignment="LEFT" textFill="#ffffff" underline="false" wrapText="false">
           <font>
             <Font name="System Regular" size="13"/>
           </font>

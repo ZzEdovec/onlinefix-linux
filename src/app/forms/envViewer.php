@@ -19,15 +19,15 @@ class envViewer extends AbstractForm
     function doEnvTableConstruct(UXEvent $e = null)
     {
         foreach ($e->sender->columns->toArray() as $column) #Localization load
-            $column->text = Localization::getByCode($column->text);
+            $column->text = $this->_($column->text);
         
-        $placeholder = new UXLabel(Localization::getByCode('ENVVIEWER.NOENVS'));
+        $placeholder = new UXLabel($this->_('ENVVIEWER.NOENVS'));
         $placeholder->font = UXFont::of('System',13,'BOLD');
         $placeholder->textColor = 'White';
         $e->sender->placeholder = $placeholder;
            
         $menu = new UXContextMenu;
-        $remove = new UXMenuItem(Localization::getByCode('REMOVE'));
+        $remove = new UXMenuItem($this->_('REMOVE'));
         
         $remove->on('action',function ()
         {

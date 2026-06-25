@@ -34,7 +34,7 @@ class gameStarting extends AbstractForm
      */
     function doLabelConstruct(UXEvent $e = null)
     {
-        $e->sender->text = sprintf(Localization::getByCode('GAMESTARTER.STARTING'),$GLOBALS['argv'][1]);
+        $e->sender->text = sprintf($this->_('GAMESTARTER.STARTING'),$GLOBALS['argv'][1]);
     }
 
     /**

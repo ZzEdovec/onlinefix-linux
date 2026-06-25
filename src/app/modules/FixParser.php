@@ -108,7 +108,7 @@ class FixParser
             Logger::error('Failed to fetch banner, status code - '.$result->statusCode());
             
             fs::delete($imagePath);
-            return sprintf(Localization::getByCode('BANNEREDITOR.FILE.FAILED'),$result->statusMessage().' ('.$result->statusCode().')');
+            return sprintf(app()->module('Localization')->_('BANNEREDITOR.FILE.FAILED'),$result->statusMessage().' ('.$result->statusCode().')');
         }
         
         Logger::info('Banner fetched');
@@ -149,7 +149,7 @@ class FixParser
         }
         
         if (fs::ext($largestFile) == 'ico' and fs::isFile('/usr/bin/ffmpeg') == false)
-            throw new IOException(Localization::getByCode('FFMPEG.NOTFOUND'));
+            throw new IOException(app()->module('Localization')->_('FFMPEG.NOTFOUND'));
         elseif (fs::ext($largestFile) == 'ico')
         {
             $convertedPath = $iconsPath.'/'.fs::nameNoExt($largestFile).'.png';

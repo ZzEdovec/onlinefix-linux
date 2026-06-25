@@ -9,7 +9,7 @@ class ftpInstaller
     {
         $panel = app()->form('MainForm')->addStubGame();
         $panel['gameName']->text = $gameName;
-        $panel['status']->text = Localization::getByCode('INSTALLING');
+        $panel['status']->text = app()->module('Localization')->_('INSTALLING');
         
         $proton = FilesWorker::getProtonExecutable();
         $installPathConverted = self::convertToWindowsPath($installPath);
@@ -34,7 +34,7 @@ class ftpInstaller
                 {
                     uiLater(function () use ($exitCode,$panel)
                     {
-                        UXDialog::show(sprintf(Localization::getByCode('FTPINSTALLER.FAILED'),$exitCode),"ERROR");
+                        UXDialog::show(sprintf(app()->module('Localization')->_('FTPINSTALLER.FAILED'),$exitCode),"ERROR");
                         $panel['box']->free();
                     });
                     

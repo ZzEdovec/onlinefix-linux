@@ -1,8 +1,8 @@
 {
   "props": {
     "author": "queinu",
-    "version": "2.5.2",
-    "description": "OFLL Initialization Module",
+    "version": "2.7",
+    "description": "OFLL",
     "singleton": true
   },
   "components": {

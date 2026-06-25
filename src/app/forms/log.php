@@ -20,7 +20,7 @@ class log extends AbstractForm
      */
     function doLabelConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LOGFORM.HEADER');
+        $e->sender->text = $this->_('LOGFORM.HEADER');
     }
 
     /**
@@ -28,7 +28,7 @@ class log extends AbstractForm
      */
     function doLabelAltConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LOGFORM.SUBHEADER');
+        $e->sender->text = $this->_('LOGFORM.SUBHEADER');
     }
 
     /**
@@ -39,7 +39,7 @@ class log extends AbstractForm
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/save.png'));
         $e->sender->graphic->size = [20,20];
         
-        $e->sender->text = Localization::getByCode('SAVE');
+        $e->sender->text = $this->_('SAVE');
     }
 
     /**
@@ -79,7 +79,7 @@ class log extends AbstractForm
     function doButtonAltConstruct(UXEvent $e = null)
     {
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/save.png'));
-        $e->sender->text = Localization::getByCode('MAINFORM.STOP');
+        $e->sender->text = $this->_('MAINFORM.STOP');
     }
 
     /**

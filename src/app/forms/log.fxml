@@ -19,19 +19,19 @@
       </font>
     </LabelEx>
     <Data cursor="DEFAULT" enabled="1" id="data-labelAlt" visible="1"/>
-    <com.jfoenix.controls.JFXButton AnchorPane.topAnchor="488" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="3" id="button3" layoutX="504" layoutY="488" prefHeight="40" prefWidth="112" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Сохранить" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+    <com.jfoenix.controls.JFXButton AnchorPane.bottomAnchor="24" AnchorPane.rightAnchor="32" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="3" id="button3" layoutX="504" layoutY="488" prefHeight="40" prefWidth="112" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Сохранить" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
       <font>
         <Font name="System Bold" size="12"/>
       </font>
     </com.jfoenix.controls.JFXButton>
     <Data cursor="HAND" enabled="1" graphic=".data/img/save.png" id="data-button3" visible="1"/>
-    <com.jfoenix.controls.JFXButton AnchorPane.topAnchor="488" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="3" id="button" layoutX="32" layoutY="488" prefHeight="40" prefWidth="112" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Telegram" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+    <com.jfoenix.controls.JFXButton AnchorPane.bottomAnchor="24" AnchorPane.leftAnchor="32" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="3" id="button" layoutX="32" layoutY="488" prefHeight="40" prefWidth="112" ripplerFill="#f2f2f2" styleClass="button jfx-button " text="Telegram" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
       <font>
         <Font name="System Bold" size="12"/>
       </font>
     </com.jfoenix.controls.JFXButton>
     <Data cursor="HAND" enabled="1" graphic=".data/img/telegram.png" id="data-button" visible="1"/>
-    <com.jfoenix.controls.JFXButton AnchorPane.topAnchor="488" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="3" id="buttonAlt" layoutX="376" layoutY="488" prefHeight="40" prefWidth="112" ripplerFill="#f2f2f2" style="-fx-background-color: #333337;" styleClass="button jfx-button " text="Закрыть" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
+    <com.jfoenix.controls.JFXButton AnchorPane.bottomAnchor="24" AnchorPane.rightAnchor="160" alignment="CENTER" buttonType="RAISED" contentDisplay="LEFT" ellipsisString="..." focusTraversable="false" graphicTextGap="3" id="buttonAlt" layoutX="376" layoutY="488" prefHeight="40" prefWidth="112" ripplerFill="#f2f2f2" style="-fx-background-color: #333337;" styleClass="button jfx-button " text="Закрыть" textAlignment="CENTER" textFill="#ffffff" underline="false" wrapText="false">
       <font>
         <Font name="System Bold" size="12"/>
       </font>

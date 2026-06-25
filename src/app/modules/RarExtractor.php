@@ -93,9 +93,9 @@ class RarExtractor
     
     function retryWithEnsureError($catchedMessage,$file,$path = null)
     {
-        if ($catchedMessage == 'Incorrect password' and uiLaterAndWait(function (){return UXDialog::confirm(Localization::getByCode('RAREXTRACTOR.FAILDEFPASSWD'));}))
+        if ($catchedMessage == 'Incorrect password' and uiLaterAndWait(function (){return UXDialog::confirm(app()->module('Localization')->_('RAREXTRACTOR.FAILDEFPASSWD'));}))
         {
-            $password = uiLaterAndWait(function (){return UXDialog::input(Localization::getByCode('RAREXTRACTOR.PASSWD'));});
+            $password = uiLaterAndWait(function (){return UXDialog::input(app()->module('Localization')->_('RAREXTRACTOR.PASSWD'));});
             if ($password == null)
                 return;
             
@@ -111,13 +111,13 @@ class RarExtractor
             }
             catch (Throwable $ex)
             {
-                uiLater(function (){UXDialog::show(Localization::getByCode('RAREXTRACTOR.FAILPASSWD'),'ERROR');});
+                uiLater(function (){UXDialog::show(app()->module('Localization')->_('RAREXTRACTOR.FAILPASSWD'),'ERROR');});
                 return;
             }
         }
         else 
         {
-            uiLater(function (){UXDialog::show($catchedMessage ?? Localization::getByCode('RAREXTRACTOR.FAIL'),'ERROR');});
+            uiLater(function (){UXDialog::show($catchedMessage ?? app()->module('Localization')->_('RAREXTRACTOR.FAIL'),'ERROR');});
             return;
         }
     }

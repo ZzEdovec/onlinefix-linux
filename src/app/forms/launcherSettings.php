@@ -76,7 +76,7 @@ class launcherSettings extends AbstractForm
      */
     function doInstallsPathConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = $this->appModule()->launcher->get('installsPath','User Settings') ?? Localization::getByCode('LAUNCHERSETTINGS.PATHS.NOPATH');
+        $e->sender->text = $this->appModule()->launcher->get('installsPath','User Settings') ?? $this->_('LAUNCHERSETTINGS.PATHS.NOPATH');
     }
 
     /**
@@ -149,7 +149,7 @@ class launcherSettings extends AbstractForm
             {
                 if (File::of(fs::abs("$protonPath/".$item[0]))->canWrite() == false)
                 {
-                    UXDialog::show(Localization::getByCode('ARIA.EXITCODE.17'),'ERROR');
+                    UXDialog::show($this->_('ARIA.EXITCODE.17'),'ERROR');
                     return;
                 }
                 
@@ -198,38 +198,34 @@ class launcherSettings extends AbstractForm
             $releases = FilesWorker::fetchProtonReleases();
             if ($releases == false or str::contains($releases,'tar.gz'))
             {
-                uiLater(function (){$this->toast(Localization::getByCode('GAMESETTINGS.NOGITHUBAPI'),4000);});
+                uiLater(function (){ $this->toast($this->_('GAMESETTINGS.NOGITHUBAPI'), 4000); });
                 
-                $this->protonsList->data('allowRefresh',true);
+                $this->protonsList->data('allowRefresh', true);
                 return;
             }
             
-            foreach ($releases as $release)
-            {
-                foreach ($release['assets'] as $asset)
+            foreach ($releases as $release => $asset)
+            {            
+                if (in_array($release, $installedProtons))
                 {
-                    if (Regex::match('^application/(gzip|x-gtar)$',$asset['content_type']) == false or 
-                        $asset['state'] != 'uploaded' or 
-                        $asset['browser_download_url'] == null)
-                        continue;
-                    
-                    if (in_array($release['tag_name'],$installedProtons))
+                    foreach ($this->protonsList->items->toArray() as $index => $item)
                     {
-                        foreach ($this->protonsList->items->toArray() as $index => $item)
+                        if ($item[0] == $release and $item[1] == null)
                         {
-                            if ($item[0] == $release['tag_name'] and $item[1] == null)
+                            uiLater(function () use ($index,$release,$asset)
                             {
-                                uiLater(function () use ($index,$release,$asset)
-                                {
-                                    $this->protonsList->items->removeByIndex($index);
-                                    $this->protonsList->items->insert($index,[$release['tag_name'],$asset['browser_download_url']]);
-                                });
-                                break;
-                            }
+                                $this->protonsList->items->removeByIndex($index);
+                                $this->protonsList->items->insert($index,[$release, $asset['url']]);
+                            });
+                            
+                            break;
                         }
                     }
-                    else
-                        uiLater(function () use ($release,$asset){$this->protonsList->items->add([$release['tag_name'],$asset['browser_download_url']]);});
+                }
+                else {
+                    uiLater(function () use ($release, $asset) {
+                        $this->protonsList->items->add([$release, $asset['url']]);
+                    });
                 }
             }
         })->start();
@@ -290,7 +286,7 @@ class launcherSettings extends AbstractForm
      */
     function doDefaultProtonConstruct(UXEvent $e = null)
     {
-        $this->defaultProton->items->addAll(array_merge(['GE-Proton Latest'],FilesWorker::getInstalledProtons()));
+        $this->defaultProton->items->addAll(array_merge(['GE-Proton Latest'], FilesWorker::getInstalledProtons()));
         $this->defaultProton->value = $this->appModule()->launcher->get('defaultProton','User Settings') ?? 'GE-Proton Latest';
     }
 
@@ -318,7 +314,7 @@ class launcherSettings extends AbstractForm
         $switch = new UXToggleSwitch;
         $switch->selected = $this->appModule()->launcher->get('fullscreen','User Settings');
         
-        quUI::generateSetButton($e->sender,Localization::getByCode('LAUNCHERSETTINGS.LAUNCHER.FULLSCREEN'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('LAUNCHERSETTINGS.LAUNCHER.FULLSCREEN'),$switch);
     }
 
 
@@ -369,7 +365,7 @@ class launcherSettings extends AbstractForm
      */
     function doLabel3Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.PROTON.DEFAULT');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.PROTON.DEFAULT');
     }
 
     /**
@@ -377,7 +373,7 @@ class launcherSettings extends AbstractForm
      */
     function doPathsButtonConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.TABS.PATHS');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.TABS.PATHS');
     }
 
     /**
@@ -385,7 +381,7 @@ class launcherSettings extends AbstractForm
      */
     function doProtonsButtonConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.TABS.PROTONS');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.TABS.PROTONS');
     }
 
     /**
@@ -393,7 +389,7 @@ class launcherSettings extends AbstractForm
      */
     function doLauncherButtonConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.TABS.LAUNCHER');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.TABS.LAUNCHER');
     }
 
     /**
@@ -401,7 +397,7 @@ class launcherSettings extends AbstractForm
      */
     function doAboutButtonConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.TABS.ABOUT');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.TABS.ABOUT');
     }
 
     /**
@@ -417,7 +413,7 @@ class launcherSettings extends AbstractForm
      */
     function doLabel5Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.PATHS.HEADER');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.PATHS.HEADER');
     }
 
     /**
@@ -425,7 +421,7 @@ class launcherSettings extends AbstractForm
      */
     function doLabel4Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.PATHS.DOWNLOADS');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.PATHS.DOWNLOADS');
     }
 
     /**
@@ -433,7 +429,7 @@ class launcherSettings extends AbstractForm
      */
     function doLabelConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.PATHS.INSTALLS');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.PATHS.INSTALLS');
     }
 
     /**
@@ -441,7 +437,7 @@ class launcherSettings extends AbstractForm
      */
     function doLabel6Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.PATHS.PROTONS');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.PATHS.PROTONS');
     }
 
     /**
@@ -449,7 +445,7 @@ class launcherSettings extends AbstractForm
      */
     function doLabelAltConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.PATHS.PREFIXES');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.PATHS.PREFIXES');
     }
 
     /**
@@ -457,7 +453,7 @@ class launcherSettings extends AbstractForm
      */
     function doLabel9Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.PROTON.HINT');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.PROTON.HINT');
     }
 
     /**
@@ -473,7 +469,7 @@ class launcherSettings extends AbstractForm
      */
     function doGraphicsButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('SETTINGSMODULE.GRAPHICS');
+        $e->sender->text = $this->_('SETTINGSMODULE.GRAPHICS');
     }
 
     /**
@@ -483,7 +479,7 @@ class launcherSettings extends AbstractForm
     {
         $switch = new UXToggleSwitch;
         $switch->selected = $this->appModule()->launcher->get('gamesUsesWined3d','User Settings');
-        quUI::generateSetButton($e->sender,Localization::getByCode('SETTINGSMODULE.USEWINED3D'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('SETTINGSMODULE.USEWINED3D'),$switch);
     }
 
     /**
@@ -502,7 +498,7 @@ class launcherSettings extends AbstractForm
         $switch = new UXToggleSwitch;
         $switch->selected = $this->appModule()->launcher->get('gamesUsesWayland','User Settings');
         
-        quUI::generateSetButton($e->sender,Localization::getByCode('SETTINGSMODULE.NATIVEWAYLAND'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('SETTINGSMODULE.NATIVEWAYLAND'),$switch);
     }
 
     /**
@@ -535,7 +531,7 @@ class launcherSettings extends AbstractForm
         $switch = new UXToggleSwitch;
         $switch->selected = $this->appModule()->launcher->get('noSteamRequest','User Settings');
         
-        quUI::generateSetButton($e->sender,Localization::getByCode('LAUNCHERSETTINGS.LAUNCHER.REQUESTSTEAM'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('LAUNCHERSETTINGS.LAUNCHER.REQUESTSTEAM'),$switch);
     }
 
     /**
@@ -559,7 +555,7 @@ class launcherSettings extends AbstractForm
      */
     function doLabel10Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('LAUNCHERSETTINGS.GRAPHICS.HEADER');
+        $e->sender->text = $this->_('LAUNCHERSETTINGS.GRAPHICS.HEADER');
     }
     
     static function getBasePathFor($for)

@@ -31,19 +31,6 @@ class MainForm extends AbstractForm
         foreach ($this->appModule()->games->toArray() as $name => $params)
             $this->addGame($name,$params['executable'],$params['overrides'],$params['banner'],$params['icon']);
         
-        $currentDownloads = $this->appModule()->launcher->get('ariaDownloads','Downloads');
-        if ($currentDownloads != null)
-        { 
-            if (app()->form('addGame')->ariaDownloader == null)
-                app()->form('addGame')->doConstruct();
-                
-            $aria = app()->form('addGame')->ariaDownloader;
-            if ($aria->isRunning() == false)
-                app()->form('addGame')->runAria();
-            
-            $aria->reAddDownloadsFromPreviousSession();
-        }
-        
         $this->requestFocus();
     }
 
@@ -52,7 +39,7 @@ class MainForm extends AbstractForm
      */
     function doNoGamesHeaderConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('MAINFORM.HEADER');
+        $e->sender->text = $this->_('MAINFORM.HEADER');
     }
 
     /**
@@ -69,7 +56,7 @@ class MainForm extends AbstractForm
         $e->sender->data('stop',$stopGraphic);
         $e->sender->data('wait',$waitGraphic);
         
-        $e->sender->text = Localization::getByCode('MAINFORM.PLAY');
+        $e->sender->text = $this->_('MAINFORM.PLAY');
     }
     
     /**
@@ -77,7 +64,7 @@ class MainForm extends AbstractForm
      */
     function doDesktopIconConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.CREATEDESKTOP');
+        $e->sender->text = $this->_('MAINFORM.MENU.CREATEDESKTOP');
     }
 
     /**
@@ -85,7 +72,7 @@ class MainForm extends AbstractForm
      */
     function doMenuIconConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.CREATEAPPMENU');
+        $e->sender->text = $this->_('MAINFORM.MENU.CREATEAPPMENU');
     }
 
     /**
@@ -93,21 +80,7 @@ class MainForm extends AbstractForm
      */
     function doDesktopIconClick(UXMouseEvent $e = null)
     {
-        $gameName = $this->gamePanel->data('gameName');
-        $icon = $this->appModule()->games->get('icon',$gameName);
-        $desktopPath = str::trim(execute('xdg-user-dir DESKTOP',true)->getInput()->readFully())."/$gameName.desktop";
-        if (fs::isFile($desktopPath))
-        {
-            fs::delete($desktopPath);
-            $this->desktopIcon->selected = false;
-        }
-        else 
-        {
-            file_put_contents($desktopPath,FilesWorker::generateDesktopEntry($gameName,$icon));
-            new Process(['chmod','+x',$desktopPath])->start();
-            
-            $this->desktopIcon->selected = true;
-        }
+        $this->desktopIcon->selected = $this->createDesktopFile(str::trim(execute('xdg-user-dir DESKTOP',true)->getInput()->readFully()));
     }
 
     /**
@@ -115,23 +88,26 @@ class MainForm extends AbstractForm
      */
     function doMenuIconClick(UXMouseEvent $e = null)
     {
-        $gameName = $this->gamePanel->data('gameName');
-        $icon = $this->appModule()->games->get('icon',$gameName);
-        $menuPath = System::getProperty('user.home')."/.local/share/applications/$gameName.desktop";
-        if (fs::isFile($menuPath))
-        {
-            fs::delete($menuPath);
-            $this->menuIcon->selected = false;
-        }
-        else 
-        {
-            file_put_contents($menuPath,FilesWorker::generateDesktopEntry($this->gamePanel->data('gameName'),$icon));
-            
-            $this->menuIcon->selected = true;
-        }
+        $this->menuIcon->selected = $this->createDesktopFile(System::getProperty('user.home')."/.local/share/applications");
     }
 
-
+    function createDesktopFile($path) {
+        $gameName = $this->gamePanel->data('gameName');
+        $desktopPath = "$path/$gameName.desktop";
+        
+        if (fs::isFile($desktopPath)) {
+            fs::delete($desktopPath);
+            return false;
+        }
+        else {
+            $icon = $this->appModule()->games->get('icon', $gameName);
+            
+            file_put_contents($desktopPath, FilesWorker::generateDesktopEntry($gameName, $icon));
+            new Process(['chmod','+x',$desktopPath])->start();
+            
+            return true;
+        }
+    }
 
     /**
      * @event playButton.action 
@@ -147,7 +123,7 @@ class MainForm extends AbstractForm
             catch (Throwable $ex){$kill = new Process(['pkill','-f',fs::name($this->appModule()->games->get('executable',$this->gamePanel->data('gameName')))])->startAndWait();}
             
             if ($kill->getExitValue() != 0)
-                $this->toast(Localization::getByCode('MAINFORM.KILLFAILED'));
+                $this->toast($this->_('MAINFORM.KILLFAILED'));
             else
                 $this->switchPlayButton('play');
         }
@@ -170,7 +146,7 @@ class MainForm extends AbstractForm
      */
     function doDonateConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('MAINFORM.DONATE');
+        $e->sender->text = $this->_('MAINFORM.DONATE');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/donate.png'));
         $e->sender->graphic->size = [20,20];
     }
@@ -188,7 +164,7 @@ class MainForm extends AbstractForm
      */
     function doAboutConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('MAINFORM.SETTINGS');
+        $e->sender->text = $this->_('MAINFORM.SETTINGS');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/settings-hires.png'));
         $e->sender->graphic->size = [20,20];
     }
@@ -198,7 +174,7 @@ class MainForm extends AbstractForm
      */
     function doTimeHeaderConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.TIMESTEMP.HEADER');
+        $e->sender->text = $this->_('MAINFORM.MENU.TIMESTEMP.HEADER');
     }
 
     /**
@@ -206,8 +182,8 @@ class MainForm extends AbstractForm
      */
     function doGameDebugButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.RUNDEBUG');
-        $e->sender->tooltipText = Localization::getByCode('MAINFORM.MENU.RUNDEBUG.TOOLTIP');
+        $e->sender->text = $this->_('MAINFORM.MENU.RUNDEBUG');
+        $e->sender->tooltipText = $this->_('MAINFORM.MENU.RUNDEBUG.TOOLTIP');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/debug.png'));
         $e->sender->graphic->size = [15,15];
     }
@@ -229,7 +205,7 @@ class MainForm extends AbstractForm
      */
     function doGameSettingsButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.SETTINGS');
+        $e->sender->text = $this->_('MAINFORM.MENU.SETTINGS');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/settings.png'));
         $e->sender->graphic->size = [15,15];
     }
@@ -254,7 +230,7 @@ class MainForm extends AbstractForm
      */
     function doGameDeleteButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('REMOVE');
+        $e->sender->text = $this->_('REMOVE');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/remove.png'));
         $e->sender->graphic->size = [15,15];
     }
@@ -272,7 +248,7 @@ class MainForm extends AbstractForm
      */
     function doUtilitiesButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.UTILITIES');
+        $e->sender->text = $this->_('MAINFORM.MENU.UTILITIES');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/wine.png'));
         $e->sender->graphic->size = [15,15];
         
@@ -282,7 +258,7 @@ class MainForm extends AbstractForm
             $prefix = FilesWorker::getProtonPrefixPath($this->gamePanel->data('gameName'),'wine');
             if ($wine == false)
             {
-                $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
+                $this->toast($this->_('FILESWORKER.PROTON.NOTFOUND'));
                 return;
             }
             
@@ -308,12 +284,12 @@ class MainForm extends AbstractForm
         };
         
         $menu = new UXContextMenu;
-        $winecfg = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.WINECFG'));
-        $taskmgr = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.TASKMGR'));
-        $control = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.CONTROL'));
-        $explorer = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.EXPLORER'));
-        $cmd = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.CMD'));
-        $regedit = new UXMenuItem(Localization::getByCode('MAINFORM.UTILITIES.REGEDIT'));
+        $winecfg = new UXMenuItem($this->_('MAINFORM.UTILITIES.WINECFG'));
+        $taskmgr = new UXMenuItem($this->_('MAINFORM.UTILITIES.TASKMGR'));
+        $control = new UXMenuItem($this->_('MAINFORM.UTILITIES.CONTROL'));
+        $explorer = new UXMenuItem($this->_('MAINFORM.UTILITIES.EXPLORER'));
+        $cmd = new UXMenuItem($this->_('MAINFORM.UTILITIES.CMD'));
+        $regedit = new UXMenuItem($this->_('MAINFORM.UTILITIES.REGEDIT'));
         $winetricks = new UXMenuItem('Winetricks');
         
         $winecfg->on('action',function () use ($runner){$runner('winecfg.exe');});
@@ -395,13 +371,13 @@ class MainForm extends AbstractForm
      */
     function doGameFolderButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.FOLDERS.BUTTON');
+        $e->sender->text = $this->_('GAMESETTINGS.FOLDERS.BUTTON');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/folder.png'));
         $e->sender->graphic->size = [15,15];
         
         $menu = new UXContextMenu;
-        $gameFolder = new UXMenuItem(Localization::getByCode('GAMESETTINGS.FOLDERS.GAME'));
-        $prefixFolder = new UXMenuItem(Localization::getByCode('GAMESETTINGS.FOLDERS.PREFIX'));
+        $gameFolder = new UXMenuItem($this->_('GAMESETTINGS.FOLDERS.GAME'));
+        $prefixFolder = new UXMenuItem($this->_('GAMESETTINGS.FOLDERS.PREFIX'));
         
         $gameFolder->on('action',function ()
         {
@@ -414,7 +390,7 @@ class MainForm extends AbstractForm
             if (fs::isDir($prefixDir))
                 open($prefixDir);
             else 
-                $this->toast(Localization::getByCode('GAMESETTINGS.WINETRICKS.NOPREFIX'));
+                $this->toast($this->_('GAMESETTINGS.WINETRICKS.NOPREFIX'));
         });
         
         $menu->items->addAll([$gameFolder,$prefixFolder]);
@@ -430,8 +406,8 @@ class MainForm extends AbstractForm
      */
     function doRunInPrefixButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('MAINFORM.MENU.RUN');
-        $e->sender->tooltipText = Localization::getByCode('MAINFORM.MENU.RUN.TOOLTIP');
+        $e->sender->text = $this->_('MAINFORM.MENU.RUN');
+        $e->sender->tooltipText = $this->_('MAINFORM.MENU.RUN.TOOLTIP');
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/run.png'));
         $e->sender->graphic->size = [15,15];
     }
@@ -445,14 +421,14 @@ class MainForm extends AbstractForm
         $prefixDir = FilesWorker::getProtonPrefixPath($this->gamePanel->data('gameName'));
         if ($proton == false)
         {
-            $this->toast(Localization::getByCode('FILESWORKER.PROTON.NOTFOUND'));
+            $this->toast($this->_('FILESWORKER.PROTON.NOTFOUND'));
             return;
         }
         
         $fc = new UXFileChooser;
 
-        $fc->extensionFilters = [['extensions'=>['*.exe'],'description'=>Localization::getByCode('FILECHOOSER.EXE.DESC')]];
-        $fc->title = Localization::getByCode('FILECHOOSER.EXE.TITLE');
+        $fc->extensionFilters = [['extensions'=>['*.exe'],'description'=>$this->_('FILECHOOSER.EXE.DESC')]];
+        $fc->title = $this->_('FILECHOOSER.EXE.TITLE');
 
         $exe = $fc->showOpenDialog($this);
         if ($exe == null)
@@ -478,13 +454,59 @@ class MainForm extends AbstractForm
      */
     function doAddGameClick(UXMouseEvent $e = null)
     {
-        if (fs::isFile('/usr/bin/aria2c'))
-            quUI::showFormAndFocus('addGame');
+        if ($this->addGame->graphic == $this->addGame->data('loading') and $this->addGame->graphic != null)
+            return;
+            
+        $dc = new UXDirectoryChooser;
+        $dc->title = $this->_('ADDGAME.FILECHOOSER');
+
+        $path = $dc->showDialog($this->visible ? $this : app()->form('MainForm'));
+        if ($path == null)
+            return;
+        
+        try{$this->switchGameButton('loading');} catch (Throwable $ex){}
+        new Thread(function () use ($path)
+        {
+            $files = self::scanDir($path);
+                                     
+            uiLater(function () use ($files,$path)
+            {
+                try {$this->switchGameButton('add','addGame'); } catch (Throwable $ex){}
+                
+                $form = quUI::showFormAndFocus('newGameConfigurator', true);
+                uiLater(function () use ($files,$path,$form) { $form->prepareForGame($files,$path); });
+            });
+        })->start();
+    }
+    
+    function switchGameButton($status)
+    {
+        if ($status == 'add')
+        {
+            $this->addGame->graphic = $this->addGame->data('add');
+            $this->addGame->text = $this->_('MAINFORM.ADDGAME');
+        }
         else 
         {
-            Logger::info('No aria2c in /usr/bin, so skipping downloads window');
-            app()->form('addGame')->doAddGameAction();
+            $this->addGame->graphic = $this->addGame->data('loading');
+            $this->addGame->text = $this->_('MAINFORM.LOADINGGAME');
         }
+    }
+    
+    static function scanDir($path)
+    {
+        $files = fs::scan(
+            $path,
+            ['callback'=> function (File $f) {
+                 if ($f->isDirectory() or 
+                      Regex::match('\.(exe|vbs|bat|rar)$',$f) == false)
+                      return false;
+                 
+                 return $f;
+             }]
+         );
+            
+        return $files;
     }
 
     /**
@@ -500,7 +522,7 @@ class MainForm extends AbstractForm
         $e->sender->data('add',$e->sender->graphic);
         $e->sender->data('loading',$loadingGraphic);
         
-        $e->sender->text = Localization::getByCode('MAINFORM.ADDGAME');
+        $e->sender->text = $this->_('MAINFORM.ADDGAME');
     }
 
     /**
@@ -517,30 +539,8 @@ class MainForm extends AbstractForm
      */
     function doClose(UXWindowEvent $e = null)
     {    
-        if (app()->form('addGame')->ariaDownloader == null or app()->form('addGame')->ariaDownloader->isRunning() == false)
-            fs::delete('/tmp/ofllpid');
+        fs::delete('/tmp/ofllpid');
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     function addGame($gameName,$exec,$overrides,$image = null,$icon = null)
     {
@@ -701,17 +701,17 @@ class MainForm extends AbstractForm
         switch ($status)
         {
             case ('stop'):
-                $this->playButton->text = Localization::getByCode('MAINFORM.STOP');
+                $this->playButton->text = $this->_('MAINFORM.STOP');
                 $this->playButton->graphic = $this->playButton->data('stop');
                 $this->gameDebugButton->enabled = false;
             break;
             case ('wait'):
-                $this->playButton->text = Localization::getByCode('MAINFORM.WAIT');
+                $this->playButton->text = $this->_('MAINFORM.WAIT');
                 $this->playButton->graphic = $this->playButton->data('wait');
                 $this->gameDebugButton->enabled = $this->playButton->enabled = false;
             return;
             default: 
-                $this->playButton->text = Localization::getByCode('MAINFORM.PLAY');
+                $this->playButton->text = $this->_('MAINFORM.PLAY');
                 $this->playButton->graphic = $this->playButton->data('play');
                 $this->gameDebugButton->enabled = true;
             break;
@@ -726,11 +726,11 @@ class MainForm extends AbstractForm
         if ($timeSpent < 3600)
         {
             $minutes = round($timeSpent / 60);
-            $this->timeLabel->text = sprintf(Localization::getByCode('MAINFORM.TIMESPENT.MINUTES'),$minutes >= 1 ? $minutes : 0);
+            $this->timeLabel->text = sprintf($this->_('MAINFORM.TIMESPENT.MINUTES'),$minutes >= 1 ? $minutes : 0);
         }
         else 
         {
-            $this->timeLabel->text = sprintf(Localization::getByCode('MAINFORM.TIMESPENT.HOURS'),round($timeSpent / 3600));
+            $this->timeLabel->text = sprintf($this->_('MAINFORM.TIMESPENT.HOURS'),round($timeSpent / 3600));
         }
     }
 }

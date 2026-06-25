@@ -47,7 +47,7 @@ class gameSettings extends AbstractForm
      */
     function doLabel6Construct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.ENVS.ENVIRONMENT');
+        $e->sender->text = $this->_('GAMESETTINGS.ENVS.ENVIRONMENT');
     }
 
     /**
@@ -65,7 +65,7 @@ class gameSettings extends AbstractForm
     {
         $switch = new UXToggleSwitch;
         $switch->selected = $this->appModule()->games->get('steamOverlay',$this->data('gameName'));
-        quUI::generateSetButton($e->sender,Localization::getByCode('GAMESETTINGS.ADDITIONALS.USESTEAMOVERLAY'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('GAMESETTINGS.ADDITIONALS.USESTEAMOVERLAY'),$switch);
     }
 
     /**
@@ -75,7 +75,7 @@ class gameSettings extends AbstractForm
     {
         $switch = new UXToggleSwitch;
         $switch->selected = $this->appModule()->games->get('steamRuntime',$this->data('gameName'));
-        quUI::generateSetButton($e->sender,Localization::getByCode('GAMESETTINGS.ADDITIONALS.USESTEAMRUNTIME'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('GAMESETTINGS.ADDITIONALS.USESTEAMRUNTIME'),$switch);
     }
 
     /**
@@ -83,7 +83,7 @@ class gameSettings extends AbstractForm
      */
     function doLabelConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.STARTSETTINGS');
+        $e->sender->text = $this->_('GAMESETTINGS.STARTSETTINGS');
     }
 
     /**
@@ -107,11 +107,9 @@ class gameSettings extends AbstractForm
      */
     function doSteamRuntimeAction(UXEvent $e = null)
     {
-        if (Filesworker::findSteamRuntime() == false and !($e->sender->data('quUIElement')->selected))
+        if (FilesWorker::findSteamRuntime($this->proton->value) == false and !($e->sender->data('quUIElement')->selected))
         {
-            if (uiConfirm(Localization::getByCode('GAMESETTINGS.STEAM.NORUNTIME')))
-                execute('steam steam://install/1628350');
-            
+            $this->toast($this->_('GAMESETTINGS.STEAM.NORUNTIME'));
             uiLater(function () use ($e){$e->sender->data('quUIElement')->selected = false;});
             return;
         }
@@ -124,7 +122,7 @@ class gameSettings extends AbstractForm
      */
     function doLabelAltConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.ENVS.ARGS.BEFORE');
+        $e->sender->text = $this->_('GAMESETTINGS.ENVS.ARGS.BEFORE');
     }
 
     /**
@@ -132,7 +130,7 @@ class gameSettings extends AbstractForm
      */
     function doLabel3Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.ADDITIONALS');
+        $e->sender->text = $this->_('GAMESETTINGS.ADDITIONALS');
     }
 
     /**
@@ -156,7 +154,7 @@ class gameSettings extends AbstractForm
      */
     function doLabel7Construct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.ENVS.ARGS.AFTER');
+        $e->sender->text = $this->_('GAMESETTINGS.ENVS.ARGS.AFTER');
     }
 
     /**
@@ -254,7 +252,7 @@ class gameSettings extends AbstractForm
     function doEditIconAction(UXEvent $e = null)
     {
         $fc = new UXFileChooser;
-        $fc->extensionFilters = [['extensions'=>['*.png','*.jpg','*.exe'],'description'=>Localization::getByCode('FILECHOOSER.IMG.DESC')]];
+        $fc->extensionFilters = [['extensions'=>['*.png','*.jpg','*.exe'],'description'=>$this->_('FILECHOOSER.IMG.DESC')]];
         
         $icon = $fc->showOpenDialog($this);
         if ($icon == null)
@@ -273,7 +271,7 @@ class gameSettings extends AbstractForm
                 if (fs::isFile($iconPath) == false)
                     throw new IOException('File not found');
             }
-            catch (Throwable $ex) {UXDialog::show(sprintf(Localization::getByCode('MAINFORM.ICONPARSERERROR'),$ex->getMessage()),'ERROR'); return;}
+            catch (Throwable $ex) {UXDialog::show(sprintf($this->_('MAINFORM.ICONPARSERERROR'),$ex->getMessage()),'ERROR'); return;}
         }
         else 
         {
@@ -316,16 +314,16 @@ class gameSettings extends AbstractForm
     function doEditBannerConstruct(UXEvent $e = null)
     {
         $menu = new UXContextMenu;
-        $viaSteam = new UXMenuItem(Localization::getByCode('BANNEREDITOR.STEAM.HEADER'));
-        $fromFile = new UXMenuItem(Localization::getByCode('BANNEREDITOR.FILE.HEADER'));
+        $viaSteam = new UXMenuItem($this->_('BANNEREDITOR.STEAM.HEADER'));
+        $fromFile = new UXMenuItem($this->_('BANNEREDITOR.FILE.HEADER'));
         
         $viaSteam->on('action',function ()
         {
-            $steamID = UXDialog::input(Localization::getByCode('BANNEREDITOR.PROMPT'),$this->appModule()->games->get('steamID',$this->data('gameName')));
+            $steamID = UXDialog::input($this->_('BANNEREDITOR.PROMPT'),$this->appModule()->games->get('steamID',$this->data('gameName')));
             
             if ($steamID == null)
             {
-                $this->toast(Localization::getByCode('BANNEDEDITOR.STEAM.NOAPPID'),3000);
+                $this->toast($this->_('BANNEDEDITOR.STEAM.NOAPPID'),3000);
                 return;
             }
             
@@ -344,8 +342,8 @@ class gameSettings extends AbstractForm
         {
             $fc = new UXFileChooser;
         
-            $fc->extensionFilters = [['extensions'=>['*.jpg','*.png'],'description'=>Localization::getByCode('FILECHOOSER.IMG.DESC')]];
-            $fc->title = Localization::getByCode('FILECHOOSER.IMG.TITLE');
+            $fc->extensionFilters = [['extensions'=>['*.jpg','*.png'],'description'=>$this->_('FILECHOOSER.IMG.DESC')]];
+            $fc->title = $this->_('FILECHOOSER.IMG.TITLE');
             
             $banner = $fc->showOpenDialog($this);
             if ($banner == null)
@@ -397,7 +395,7 @@ class gameSettings extends AbstractForm
      */
     function doGameNameConstruct(UXEvent $e = null)
     {    
-        $e->sender->promptText = Localization::getByCode('GAMESETTINGS.GAMENAME.PROMPT');
+        $e->sender->promptText = $this->_('GAMESETTINGS.GAMENAME.PROMPT');
         $e->sender->text = $this->data('gameName');
     }
 
@@ -454,7 +452,7 @@ class gameSettings extends AbstractForm
      */
     function doProtonConstruct(UXEvent $e = null)
     {
-        $this->proton->items->addAll(array_merge(['GE-Proton Latest',Localization::getByCode('GAMESETTINGS.PROTONS.OTHER')],FilesWorker::getInstalledProtons()));
+        $this->proton->items->addAll(array_merge(['GE-Proton Latest',$this->_('GAMESETTINGS.PROTONS.OTHER')],FilesWorker::getInstalledProtons()));
         $this->proton->value = $this->appModule()->games->get('proton',$this->data('gameName')) ?? 'GE-Proton Latest';
     }
 
@@ -463,15 +461,20 @@ class gameSettings extends AbstractForm
      */
     function doProtonAction(UXEvent $e = null)
     {
-        if ($this->proton->value == Localization::getByCode('GAMESETTINGS.PROTONS.OTHER'))
+        if ($this->proton->value == $this->_('GAMESETTINGS.PROTONS.OTHER'))
         {
-            $form = quUI::showFormAndFocus('launcherSettings');
+            $form = app()->form('launcherSettings');
             uiLater(function () use ($form)
             {
+                $this->proton->value = $this->appModule()->games->get('proton',$this->data('gameName'));
+                
                 $form->protonsButton->selected = true;
                 $form->doProtonsButtonAction();
                 
-                $this->proton->value = $this->appModule()->games->get('proton',$this->data('gameName'));
+                $form->showAndWait();
+                
+                $this->proton->items->clear();
+                $this->doProtonConstruct();
             });
             return;
         }
@@ -490,13 +493,13 @@ class gameSettings extends AbstractForm
         if ($prefixPath == null)
             return;
         elseif (File::of($prefixPath)->findFiles() != [])
-            UXDialog::show(Localization::getByCode('NEWGAMECONFIG.PREFIX.PATHNONEMPTY'),'WARNING');
+            UXDialog::show($this->_('NEWGAMECONFIG.PREFIX.PATHNONEMPTY'),'WARNING');
             
         $oldPrefix = $this->appModule()->games->get('prefixPath',$this->data('gameName')) ?? 
                      fs::parent($this->appModule()->games->get('executable',$this->data('gameName'))).'/OFME Prefix';
         
         $oldFiles = File::of($oldPrefix)->findFiles();
-        if ($oldFiles != [] and uiConfirm(Localization::getByCode('GAMESETTINGS.PROTONS.PREFIXMOVE')))
+        if ($oldFiles != [] and uiConfirm($this->_('GAMESETTINGS.PROTONS.PREFIXMOVE')))
         {
             foreach ($oldFiles as $file)
                 new Process(['mv','-f',$file,$prefixPath])->start();
@@ -522,7 +525,7 @@ class gameSettings extends AbstractForm
      */
     function doLabel5Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.PROTONS.VERSION');
+        $e->sender->text = $this->_('GAMESETTINGS.PROTONS.VERSION');
     }
 
     /**
@@ -530,7 +533,7 @@ class gameSettings extends AbstractForm
      */
     function doLabel8Construct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.PROTONS.PREFIXPATH');
+        $e->sender->text = $this->_('GAMESETTINGS.PROTONS.PREFIXPATH');
     }
 
     /**
@@ -538,7 +541,7 @@ class gameSettings extends AbstractForm
      */
     function doViewButtonConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.TABS.VIEW');
+        $e->sender->text = $this->_('GAMESETTINGS.TABS.VIEW');
     }
 
     /**
@@ -546,7 +549,7 @@ class gameSettings extends AbstractForm
      */
     function doStartupButtonConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('GAMESETTINGS.TABS.RUN');
+        $e->sender->text = $this->_('GAMESETTINGS.TABS.RUN');
     }
 
     /**
@@ -560,7 +563,7 @@ class gameSettings extends AbstractForm
         $e->sender->enabled = $fixPath != null;
         $switch->selected = File::of($fixPath)->findFiles(function ($p,$f){return str::endsWith($f,'.noofllpath');}) != [];
         
-        quUI::generateSetButton($e->sender,Localization::getByCode('GAMESETTINGS.ADDITIONALS.USEFAKESTEAM'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('GAMESETTINGS.ADDITIONALS.USEFAKESTEAM'),$switch);
     }
 
     /**
@@ -572,7 +575,7 @@ class gameSettings extends AbstractForm
         
         if ($dlls == [])
         {
-            UXDialog::show(Localization::getByCode('GAMESETTINGS.FAKESTEAM.FAILED'));
+            UXDialog::show($this->_('GAMESETTINGS.FAKESTEAM.FAILED'));
             
             uiLater(function () use ($e){$e->sender->data('quUIElement')->selected = false;});
             return;
@@ -613,7 +616,7 @@ class gameSettings extends AbstractForm
      */
     function doGraphicsButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('SETTINGSMODULE.GRAPHICS');
+        $e->sender->text = $this->_('SETTINGSMODULE.GRAPHICS');
     }
 
     /**
@@ -623,7 +626,7 @@ class gameSettings extends AbstractForm
     {
         $switch = new UXToggleSwitch;
         $switch->selected = $this->appModule()->games->get('wined3d',$this->data('gameName'));
-        quUI::generateSetButton($e->sender,Localization::getByCode('SETTINGSMODULE.USEWINED3D'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('SETTINGSMODULE.USEWINED3D'),$switch);
     }
 
     /**
@@ -642,7 +645,7 @@ class gameSettings extends AbstractForm
         $switch = new UXToggleSwitch;
         $switch->selected = $this->appModule()->games->get('nativeWayland',$this->data('gameName'));
         
-        quUI::generateSetButton($e->sender,Localization::getByCode('SETTINGSMODULE.NATIVEWAYLAND'),$switch);
+        quUI::generateSetButton($e->sender,$this->_('SETTINGSMODULE.NATIVEWAYLAND'),$switch);
     }
 
     /**
@@ -698,6 +701,6 @@ class gameSettings extends AbstractForm
             
             $banner->save($bannersPath.'/'.$gameName.'.png');
             $this->appModule()->games->set('banner',$bannersPath.'/'.$gameName.'.png',$gameName);
-        } catch (Throwable $ex){UXDialog::show(sprintf(Localization::getByCode('BANNEREDITOR.FILE.FAILED'),$ex->getMessage()),'ERROR');}
+        } catch (Throwable $ex){UXDialog::show(sprintf($this->_('BANNEREDITOR.FILE.FAILED'),$ex->getMessage()),'ERROR');}
     }
 }

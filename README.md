@@ -16,16 +16,16 @@
 - Download games directly from the launcher (requires `aria2` and an OnlineFix source from Hydra Launcher)
 ## ❕ Compatibility
 - SteamFix
-    - OnlineFix – full support for 64-bit, 32-bit may have issues
-    - FreeTP – full support
+    - OnlineFix - full 64-bit support, 32-bit may have issues
+    - FreeTP - only fixes older than 2026
 - Custom OnlineFix servers (Photon Launcher)
     - Full support
-- SteamFix and EOSFix (combined)
-    - FreeTP – doesn't work in most cases, and a solution is being sought
-    - OnlineFix – full support
+- SteamFix + EOSFix (combined)
+    - OnlineFix - full support
+    - FreeTP - completely broken
 - EOSFix
-    - OnlineFix – with EOSAuthHooker, old type not tested
-    - FreeTP – not tested
+    - OnlineFix - with EOSAuthHooker, legacy mode untested
+    - FreeTP - completely broken
 ## 📦 Dependencies
 Before using the launcher, make sure the following packages are installed:
 - `ffmpeg`

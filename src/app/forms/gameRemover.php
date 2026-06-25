@@ -43,7 +43,7 @@ class gameRemover extends AbstractForm
         } catch (Throwable $ex){}
         
         if (app()->form('MainForm')->container->content->children->isEmpty())
-            $this->noGamesHeader->show();
+            app()->form('MainForm')->noGamesHeader->show();
         
         app()->form('MainForm')->hideGameMenu();
         $this->hide();
@@ -60,7 +60,7 @@ class gameRemover extends AbstractForm
      */
     function doButtonConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('DIALOG.YES');
+        $e->sender->text = $this->_('DIALOG.YES');
     }
 
     /**
@@ -76,7 +76,7 @@ class gameRemover extends AbstractForm
      */
     function doButtonAltConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('DIALOG.NO');
+        $e->sender->text = $this->_('DIALOG.NO');
     }
 
     /**
@@ -92,7 +92,7 @@ class gameRemover extends AbstractForm
      */
     function doRemoveFilesConstruct(UXEvent $e = null)
     {    
-        $e->sender->text = Localization::getByCode('GAMEREMOVER.DISKREMOVE');
+        $e->sender->text = $this->_('GAMEREMOVER.DISKREMOVE');
     }
 
     /**
@@ -101,7 +101,7 @@ class gameRemover extends AbstractForm
     function doShow(UXWindowEvent $e = null)
     {   
         $gameName = app()->form('MainForm')->gamePanel->data('gameName');
-        $this->label->text = sprintf(Localization::getByCode('GAMEREMOVER.HEADER'),$gameName);
+        $this->label->text = sprintf($this->_('GAMEREMOVER.HEADER'),$gameName);
         
         $mainPath = $this->appModule()->games->get('mainPath',$gameName);
         $legacyPrefixPath = fs::parent($this->appModule()->games->get('executable',$gameName)).'/OFME Prefix';
@@ -124,7 +124,7 @@ class gameRemover extends AbstractForm
      */
     function doRemovePrefixConstruct(UXEvent $e = null)
     {
-        $e->sender->text = Localization::getByCode('GAMEREMOVER.PREFIXREMOVE');
+        $e->sender->text = $this->_('GAMEREMOVER.PREFIXREMOVE');
     }
 
     /**

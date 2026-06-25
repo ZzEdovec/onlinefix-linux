@@ -39,7 +39,7 @@ class protonDownloader extends AbstractForm
         $this->hide();
     }
     
-    function startDownload($name,$url)
+    function startDownload($name, $url)
     {
         $protonPath = launcherSettings::getBasePathFor('protons');
         
@@ -50,7 +50,7 @@ class protonDownloader extends AbstractForm
         
         if ($url == null or $isProtonPath == false)
         {
-            UXDialog::show($url == null ? Localization::getByCode('PROTONDOWNLOADER.NOURL') : Localization::getByCode('PROTONDOWNLOADER.NOPATH'),'ERROR');
+            UXDialog::show($url == null ? $this->_('PROTONDOWNLOADER.NOURL') : $this->_('PROTONDOWNLOADER.NOPATH'),'ERROR');
             
             uiLater(function (){$this->hide();});
             return;
@@ -62,7 +62,7 @@ class protonDownloader extends AbstractForm
         $downloader->urls = [$url];
         $downloader->destDirectory = $protonPath;
         $downloader->threadCount = 40;
-        $downloadText = Localization::getByCode('PROTONDOWNLOADER.DOWNLOADING');
+        $downloadText = $this->_('PROTONDOWNLOADER.DOWNLOADING');
         $timer = Timer::every('1s',function () use ($downloader,$downloadText)
         {
             $speed = $downloadText.' ('.round($downloader->getSpeed() / 1e+6,2).'MB/s)';
@@ -78,11 +78,11 @@ class protonDownloader extends AbstractForm
             $downloader->free();
             
             $this->progressBar->progress = -1;
-            $this->label->text = Localization::getByCode('PROTONDOWNLOADER.UNPACKING');
+            $this->label->text = $this->_('PROTONDOWNLOADER.UNPACKING');
             
             if (fs::isFile('/usr/bin/tar') == false)
             {
-                UXDialog::show(Localization::getByCode('PROTONDOWNLOADER.NOTAR'),'ERROR');
+                UXDialog::show($this->_('PROTONDOWNLOADER.NOTAR'),'ERROR');
                 
                 fs::delete($e->file);
                 $this->hide();
@@ -99,7 +99,7 @@ class protonDownloader extends AbstractForm
         });
         $downloader->on('errorOne',function ($e) use ($downloader)
         {
-            UXDialog::showAndWait(Localization::getByCode('PROTONDOWNLOADER.ERRORDOWNLOADING'),'ERROR');
+            UXDialog::showAndWait($this->_('PROTONDOWNLOADER.ERRORDOWNLOADING'),'ERROR');
             
             fs::delete($e->file);
             $downloader->free();
