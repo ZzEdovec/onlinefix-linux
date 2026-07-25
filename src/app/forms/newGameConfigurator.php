@@ -156,7 +156,7 @@ class newGameConfigurator extends AbstractForm
         $this->gameParams['mainFile'] = $candidate;
         $this->gameParams['canInstall'] = $canInstall;
         
-        $defaultInstallPath = $this->appModule()->launcher->get('installsPath','User Settings');
+        $defaultInstallPath = $this->appModule()->launcher->get('installsPath', 'User Settings');
         if ($canInstall == false or $ext != 'exe')
         {
             $this->gamePath->text = $this->gameParams['path'] ?? $defaultInstallPath;

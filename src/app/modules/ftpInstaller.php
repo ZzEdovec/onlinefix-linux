@@ -47,7 +47,7 @@ class ftpInstaller
                 }
             }
             
-            $files = addGame::scanDir($installPath);   
+            $files = MainForm::scanDir($installPath);   
             uiLater(function () use ($files,$installPath,$gameName,$prefixPath,$panel,$installers,$removeAfterInstall)
             {
                 $panel['box']->free();

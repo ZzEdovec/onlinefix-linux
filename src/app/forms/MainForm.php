@@ -7,7 +7,6 @@ use std, gui, framework, app;
 
 class MainForm extends AbstractForm
 {
-
     /**
      * @event container.construct 
      */

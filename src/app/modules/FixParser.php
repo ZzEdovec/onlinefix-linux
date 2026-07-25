@@ -40,13 +40,17 @@ class FixParser
                 $realAppID = $ini->get('RealAppId','OnlineFix Linux') ?? $ini->get('RealAppId','Main');
                 $fakeAppID = $ini->get('FakeAppId','Main');
                 
-                if (str::lower($regexFile) == 'steamfix.ini' and arr::has($ini->sections(),'OnlineFix Linux') == false)
+                if (str::lower($regexFile) == 'steamfix.ini' and arr::has($ini->sections(), 'OnlineFix Linux') == false)
                 {
                     $ini->set('RealAppId',$fakeAppID,'Main');
                     $ini->set('RealAppId',$realAppID,'OnlineFix Linux');
                     
                     Logger::info('FreeTP patch applied!');
                 }
+                
+                if ($ini->get('ExtraProtection', 'Misc') != null)
+                    $ini->set('ExtraProtection', 'false', 'Misc'); // If you pass it as a bool, it'll be 0 in the file :D
+                
                 
                 $ini->free();
                 continue;
