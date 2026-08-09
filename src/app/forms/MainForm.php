@@ -453,43 +453,7 @@ class MainForm extends AbstractForm
      */
     function doAddGameClick(UXMouseEvent $e = null)
     {
-        if ($this->addGame->graphic == $this->addGame->data('loading') and $this->addGame->graphic != null)
-            return;
-            
-        $dc = new UXDirectoryChooser;
-        $dc->title = $this->_('ADDGAME.FILECHOOSER');
-
-        $path = $dc->showDialog($this->visible ? $this : app()->form('MainForm'));
-        if ($path == null)
-            return;
-        
-        try{$this->switchGameButton('loading');} catch (Throwable $ex){}
-        new Thread(function () use ($path)
-        {
-            $files = self::scanDir($path);
-                                     
-            uiLater(function () use ($files,$path)
-            {
-                try {$this->switchGameButton('add','addGame'); } catch (Throwable $ex){}
-                
-                $form = quUI::showFormAndFocus('newGameConfigurator', true);
-                uiLater(function () use ($files,$path,$form) { $form->prepareForGame($files,$path); });
-            });
-        })->start();
-    }
-    
-    function switchGameButton($status)
-    {
-        if ($status == 'add')
-        {
-            $this->addGame->graphic = $this->addGame->data('add');
-            $this->addGame->text = $this->_('MAINFORM.ADDGAME');
-        }
-        else 
-        {
-            $this->addGame->graphic = $this->addGame->data('loading');
-            $this->addGame->text = $this->_('MAINFORM.LOADINGGAME');
-        }
+        quUI::showFormAndFocus('addGame', true);
     }
     
     static function scanDir($path)
@@ -513,13 +477,10 @@ class MainForm extends AbstractForm
      */
     function doAddGameConstruct(UXEvent $e = null)
     {
-        $loadingGraphic = new UXMaterialProgressIndicator;
-        $loadingGraphic->size = [20,20];
         $e->sender->graphic = new UXImageArea(new UXImage('res://.data/img/add.png'));
         $e->sender->graphic->size = [20,20];
         
         $e->sender->data('add',$e->sender->graphic);
-        $e->sender->data('loading',$loadingGraphic);
         
         $e->sender->text = $this->_('MAINFORM.ADDGAME');
     }

@@ -562,7 +562,7 @@ class launcherSettings extends AbstractForm
     {
         $userHome = System::getProperty('user.home');
         $defaultDir = "$userHome/.local/share/OnlineFix Linux Launcher/$for";
-        $userDir = app()->appModule()->launcher->get("$for\Path",'User Settings');
+        $userDir = app()->appModule()->launcher->get($for . 'Path', 'User Settings');
         
         if ($userDir == null)
         {

@@ -10,7 +10,17 @@ use std, gui, framework, app;
 class newGameConfigurator extends AbstractForm
 {
 
-    $gameParams;
+    $gameParams = [
+        'openedFromAria' => false,
+        'skipConfig' => false,
+        'originalFile' => null,
+        'path' => null,
+        'unpackedPath' => null,
+        'canInstall' => false,
+        'mainFile' => null
+    ];
+    $cancelConfirmed = false;
+    $addedGame = false;
 
     /**
      * @event gamePathBox.click 
@@ -67,19 +77,6 @@ class newGameConfigurator extends AbstractForm
         $this->gameName->requestFocus();
     }
 
-
-    /**
-     * @event hide 
-     */
-    function doHide(UXWindowEvent $e = null)
-    {
-        if ($this->isFree())
-            return;
-            
-        $this->free();
-        $this->doCancelButtonAction();
-    }
-
     /**
      * @event prefixPath.click 
      */
@@ -124,7 +121,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doSelectFileButtonAction(UXEvent $e = null,$candidate = null)
     {    
-        if (is_null($this->listView->selectedIndex))
+        if (is_null($this->listView->selectedIndex) or $this->listView->selectedIndex < 0)
         {
             $this->toast($this->_('NOTHING.SELECTED'));
             return;
@@ -132,12 +129,12 @@ class newGameConfigurator extends AbstractForm
         
         if ($candidate == null)
         {
-            $canInstall = $this->listView->selectedItem[2];
+            $canInstall = $this->listView->selectedItem[2] ?? false;
             $candidate = $this->gameParams['path'].$this->listView->selectedItem[1].$this->listView->selectedItem[0];
         }
         else
         {
-            $canInstall = $candidate[2];
+            $canInstall = $candidate[2] ?? false;
             $candidate = $this->gameParams['path'].$candidate[1].$candidate[0];
         }
         
@@ -156,7 +153,7 @@ class newGameConfigurator extends AbstractForm
         $this->gameParams['mainFile'] = $candidate;
         $this->gameParams['canInstall'] = $canInstall;
         
-        $defaultInstallPath = $this->appModule()->launcher->get('installsPath', 'User Settings');
+        $defaultInstallPath = launcherSettings::getBasePathFor('installs');
         if ($canInstall == false or $ext != 'exe')
         {
             $this->gamePath->text = $this->gameParams['path'] ?? $defaultInstallPath;
@@ -165,7 +162,7 @@ class newGameConfigurator extends AbstractForm
         elseif ($defaultInstallPath != null and $ext == 'exe' and $canInstall)
             $this->gamePath->text = $defaultInstallPath.'/'.fs::name(fs::parent($candidate));
         
-        if ($this->gameParams['skipConfig'])
+        if ($this->gameParams['skipConfig'] ?? false)
         {
             $this->doAddGameAction();
             return;
@@ -179,7 +176,7 @@ class newGameConfigurator extends AbstractForm
             $nameNoExt = $this->gameName->text;
         }
         
-        if ($this->gameParams['path'] != null and $this->ftpInstallerBox->enabled == false)
+        if (($this->gameParams['path'] ?? null) != null and $this->ftpInstallerBox->enabled == false)
         {
             $this->gamePathBox->enabled = false;
             $this->cleanAfterAdd->enabled = $this->cleanAfterAdd->data('quUIElement')->selected = false;
@@ -194,9 +191,9 @@ class newGameConfigurator extends AbstractForm
     
     function parseFromRar($file)
     {
+        $extractor = new RarExtractor;
         try 
         {
-            $extractor = new RarExtractor;
             $files = $extractor->getRarContent($file);
         }
         catch (Throwable $ex)
@@ -204,6 +201,7 @@ class newGameConfigurator extends AbstractForm
             $files = $extractor->retryWithEnsureError($ex->getMessage(),$file);
             if ($files == null)
             {
+                $this->cancelConfirmed = true;
                 $this->hide();
                 return;
             }
@@ -216,6 +214,7 @@ class newGameConfigurator extends AbstractForm
         if ($parsedFiles == [])
         {
             UXDialog::showAndWait($this->_('NEWGAMECONFIG.EMPTYRAR'),'ERROR');
+            $this->cancelConfirmed = true;
             $this->hide();
             return;
         }
@@ -228,20 +227,62 @@ class newGameConfigurator extends AbstractForm
      */
     function doCancelButtonAction(UXEvent $e = null)
     {
-        if ($this->gameParams['openedFromAria'] and ($this->isFree() or uiConfirm($this->_('NEWGAMECONFIG.ARESURE'))))
+        if ($this->gameParams['openedFromAria'] ?? false)
         {
-            $origParent = fs::parent($this->gameParams['originalFile']);
+            if (uiConfirm($this->_('NEWGAMECONFIG.ARESURE')) == false)
+                return;
+        }
 
-            new Process(['rm','-rf',$origParent])->start();
-            $this->hide();
-        }
-        elseif ($this->gameParams['skipConfig'] and $this->isFree() == false)
+        $this->cancelConfirmed = true;
+        $this->hide();
+    }
+
+    /**
+     * @event hide
+     */
+    function doHide(UXWindowEvent $e = null)
+    {
+        if ($this->isFree() or $this->addedGame)
+            return;
+
+        if (($this->gameParams['skipConfig'] ?? false) and $this->cancelConfirmed == false)
+            $this->cancelConfirmed = true;
+
+        if ($this->cancelConfirmed)
         {
-            new Process(['rm','-rf',$this->prefixPath->text])->start();
-            $this->hide();
+            if ($this->gameParams['openedFromAria'] ?? false)
+            {
+                self::removeDirectoryIfSafe($this->gameParams['path'] ?? null, launcherSettings::getBasePathFor('downloads'));
+            }
+            elseif ($this->gameParams['skipConfig'] ?? false)
+            {
+                $prefix = $this->prefixPath->text;
+                $prefixBase = launcherSettings::getBasePathFor('prefixes');
+                self::removeDirectoryIfSafe($prefix, $prefixBase);
+            }
         }
-        elseif ($this->gameParams['openedFromAria'] == false and $this->isFree() == false)
-            $this->hide();
+
+        $this->free();
+    }
+
+    static function removeDirectoryIfSafe($path, $base = null)
+    {
+        if ($path == null or str::length(str::trim($path)) == 0)
+            return false;
+
+        $path = fs::abs($path);
+        if ($path == '/' or $path == System::getProperty('user.home') or fs::isDir($path) == false)
+            return false;
+
+        if ($base != null)
+        {
+            $base = fs::abs($base);
+            if ($path == $base or str::startsWith($path, $base . '/') == false)
+                return false;
+        }
+
+        new Process(['rm','-rf',$path])->start();
+        return true;
     }
 
     /**
@@ -249,7 +290,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doGameNameKeyUp(UXKeyEvent $e = null)
     {
-        $installPathDefault = $this->appModule()->launcher->get('installsPath','User Settings');
+        $installPathDefault = launcherSettings::getBasePathFor('installs');
         $prefixParent = fs::parent($this->prefixPath->text);
         $prefixDefault = launcherSettings::getBasePathFor('prefixes');
         
@@ -264,7 +305,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doAddGameAction(UXEvent $e = null)
     {
-        if ($this->gameParams['skipConfig'] == false)
+        if (($this->gameParams['skipConfig'] ?? false) == false)
         {
             $isAddPossible = $this->checkAreAddPossible();
             if (is_bool($isAddPossible) == false or $isAddPossible != true)
@@ -273,110 +314,157 @@ class newGameConfigurator extends AbstractForm
                 return;
             }
         }
+        elseif ($this->appModule()->games->section($this->gameName->text) != [])
+        {
+            UXDialog::show($this->_('MAINFORM.GAMEEXISTS'),'ERROR');
+            return;
+        }
         
+        $gameName = str::trim($this->gameName->text);
+        $gamePath = $this->gamePath->text;
+        $prefixPath = $this->prefixPath->text;
+        $cleanAfterAdd = $this->cleanAfterAdd->data('quUIElement')->selected;
+        $ftpInstallerPath = $this->ftpInstallerPath->text;
+        $originalFile = $this->gameParams['originalFile'] ?? null;
+        $mainFile = $this->gameParams['mainFile'] ?? null;
+        $unpackedPath = $this->gameParams['unpackedPath'] ?? null;
+        $canInstall = $this->gameParams['canInstall'] ?? false;
+        $openedFromAria = $this->gameParams['openedFromAria'] ?? false;
+        $sourcePath = $this->gameParams['path'] ?? null;
+
+        $this->addedGame = true;
         $this->free();
         
-        if ($this->gameParams['canInstall'])
+        if ($canInstall)
         {
-            ftpInstaller::install($this->gameName->text,
-                                  [$this->gameParams['mainFile'],$this->ftpInstallerPath->text],
-                                  $this->prefixPath->text,$this->gamePath->text,
-                                  $this->cleanAfterAdd->data('quUIElement')->selected);
+            ftpInstaller::install($gameName,
+                                  [$mainFile,$ftpInstallerPath],
+                                  $prefixPath,$gamePath,
+                                  $cleanAfterAdd);
             return;
         }
         
         $box = app()->form('MainForm')->addStubGame();
-        $box['gameName']->text = $this->gameName->text;
+        $box['gameName']->text = $gameName;
         
-        new Thread(function () use ($box)
+        new Thread(function () use ($box, $gameName, $gamePath, $prefixPath, $cleanAfterAdd, $originalFile, $mainFile, $unpackedPath, $openedFromAria, $sourcePath)
         {
-            if ($this->gameParams['originalFile'] != null and fs::ext($this->gameParams['originalFile']) == 'rar')
-            {
-                uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.UNPACKING');});
-                
-                $extractor = new RarExtractor;
-                try 
-                {
-                    $extractor->unpackRar($this->gameParams['originalFile'],$this->gamePath->text);
-                } catch (Throwable $ex)
-                {
-                    $result = $extractor->retryWithEnsureError($ex->getMessage(),$this->gameParams['originalFile'],$this->gamePath->text);
-                    if ($result != true)
-                    {
-                        uiLater(function () use ($box) {app()->form('MainForm')->removeStubGame($box['box']);});
-                        return;
-                    }
-                }
-            }
-            
-            if (fs::isFile($this->gameParams['mainFile']) == false)
-                $this->gameParams['mainFile'] = $this->gamePath->text.$this->gameParams['mainFile'];
-            
-            if ($this->gameParams['unpackedPath'] != null)
-                $path = $this->gamePath->text .= $this->gameParams['unpackedPath'];
-            
-            uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.DLLS');});
-            
-            $parsed = FixParser::parseDlls($path ?? $this->gamePath->text);
-            if ($parsed['fakeAppId'] != null)
-                $this->appModule()->games->set('fakeSteamID',$parsed['fakeAppId'],$this->gameName->text);
-                
-            if ($parsed['realAppId'] != null)
-            {
-                $bannerPath = FixParser::parseBanner($parsed['realAppId']);
-                if (fs::isFile($bannerPath))
-                    $this->appModule()->games->set('banner',$bannerPath,$this->gameName->text);
-                else 
-                    uiLater(function () use ($bannerPath){UXDialog::show($bannerPath,'ERROR');});
-                
-                $this->appModule()->games->set('steamID',$parsed['realAppId'],$this->gameName->text);
-            }
-                
-            uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.ICOEXTRACT');});
-            
             try
             {
-                $appIcon = FixParser::parseIcon($this->gameParams['mainFile']);
-                if (fs::isFile($appIcon))
-                    $this->appModule()->games->set('icon',$appIcon,$this->gameName->text);
-            } catch (Throwable $ex)
-            {
-                uiLater(function () use ($ex)
+                $path = null;
+                $resolvedMainFile = $mainFile;
+
+                if ($originalFile != null and fs::ext($originalFile) == 'rar')
                 {
-                    UXDialog::show(sprintf($this->_('MAINFORM.ICONPARSERERROR'),$ex->getMessage()),'ERROR');
-                });
-            }
-            
-            uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.SETTINGS');});
-            
-            $defaultProton = $this->appModule()->launcher->get('defaultProton','User Settings') ?? 'GE-Proton Latest';
-            $this->appModule()->games->put(['overrides'=>$parsed['overrides'],
-                                            'executable'=>$this->gameParams['mainFile'],
-                                            'mainPath'=>$path ?? $this->gamePath->text,
-                                            'prefixPath'=>$this->prefixPath->text,
-                                            'proton'=>$defaultProton,
-                                            'steamRuntime'=>boolval(FilesWorker::findSteamRuntime($defaultProton)),
-                                            'steamOverlay'=>true,
-                                            'wined3d'=>$this->appModule()->launcher->get('gamesUsesWined3d','User Settings'),
-                                            'nativeWayland'=>$this->appModule()->launcher->get('gamesUsesWayland','User Settings'),
-                                            'fixPath'=>$parsed['fixPath']],$this->gameName->text);
-                                            
-            uiLater(function () use ($parsed,$bannerPath,$appIcon,$box)
-            {
-                app()->form('MainForm')->removeStubGame($box['box']);
-                app()->form('MainForm')->addGame($this->gameName->text,$this->gameParams['mainFile'],$parsed['overrides'],$bannerPath,$appIcon);
-            });
-            
-            if ($this->cleanAfterAdd->data('quUIElement')->selected) #available only when installed (not simple added), so no checks needed
-            {
-                $origParent = fs::parent($this->gameParams['originalFile']);
-                if (str::contains($path,$origParent))
-                {
-                    uiLater(function (){UXDialog::show($this->_('NEWGAMECONFIG.CLEANSKIPPED'),'WARNING');});
-                    return;
+                    uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.UNPACKING');});
+
+                    $extractor = new RarExtractor;
+                    try
+                    {
+                        $extractor->unpackRar($originalFile,$gamePath);
+                    } catch (Throwable $ex)
+                    {
+                        $result = $extractor->retryWithEnsureError($ex->getMessage(),$originalFile,$gamePath);
+                        if ($result != true)
+                        {
+                            uiLater(function () use ($box, $openedFromAria, $sourcePath)
+                            {
+                                app()->form('MainForm')->removeStubGame($box['box']);
+                                if ($openedFromAria)
+                                    newGameConfigurator::removeDirectoryIfSafe($sourcePath, launcherSettings::getBasePathFor('downloads'));
+                            });
+                            return;
+                        }
+                    }
                 }
-                
-                new Process(['rm','-rf',$origParent])->start();
+
+                if (fs::isFile($resolvedMainFile) == false)
+                    $resolvedMainFile = $gamePath.$resolvedMainFile;
+
+                if ($unpackedPath != null)
+                    $path = $gamePath . $unpackedPath;
+
+                uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.DLLS');});
+
+                $parsed = FixParser::parseDlls($path ?? $gamePath);
+                $noFix = $parsed == null;
+                if ($noFix)
+                    $parsed = ['overrides'=>'', 'realAppId'=>null, 'fakeAppId'=>null, 'fixPath'=>null];
+
+                $bannerPath = $appIcon = null;
+                if (($parsed['fakeAppId'] ?? null) != null)
+                    $this->appModule()->games->set('fakeSteamID',$parsed['fakeAppId'],$gameName);
+
+                if (($parsed['realAppId'] ?? null) != null)
+                {
+                    $bannerPath = FixParser::parseBanner($parsed['realAppId']);
+                    if (fs::isFile($bannerPath))
+                        $this->appModule()->games->set('banner',$bannerPath,$gameName);
+                    else
+                        uiLater(function () use ($bannerPath){UXDialog::show($bannerPath,'ERROR');});
+
+                    $this->appModule()->games->set('steamID',$parsed['realAppId'],$gameName);
+                }
+
+                uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.ICOEXTRACT');});
+
+                try
+                {
+                    $appIcon = FixParser::parseIcon($resolvedMainFile);
+                    if (fs::isFile($appIcon))
+                        $this->appModule()->games->set('icon',$appIcon,$gameName);
+                } catch (Throwable $ex)
+                {
+                    uiLater(function () use ($ex)
+                    {
+                        UXDialog::show(sprintf($this->_('MAINFORM.ICONPARSERERROR'),$ex->getMessage()),'ERROR');
+                    });
+                }
+
+                uiLater(function () use ($box){$box['status']->text = $this->_('NEWGAMECONFIG.SETTINGS');});
+
+                $defaultProton = $this->appModule()->launcher->get('defaultProton','User Settings') ?? 'GE-Proton Latest';
+                $this->appModule()->games->put(['overrides'=>$parsed['overrides'],
+                                                'executable'=>$resolvedMainFile,
+                                                'mainPath'=>$path ?? $gamePath,
+                                                'prefixPath'=>$prefixPath,
+                                                'proton'=>$defaultProton,
+                                                'steamRuntime'=>boolval(FilesWorker::findSteamRuntime($defaultProton)),
+                                                'steamOverlay'=>true,
+                                                'wined3d'=>$this->appModule()->launcher->get('gamesUsesWined3d','User Settings'),
+                                                'nativeWayland'=>$this->appModule()->launcher->get('gamesUsesWayland','User Settings'),
+                                                'fixPath'=>$parsed['fixPath']],$gameName);
+
+                uiLater(function () use ($parsed,$bannerPath,$appIcon,$box,$gameName,$resolvedMainFile,$noFix)
+                {
+                    app()->form('MainForm')->removeStubGame($box['box']);
+                    app()->form('MainForm')->addGame($gameName,$resolvedMainFile,$parsed['overrides'],$bannerPath,$appIcon);
+                    if ($noFix)
+                        UXDialog::show($this->_('NEWGAMECONFIG.NOFIX'),'WARNING');
+                });
+
+                if ($cleanAfterAdd and $originalFile != null)
+                {
+                    $origParent = $openedFromAria ? $sourcePath : fs::parent($originalFile);
+                    $target = $path ?? $gamePath;
+                    if ($target == $origParent or str::startsWith($target, $origParent . '/') or str::startsWith($origParent, $target . '/'))
+                    {
+                        uiLater(function (){UXDialog::show($this->_('NEWGAMECONFIG.CLEANSKIPPED'),'WARNING');});
+                        return;
+                    }
+
+                    self::removeDirectoryIfSafe($origParent, $openedFromAria ? launcherSettings::getBasePathFor('downloads') : null);
+                }
+            }
+            catch (Throwable $ex)
+            {
+                uiLater(function () use ($box, $openedFromAria, $sourcePath, $ex)
+                {
+                    app()->form('MainForm')->removeStubGame($box['box']);
+                    if ($openedFromAria)
+                        newGameConfigurator::removeDirectoryIfSafe($sourcePath, launcherSettings::getBasePathFor('downloads'));
+                    UXDialog::show($this->_('ARIADOWNLOADER.DOWNLOADERROR') . "\n" . $ex->getMessage(), 'ERROR');
+                });
             }
         })->start();
     }
@@ -494,7 +582,7 @@ class newGameConfigurator extends AbstractForm
      */
     function doKeyUpEsc(UXKeyEvent $e = null)
     {    
-        $this->hide();
+        $this->doCancelButtonAction();
     }
 
 
@@ -508,7 +596,7 @@ class newGameConfigurator extends AbstractForm
         if ($path == null) # if $path is == null, then the files are parsed from rar
             $this->gameParams['unpackedPath'] = newGameConfigurator::detectBasePath($files);
             
-        if ($this->gameParams['openedFromAria'])
+        if ($this->gameParams['openedFromAria'] ?? false)
         {
             $this->cleanAfterAdd->enabled = false;
             $this->cleanAfterAdd->data('quUIElement')->selected = true;
@@ -538,7 +626,7 @@ class newGameConfigurator extends AbstractForm
             $candidates[] = [$fileName,str::replace(fs::parent($file),$path,null).'/',newGameConfigurator::checkAreInstallPossible($file)];
             $candidatesNames[] = $fileName;
             
-            if (newGameConfigurator::checkAreAutoSelectPossible($file,$this->gameParams['originalFile'] != null ? $files : null))
+            if (newGameConfigurator::checkAreAutoSelectPossible($file,($this->gameParams['originalFile'] ?? null) != null ? $files : null))
             {
                 $this->doSelectFileButtonAction(null,arr::last($candidates));
                 return;
@@ -550,6 +638,7 @@ class newGameConfigurator extends AbstractForm
         {
             UXDialog::show($this->_('NOTHING.FOUND'),'ERROR');
             
+            $this->cancelConfirmed = true;
             $this->hide();
             return;
         }
@@ -568,7 +657,7 @@ class newGameConfigurator extends AbstractForm
     
     private function checkAreAddPossible()
     {
-        if ($this->gameName->text == null or $this->gamePath->text == null or $this->prefixPath->text == null/* or ($this->ftpInstallerBox->enabled and $this->ftpInstallerPath->text == null)*/)
+        if (str::length(str::trim($this->gameName->text)) == 0 or str::length(str::trim($this->gamePath->text)) == 0 or str::length(str::trim($this->prefixPath->text)) == 0/* or ($this->ftpInstallerBox->enabled and $this->ftpInstallerPath->text == null)*/)
             return $this->_('NEWGAMECONFIG.FIELDSEMPTY');
         elseif ($this->appModule()->games->section($this->gameName->text) != [])
             return $this->_('MAINFORM.GAMEEXISTS');
@@ -583,7 +672,7 @@ class newGameConfigurator extends AbstractForm
         {
             $parent = fs::parent($file);
             $count = str::count($parent,'/');
-            if ($count < $candidate['count'] or $candidate == [])
+            if ($candidate == [] or $count < $candidate['count'])
                 $candidate = ['path'=>$parent,'count'=>$count];
         }
         
@@ -592,10 +681,13 @@ class newGameConfigurator extends AbstractForm
     
     static private function isFile($file,$files = null) #wrapper with rar support
     {
+        if ($files == null)
+            return fs::isFile($file);
+
         foreach ($files as $c => $f)
             $files[$c] = str::lower($f);
             
-        return $files != null ? arr::has($files,$file) : fs::isFile($file);
+        return arr::has($files,$file);
     }
     
     static function checkAreAutoSelectPossible($file,$rarFiles = null)
@@ -702,5 +794,6 @@ class newGameConfigurator extends AbstractForm
                 return File::of(fs::parent($file))->find(function ($d,$f){return fs::ext($f) == 'ftp';}) != [];
             break;
         }
+        return false;
     }
 }
